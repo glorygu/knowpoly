@@ -1,0 +1,92 @@
+
+.cointainer{
+	display:flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	height: auto;
+	position:relative;
+}
+
+.player1, .player2, .player3, .player4{
+	width: 50%;
+	height: 50%;
+	padding-bottom: 50%;
+	font-size: 2em;
+}
+
+
+
+.player1{
+	background-color:#8DB6CD;
+}
+
+.player2{
+	background-color:#607B8B;
+}
+
+.player3{
+	background-color:#8FBC8F;
+}
+
+.player4{
+	background-color:#A2CD5A;
+}
+
+.header{
+background-color: gray;
+height: 20%
+
+}
+
+#dice{
+text-align: right;
+margin-right: 3em;
+margin-top: 3em;
+
+}
+.prop{
+	height: 40%;
+	background-color: lightgray;
+text-align: center;
+}
+
+.bottom{
+	height: 40%;
+	background-color: gray;
+
+}
+
+.prueba{
+	position: absolute;
+	left: 5em;
+	top: 5em;
+	bottom: 5em;
+	background-color: white;
+	right: 5em;
+	display:flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+
+
+#enter, #property1, #property2, #property3, #property4, #property5, #property6, #property7, #property8, #property9, #chair1,#property10, #property11, #property12, #chair2, #curve{
+	width: calc(100%/6 - 2px);
+	background-color: rgb(196,215,196);
+	border: 1px solid black;
+}
+
+
+#property6, #property8{
+
+}
+
+.space{
+	width: calc(calc(100%/6)*4);
+}
+
+@media (max-width: 1024px) {
+	.prueba{
+
+	}
+}
