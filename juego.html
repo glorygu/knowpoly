@@ -7,10 +7,10 @@
 	</head>
 	<body>
 	<div class = "cointainer">
-		<div class = "player1"><p>Jugador 1<p></div>
-		<div class = "player2"><p>Jugador 2</p></div>
-		<div class = "player3"><p>Jugador 3</p></div>
-		<div class = "player4"><p>Jugador 4</p></div>
+		<div class = "player1" onclick="addPlayer(1)"><p id="name1">Jugador 1<p></div>
+		<div class = "player2" onclick="addPlayer(2)"><p id="name2">Jugador 2</p></div>
+		<div class = "player3" onclick="addPlayer(3)"><p id="name3">Jugador 3</p></div>
+		<div class = "player4" onclick="addPlayer(4)"><p id="name4">Jugador 4</p></div>
 		<div class = "prueba">
 			<div id = "enter">Entrada</div>
 			<div id = "property1">
@@ -63,7 +63,7 @@
 				<div class = "bottom">
 				</div>
 			</div>
-			<div class = "space">
+			<div class = "space" id = "upperSpace">
 				<div id= "dice">
 					 <img src = "img/d1.png" width ="75"/>
 				</div>
@@ -87,7 +87,7 @@
 				<div class = "bottom">
 				</div>
 			</div>
-			<div class = "space"></div>
+			<div class = "space" id = "lowerSpace"></div>
 			<div id = "property8">
 
 				<div class ="header">
@@ -139,5 +139,6 @@
 			<div id = "curve">Cueva de la icnoransia</div>
 		</div>
 	<div>
+	<script src="game.js"></script>
 	</body>
 </html>
