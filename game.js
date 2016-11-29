@@ -25,7 +25,7 @@ var cellHeight = enterOffset.height;
 
 **/
 
-function property(type, id, propertyBuy, propertySell, houseBuy, houseSell, h0, h1, h2, h3, h4, h5 ){ //h0, h1, h2 ... corresponden a los hospedajes de cada casa 
+function Property(type, id, propertyBuy, propertySell, houseBuy, houseSell, h0, h1, h2, h3, h4, h5 ){ //h0, h1, h2 ... corresponden a los hospedajes de cada casa 
 	this.type = type; //property, enter, cave, hotChair
 	this.id = id; 
 	if (type == "property"){
@@ -106,15 +106,21 @@ function addPlayer(playerNumber){
 				player.richness = 650;
 				document.getElementById("name"+playerNumber).innerHTML = player.name;
 				//player.position = "enter";
+				var imgHeight =  Math.floor(enter.offsetHeight/5);
+    			var imgWidth = Math.floor(enter.offsetWidth/3);
+    			player.top = (enter.offsetParent.offsetTop+(imgHeight*activePlayers.length));
+    			player.left = (enter.offsetParent.offsetLeft); 
 				activePlayers.push(player);
+				
 				loadColorSelector(player.name);
+				
 				
 			}
 		}
 	}
 }
 
-function loadColorSelector( name){
+function loadColorSelector(name){
 	var divSelectColor = document.createElement('div');
 	var msg = document.createTextNode(name+' , seleccione un color');
 	divSelectColor.appendChild(msg);
@@ -123,11 +129,11 @@ function loadColorSelector( name){
 	divSelectColor.setAttribute("height",upperSpaceOffset.height - 20);
 	divSelectColor.id = "colorSelector";
 	for(var i  = 0; i < availableColors.length; i++){
-		img = document.createElement('img');
+		var img = document.createElement('img');
 		img.src = ('img/'+availableColors[i]+'.png');
 		img.setAttribute("height",upperSpaceOffset.height-80);
 		img.setAttribute("width",(upperSpaceOffset.width/4)-40);
-		
+		img.setAttribute("class", "players");
 		img.id=availableColors[i];
 		//img.onclick = function (availableColors[i] ){ alert("Ha escogido el color " + availableColors[i]); color =availableColors[i]; }
 		img.onclick = selectColor;
@@ -138,15 +144,15 @@ function loadColorSelector( name){
 function selectColor ( ){
 
 	if(addingPlayers){
-		color = this.id;
+		var color = this.id;
 	if (color != null){
 		activePlayers[activePlayers.length-1].color = color;
 		activePlayers[activePlayers.length-1].img = this;
 		removeFromArray(availableColors, color);
 		this.parentNode.style.display = 'none';
 		var enterOffset = getOffset(enter);
-		this.setAttribute("height",enterOffset.height/5);
-		this.setAttribute("width",enterOffset.width/3);
+		this.setAttribute("height",Math.floor(enter.offsetHeight/5));
+		this.setAttribute("width",Math.floor(enter.offsetWidth/3));
 		this.style.left = enterOffset.left + enterOffset.width/3;
 		this.style.top = enterOffset.top + ((enterOffset.height/5) * activePlayers.length); 
 		this.onclick = none; //cqmbiar
@@ -200,7 +206,50 @@ function calculateSequence (startingCell, numberOfCells)
 
 }
 
-function moveLeft(player, numberOfCells){
+function move( ){
+    var player = activePlayers[activePlayers.length-1];
+    //moveRight(player,5);
+    moveDown(player,3);
+    
+    
+}
+function moveRight(player, numCells){
+    
+    for (var i = 0; i < numCells; i++){
+        player.left += enterOffset.width;
+        console.log(player.img);
+        player.img.style.left = (player.left)+"px";
+        player.img.style.transitionDuration = "1s";
+    }
+    
+}
 
+function moveLeft(player, numCells){
+    
+    for (var i = 0; i < numCells; i++){
+        player.left -= enterOffset.width;
+        player.img.style.left = (player.left)+"px";
+        player.img.style.transitionDuration = "1s";
+    }
+    
+}
 
+function moveDown(player, numCells){
+    
+    for (var i = 0; i < numCells; i++){
+        player.top += enterOffset.height;
+        player.img.style.top = (player.top)+"px";
+        player.img.style.transitionDuration = "1s";
+    }
+    
+}
+
+function moveUp(player, numCells){
+    
+    for (var i = 0; i < numCells; i++){
+        player.top -= enterOffset.height;
+        player.img.style.top = (player.top)+"px";
+        player.img.style.transitionDuration = "1s";
+    }
+    
 }
