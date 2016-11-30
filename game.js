@@ -11,7 +11,7 @@ var addingPlayers = 'true';
 var upperSpace  = document.getElementById("upperSpace");
 var enter =  document.getElementById("enter");
 var questionsPool = []; 
-
+var properties = new Array();
 
 /**
 **/
@@ -25,11 +25,12 @@ var cellHeight = enterOffset.height;
 
 **/
 
-function Property(type, id, propertyBuy, propertySell, houseBuy, houseSell, h0, h1, h2, h3, h4, h5 ){ //h0, h1, h2 ... corresponden a los hospedajes de cada casa 
+function Property(type, id, name, url, propertyBuy, propertySell, houseBuy, houseSell, h0, h1, h2, h3, h4, h5 ){ //h0, h1, h2 ... corresponden a los hospedajes de cada casa 
 	this.type = type; //property, enter, cave, hotChair
-	this.id = id; 
+	this.id = id;
+	this.name = name;
+	this.img = url;
 	if (type == "property"){
-
 		this.propertyBuy = propertyBuy;
 		this.propertySell = propertySell;
 		this.houseBuy = houseBuy; 
@@ -42,6 +43,29 @@ function Property(type, id, propertyBuy, propertySell, houseBuy, houseSell, h0, 
 		this.h5 = h5;
 	} 
 
+}
+
+function fillProperties(){
+	var property1 = new Property('property', 'p1', 'Avenida Central', 'url(img/av_central.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+	this.properties.push(property1);
+	
+}
+
+
+
+/**
+	Funcion para llenar el tablero
+*/
+function fillBoard(){
+	var property = document.getElementById('property1');
+	var dataProperty = properties.pop();
+	var header = property.getElementsByClassName('header');
+	var buttom = document.createElement('buttom');
+	var txt = document.createTextNode(dataProperty.propertyBuy);
+	buttom.appendChild(txt);
+	header[0].appendChild(buttom);
+	var body = property.getElementsByClassName('prop');
+	body[0].style.backgroundImage = 'url(img/av_central.jpg)';
 }
 
 
@@ -253,3 +277,6 @@ function moveUp(player, numCells){
     }
     
 }
+
+fillProperties();
+fillBoard();
