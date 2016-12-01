@@ -6,12 +6,12 @@ var imgWidth = 80;
 var imgHeight = 80;
 var activePlayers = [];
 var cells = [];
-var availableColors = ["red","yellow","green","blue"];
+var colors = ["red","green","blue","yellow"];
 var addingPlayers = 'true';
 var upperSpace  = document.getElementById("upperSpace");
 var enter =  document.getElementById("enter");
 var questionsPool = []; 
-
+var board = document.getElementById("board");
 
 /**
 **/
@@ -104,15 +104,16 @@ function addPlayer(playerNumber){
 				player.number = playerNumber;
 				player.liquidCash = 650;
 				player.richness = 650;
-				document.getElementById("name"+playerNumber).innerHTML = player.name;
+				document.getElementById("name"+playerNumber).innerHTML = player.name + "<p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p>/" +  "<p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
 				//player.position = "enter";
 				var imgHeight =  Math.floor(enter.offsetHeight/5);
     			var imgWidth = Math.floor(enter.offsetWidth/3);
     			player.top = (enter.offsetParent.offsetTop+(imgHeight*activePlayers.length));
     			player.left = (enter.offsetParent.offsetLeft); 
 				activePlayers.push(player);
-				
-				loadColorSelector(player.name);
+				player.color=colors[playerNumber-1];
+				placePlayer(player);
+				//loadColorSelector(player.name);
 				
 				
 			}
@@ -120,53 +121,20 @@ function addPlayer(playerNumber){
 	}
 }
 
-function loadColorSelector(name){
-	var divSelectColor = document.createElement('div');
-	var msg = document.createTextNode(name+' , seleccione un color');
-	divSelectColor.appendChild(msg);
-	var upperSpaceOffset = getOffset(upperSpace);
-	divSelectColor.setAttribute("width",upperSpaceOffset.width - 20);
-	divSelectColor.setAttribute("height",upperSpaceOffset.height - 20);
-	divSelectColor.id = "colorSelector";
-	for(var i  = 0; i < availableColors.length; i++){
-		var img = document.createElement('img');
-		img.src = ('img/'+availableColors[i]+'.png');
-		img.setAttribute("height",upperSpaceOffset.height-80);
-		img.setAttribute("width",(upperSpaceOffset.width/4)-40);
-		img.setAttribute("class", "players");
-		img.id=availableColors[i];
-		//img.onclick = function (availableColors[i] ){ alert("Ha escogido el color " + availableColors[i]); color =availableColors[i]; }
-		img.onclick = selectColor;
-		divSelectColor.appendChild(img);
-	}
-	upperSpace.appendChild(divSelectColor);
-}
-function selectColor ( ){
 
-	if(addingPlayers){
-		var color = this.id;
-	if (color != null){
-		activePlayers[activePlayers.length-1].color = color;
-		activePlayers[activePlayers.length-1].img = this;
-		removeFromArray(availableColors, color);
-		this.parentNode.style.display = 'none';
-		var enterOffset = getOffset(enter);
-		this.setAttribute("height",Math.floor(enter.offsetHeight/5));
-		this.setAttribute("width",Math.floor(enter.offsetWidth/3));
-		this.style.left = enterOffset.left + enterOffset.width/3;
-		this.style.top = enterOffset.top + ((enterOffset.height/5) * activePlayers.length); 
-		this.onclick = none; //cqmbiar
-		enter.appendChild(this);
-		console.log(activePlayers);
-		/*var colorSelector = document.getElementById("colorSelector");
-		console.log(colorSelector);
-		colorSelector.style.display = 'none';*/
-	}
-	}
-}
-
-function none(){
-//cambiar
+function placePlayer(player){
+	var img = document.createElement('img');
+	img.src = ('img/'+player.color+'.png');
+	img.setAttribute("class", "playerToken");
+	img.id=player.color;
+	imgHeight = img.offsetHeight; 
+	imgWidth = img.offsetWidth;
+	console.log("eh" + imgWidth +"enter top " + enter.offsetParent.offsetTop + "this top" +(enter.offsetParent.offsetTop+(imgHeight*(activePlayers.length))));
+	//img.style.top = (enter.offsetParent.offsetTop+(imgHeight*(activePlayers.length))) ;//+ 'px';
+    //img.style.left = (enter.offsetParent.offsetLeft+imgWidth) + 'px';
+	player.img = img;
+	enter.appendChild(img);
+	
 }
 
 function playerExists(playerNumber){
@@ -206,6 +174,37 @@ function calculateSequence (startingCell, numberOfCells)
 
 }
 
+function moveFullBoard( ){
+    //var player = activePlayers[activePlayers.length-1];
+    //moveRight(player,5);
+    // setTimeout(function(){}, 1000);
+    //moveDown(player,3);
+    //moveLeft(player,5);
+    //moveUp(player,3);
+    for (var i = 0; i < activePlayers.length; i++){
+    	var player = activePlayers[i];
+        moveRight(player,5);
+    	
+    }
+    setTimeout(function(){console.log("stop wait a minute, julio, get the stretch")}, 10000);
+    for (var i = 0; i < activePlayers.length; i++){
+    	var player = activePlayers[i];
+        moveDown(player,3);
+    	
+    }
+    for (var i = 0; i < activePlayers.length; i++){
+    	var player = activePlayers[i];
+        moveLeft(player,5);
+    	
+    }
+    setTimeout(function(){console.log("stop wait a minute, julio, get the stretch")}, 10000);
+    for (var i = 0; i < activePlayers.length; i++){
+    	var player = activePlayers[i];
+        moveUp(player,3);
+    	
+    }
+    
+}
 function move( ){
     var player = activePlayers[activePlayers.length-1];
     //moveRight(player,5);
@@ -216,10 +215,11 @@ function move( ){
 function moveRight(player, numCells){
     
     for (var i = 0; i < numCells; i++){
-        player.left += enterOffset.width;
-        console.log(player.img);
-        player.img.style.left = (player.left)+"px";
-        player.img.style.transitionDuration = "1s";
+        player.left += enter.offsetWidth;
+        
+        player.img.style.left = (player.left-60)+"px";
+        player.img.style.transitionDuration = "10s";
+          setTimeout(function(){console.log("stop wait a minute, julio, get the stretch")}, 3000);
     }
     
 }
@@ -227,9 +227,10 @@ function moveRight(player, numCells){
 function moveLeft(player, numCells){
     
     for (var i = 0; i < numCells; i++){
-        player.left -= enterOffset.width;
-        player.img.style.left = (player.left)+"px";
+        player.left -=enter.offsetWidth;
+        player.img.style.left = (player.left-30)+"px";
         player.img.style.transitionDuration = "1s";
+        setTimeout(function(){}, 1000);
     }
     
 }
@@ -237,9 +238,10 @@ function moveLeft(player, numCells){
 function moveDown(player, numCells){
     
     for (var i = 0; i < numCells; i++){
-        player.top += enterOffset.height;
+        player.top += enter.offsetHeight;
         player.img.style.top = (player.top)+"px";
-        player.img.style.transitionDuration = "1s";
+        player.img.style.transitionDuration = "10s";
+        setTimeout(function(){}, 1000);
     }
     
 }
@@ -247,9 +249,10 @@ function moveDown(player, numCells){
 function moveUp(player, numCells){
     
     for (var i = 0; i < numCells; i++){
-        player.top -= enterOffset.height;
+        player.top -= enter.offsetHeight;
         player.img.style.top = (player.top)+"px";
         player.img.style.transitionDuration = "1s";
+        setTimeout(function(){}, 1000);
     }
     
 }

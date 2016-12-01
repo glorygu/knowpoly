@@ -1,5 +1,14 @@
 img{
-	position:absolute;
+	
+}
+
+.playerToken {
+	
+	width: 25%;
+	height: 30%;
+	top: 25%;
+	position: relative;
+
 }
 .cointainer{
 	display:flex;
@@ -14,26 +23,54 @@ img{
 	height: 50%;
 	padding-bottom: 50%;
 	font-size: 2em;
+		display: inline-block
 }
-
 
 
 .player1{
-	background-color:#8DB6CD;
+	background-color:#ff704d;
 }
 
 .player2{
-	background-color:#607B8B;
+	background-color:#85e085;
 }
 
 .player3{
-	background-color:#8FBC8F;
+	background-color:#3333ff;
 }
+.player3 span, .player4 span{
+	
+	position: absolute;
+	bottom: 2%;
+
+
+}
+
+#playerIcon3{
+	position: absolute;
+	bottom: 2%;
+	left: 4em;
+	
+}
+
+p{
+	display: inline-block;
+}
+ #playerIcon4 {
+	position: absolute;
+	bottom: 2%;
+	left: 16em;
+	
+}
+
 
 .player4{
-	background-color:#A2CD5A;
+	background-color:#ffff33;
 }
-
+.playerIcon{
+	width: 4%;
+	height: 4%;
+}
 .header{
 background-color: gray;
 height: 20%
