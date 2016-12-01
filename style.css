@@ -49,7 +49,7 @@ img{
 
 .header{
 background-color: gray;
-height: 20%
+height: 10%;
 
 }
 
@@ -59,16 +59,32 @@ margin-right: 3em;
 margin-top: 3em;
 
 }
+
+.peaje{
+	width: 10%;
+	text-align: end;
+}
+
 .prop{
-	height: 40%;
+	height: 70%;
 	background-color: lightgray;
 	text-align: center;
+	background-repeat: no-repeat;
+	background-size: cover;
 }
 
 .bottom{
-	height: 40%;
+	height: 20%;
 	background-color: gray;
+	display:flex;
+	flex-direction: row;
+	flex-wrap: wrap;
 
+}
+
+img{
+	height:auto;
+	width:auto;
 }
 
 .prueba{
@@ -83,13 +99,38 @@ margin-top: 3em;
 	flex-wrap: wrap;
 }
 
+scan p{
+	background-color: white;
+}
 
+.buttomHouse{
+	width: calc(100%/7);
+	margin-bottom: 0;
+	height:auto;
+	
+}
+
+buttom{
+	border: 1px solid;
+	margin-left: 1px;
+	height:auto;
+	width:auto;
+	
+}
+
+#enter{
+	background-repeat: no-repeat;
+	background-size: cover;
+}
 
 #enter, #property1, #property2, #property3, #property4, #property5, #property6, #property7, #property8, #property9, #chair1,#property10, #property11, #property12, #chair2, #curve{
 	width: calc(100%/6 - 2px);
 	background-color: rgb(196,215,196);
 	border: 1px solid black;
 	max-height: calc(100%/3);
+	display:flex;
+	flex-direction: column;
+	flex-wrap: wrap;
 }
 
 

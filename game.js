@@ -46,9 +46,10 @@ function Property(type, id, name, url, propertyBuy, propertySell, houseBuy, hous
 }
 
 function fillProperties(){
-	var property1 = new Property('property', 'p1', 'Avenida Central', 'url(img/av_central.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+	var enter = new Property('enter', 'enter', 'Costa Rica', 'url(img/img_costa_rica.jpg)');
+	var property1 = new Property('property', 'property1', 'Avenida Central', 'url(img/av_central.png)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+	this.properties.push(enter);
 	this.properties.push(property1);
-	
 }
 
 
@@ -57,15 +58,76 @@ function fillProperties(){
 	Funcion para llenar el tablero
 */
 function fillBoard(){
-	var property = document.getElementById('property1');
+	
+	/*var property = document.getElementById('property1');
 	var dataProperty = properties.pop();
 	var header = property.getElementsByClassName('header');
-	var buttom = document.createElement('buttom');
-	var txt = document.createTextNode(dataProperty.propertyBuy);
+	
+	
+	*/
+	var mainDiv = document.getElementsByClassName('prueba');
+	var elements = mainDiv[0].childNodes;
+	var indicator = false;
+	var index = 0;
+	var bodyDiv;
+	var secondIndex = 0;
+	var element;
+	var buttom;
+	var txt, headerDiv, bodyDiv, bottomDiv;
+	
+	while(indicator == false && index < elements.length && secondIndex < this.properties.length){
+		element = elements[index];
+		if(element.id == this.properties[secondIndex].id){
+			
+			if(this.properties[secondIndex].type == 'property'){
+				buttom = document.createElement('buttom');
+				txt = document.createTextNode(this.properties[secondIndex].propertyBuy);
+				buttom.appendChild(txt);
+				header = element.getElementsByClassName('header');
+				header[0].appendChild(buttom);
+				buttom = document.createElement('buttom');
+				txt = document.createTextNode(this.properties[secondIndex].propertySell);
+				buttom.appendChild(txt);
+				header[0].appendChild(buttom);
+				p = document.createElement('p');
+				txt = document.createTextNode('Peaje: '+this.properties[secondIndex].h0);
+				p.appendChild(txt);
+				p.className = 'peaje';
+				header[0].appendChild(p);
+				bodyDiv = element.getElementsByClassName('prop');
+				bodyDiv[0].innerHTML = '<scan><p>' + this.properties[secondIndex].name + '</p></scan>';
+				bodyDiv[0].style.backgroundImage = this.properties[secondIndex].img;
+				bottomDiv = element.getElementsByClassName('bottom');
+				for(var c = 0; c < 6; ++c){
+					buttom = document.createElement('buttom');
+					buttom.className = 'buttomHouse';
+					txt = document.createTextNode(this.properties[secondIndex].houseBuy);
+					buttom.appendChild(txt);
+					bottomDiv[0].appendChild(buttom);
+					
+				}
+				for(var i = 0; i < 6; ++i){
+					var string = 'h'+i;
+					buttom = document.createElement('buttom');
+					buttom.className = 'buttomHouse';
+					txt = document.createTextNode((this.properties[secondIndex])[string]);
+					buttom.appendChild(txt);
+					bottomDiv[0].appendChild(buttom);
+				}
+			}else{
+				element.style.backgroundImage = this.properties[secondIndex].img;
+			}
+			
+			++secondIndex;
+		}
+		++index;
+	}
+	/*
 	buttom.appendChild(txt);
 	header[0].appendChild(buttom);
 	var body = property.getElementsByClassName('prop');
-	body[0].style.backgroundImage = 'url(img/av_central.jpg)';
+	body[0].style.backgroundImage = 'url(img/av_central.png)';
+	*/
 }
 
 
