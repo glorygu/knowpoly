@@ -82,11 +82,13 @@ function fillBoard(){
 			if(this.properties[secondIndex].type == 'property'){
 				buttom = document.createElement('buttom');
 				txt = document.createTextNode(this.properties[secondIndex].propertyBuy);
+				buttom.className = 'propertyBuy';
 				buttom.appendChild(txt);
 				header = element.getElementsByClassName('header');
 				header[0].appendChild(buttom);
 				buttom = document.createElement('buttom');
 				txt = document.createTextNode(this.properties[secondIndex].propertySell);
+				buttom.className = 'propertySell';
 				buttom.appendChild(txt);
 				header[0].appendChild(buttom);
 				p = document.createElement('p');
@@ -100,7 +102,7 @@ function fillBoard(){
 				bottomDiv = element.getElementsByClassName('bottom');
 				for(var c = 0; c < 6; ++c){
 					buttom = document.createElement('buttom');
-					buttom.className = 'buttomHouse';
+					buttom.className = 'buttomHouseB';
 					txt = document.createTextNode(this.properties[secondIndex].houseBuy);
 					buttom.appendChild(txt);
 					bottomDiv[0].appendChild(buttom);
