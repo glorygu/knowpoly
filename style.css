@@ -9,6 +9,19 @@ img{
 	position:relative;
 }
 
+.propertyBuy, .propertySell{
+	height:50%;
+}
+
+.propertyBuy{
+	background-color: #7EB5EB;
+	opacity: 0.30;
+}
+
+.propertySell{
+	border:none;
+}
+
 .player1, .player2, .player3, .player4{
 	width: 50%;
 	height: 50%;
@@ -56,9 +69,9 @@ img{
 }
 
 #dice{
-text-align: right;
-margin-right: 3em;
-margin-top: 3em;
+	text-align: right;
+	margin-right: 3em;
+	margin-top: 3em;
 
 }
 
@@ -88,9 +101,6 @@ margin-top: 3em;
 
 }
 
-.propertyBuy, .propertySell{
-	width 10%;
-}
 
 img{
 	height:auto;
@@ -113,19 +123,19 @@ scan p{
 	background-color: white;
 }
 
-.buttomHouseB{
-	background-color:green;
+.buttomHouseU{
+	background-color:#2EB420;
 }
 
 .buttomHouse{
-	background-color:yellow;
+	background-color: #F2F928;
 }
 
-.buttomHouse, .buttomHouseB{
+.buttomHouse, .buttomHouseU{
 	width: calc(100%/7);
 	margin-bottom: 0;
 	height:auto;
-	
+	opacity: 0.30;
 }
 
 buttom{
@@ -163,8 +173,14 @@ buttom{
 		font-size: 18px;
 	}
 	
-	.buttomHouse{
+	.buttomHouse, .buttomHouseU{
 		font-size: 10px;
 	}
+	
+	.propertyBuy, .propertySell, .peaje{
+		font-size: 10px;
+	}
+
+	
 
 }
