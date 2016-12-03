@@ -13,8 +13,11 @@ var enter =  document.getElementById("enter");
 var questionsPool = []; 
 var properties = {};
 var currentProperty = "property1"; //color id de la propiedad en la que está el jugador en turno(Falta)
-var currentPlayer; //color id del jugador actual
-var index = 0; //numero de casilla dónde esta ubicada la persona.
+var currentPlayer; //id del jugador actual
+var arrayIndexesPlayer1 = new Array(); //para manejar el el id de la propiedad que pertenece a cada jugador
+var arrayIndexesPlayer2 = new Array();
+var arrayIndexesPlayer3 = new Array();
+var arrayIndexesPlayer4 = new Array();
 
 /**
 **/
@@ -33,10 +36,10 @@ function Property(type, id, name, url, propertyBuy, propertySell, houseBuy, hous
 	this.id = id;
 	this.name = name;
 	this.img = url
-	this.isSold = true;
+	this.isSold = false;
 	this.owner = 'Bank'
 	if (type == "property"){
-		this.countHouses = 1;
+		this.countHouses = 0;
 		this.propertyBuy = propertyBuy;
 		this.propertySell = propertySell;
 		this.houseBuy = houseBuy; 
@@ -64,13 +67,7 @@ function fillProperties(){
 	Funcion para llenar el tablero
 */
 function fillBoard(){
-	
-	/*var property = document.getElementById('property1');
-	var dataProperty = properties.pop();
-	var header = property.getElementsByClassName('header');
-	
-	
-	*/
+
 	var mainDiv = document.getElementsByClassName('prueba');
 	var elements = mainDiv[0].childNodes;
 	var indicator = false;
@@ -134,12 +131,7 @@ function fillBoard(){
 		}
 		++index;
 	}
-	/*
-	buttom.appendChild(txt);
-	header[0].appendChild(buttom);
-	var body = property.getElementsByClassName('prop');
-	body[0].style.backgroundImage = 'url(img/av_central.png)';
-	*/
+	
 }
 
 
@@ -376,15 +368,52 @@ function fallBox(){
 			buttom = representationProperty.getElementsByClassName('propertyBuy');
 			buttom[0].style.opacity = '0.99';
 			buttom[0].disabled = false;
-			
 		}
 	}else{
-		buttom = representationProperty.getElementsByClassName('propertySell');
-		buttom[0].style.opacity = '0.99';
-		buttom[0].style.backgroundColor = '#7EB5EB';
-		buttom[0].style.border = '1px solid'
-		buttom[0].disabled = false;
+		
+		this.arrayIndexesPlayer1.push('property1');
+		paintBox();
+	
+		
+	}
+}
+
+
+function paintBox(){
+	
+	
+	var propertiesIndexes;
+	var representationProperty = document.getElementById(this.currentProperty);
+	var dataProperty = this.properties[this.currentProperty];
+	var buttom;
+	var buttomsBuy;
+	var buttomsH;
+	
+	switch(this.currentPlayer.number){
+		case 1:
+			propertiesIndexes = this.arrayIndexesPlayer1;
+			break;
+		case 2:
+			propertiesIndexes = this.arrayIndexesPlayer2;
+			break;
+		case 3:
+			propertiesIndexes = this.arrayIndexesPlayer3;
+			break;
+		default:
+			propertiesIndexes = this.arrayIndexesPlayer4;
+			break;
+	}
+	
+	for(var c = 0; c < propertiesIndexes.length; ++c){
+		representationProperty = document.getElementById(propertiesIndexes[c]);
+		dataProperty = this.properties[propertiesIndexes[c]];
+		
 		if(dataProperty.countHouses == 0){
+			buttom = representationProperty.getElementsByClassName('propertySell');
+			buttom[0].style.opacity = '0.99';
+			buttom[0].style.backgroundColor = '#7EB5EB';
+			buttom[0].style.border = '1px solid'
+			buttom[0].disabled = false;
 			buttomsBuy = representationProperty.getElementsByClassName('buttomHouseU');
 			buttomsBuy[1].style.opacity = '0.99';
 			buttomsBuy[1].disabled = false;
@@ -414,7 +443,11 @@ function fallBox(){
 			buttomsH = representationProperty.getElementsByClassName('buttomHouse');
 			buttomsH[dataProperty.countHouses].style.opacity = '0.99';
 		}
+		
+	
 	}
+	
+	
 }
 
 fillProperties();
