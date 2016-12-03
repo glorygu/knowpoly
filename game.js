@@ -11,7 +11,10 @@ var addingPlayers = 'true';
 var upperSpace  = document.getElementById("upperSpace");
 var enter =  document.getElementById("enter");
 var questionsPool = []; 
-var properties = new Array();
+var properties = {};
+var currentProperty = "property1"; //color id de la propiedad en la que está el jugador en turno(Falta)
+var currentPlayer; //color id del jugador actual
+var index = 0; //numero de casilla dónde esta ubicada la persona.
 
 /**
 **/
@@ -29,8 +32,11 @@ function Property(type, id, name, url, propertyBuy, propertySell, houseBuy, hous
 	this.type = type; //property, enter, cave, hotChair
 	this.id = id;
 	this.name = name;
-	this.img = url;
+	this.img = url
+	this.isSold = true;
+	this.owner = 'Bank'
 	if (type == "property"){
+		this.countHouses = 1;
 		this.propertyBuy = propertyBuy;
 		this.propertySell = propertySell;
 		this.houseBuy = houseBuy; 
@@ -48,8 +54,8 @@ function Property(type, id, name, url, propertyBuy, propertySell, houseBuy, hous
 function fillProperties(){
 	var enter = new Property('enter', 'enter', 'Costa Rica', 'url(img/img_costa_rica.jpg)');
 	var property1 = new Property('property', 'property1', 'Avenida Central', 'url(img/av_central.png)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
-	this.properties.push(enter);
-	this.properties.push(property1);
+	this.properties['enter'] = enter;
+	this.properties['property1'] = property1;
 }
 
 
@@ -75,38 +81,38 @@ function fillBoard(){
 	var buttom;
 	var txt, headerDiv, bodyDiv, bottomDiv;
 	
-	while(indicator == false && index < elements.length && secondIndex < this.properties.length){
+	while(indicator == false && index < elements.length){
 		element = elements[index];
-		if(element.id == this.properties[secondIndex].id){
+		if(this.properties.hasOwnProperty(element.id) == true){
 			
-			if(this.properties[secondIndex].type == 'property'){
+			if(this.properties[element.id].type == 'property'){
 				buttom = document.createElement('buttom');
-				txt = document.createTextNode(this.properties[secondIndex].propertyBuy);
+				txt = document.createTextNode(this.properties[element.id].propertyBuy);
 				buttom.className = 'propertyBuy';
 				buttom.disabled = true;
 				buttom.appendChild(txt);
 				header = element.getElementsByClassName('header');
 				header[0].appendChild(buttom);
 				buttom = document.createElement('buttom');
-				txt = document.createTextNode(this.properties[secondIndex].propertySell);
+				txt = document.createTextNode(this.properties[element.id].propertySell);
 				buttom.className = 'propertySell';
 				buttom.disabled = true;
 				buttom.appendChild(txt);
 				header[0].appendChild(buttom);
 				p = document.createElement('p');
-				txt = document.createTextNode('Peaje: '+this.properties[secondIndex].h0);
+				txt = document.createTextNode('Peaje: '+this.properties[element.id].h0);
 				p.appendChild(txt);
 				p.className = 'peaje';
 				header[0].appendChild(p);
 				bodyDiv = element.getElementsByClassName('prop');
-				bodyDiv[0].innerHTML = '<scan><p>' + this.properties[secondIndex].name + '</p></scan>';
-				bodyDiv[0].style.backgroundImage = this.properties[secondIndex].img;
+				bodyDiv[0].innerHTML = '<scan><p>' + this.properties[element.id].name + '</p></scan>';
+				bodyDiv[0].style.backgroundImage = this.properties[element.id].img;
 				bottomDiv = element.getElementsByClassName('bottom');
 				for(var c = 0; c < 6; ++c){
 					buttom = document.createElement('buttom');
 					buttom.disabled = true;
 					buttom.className = 'buttomHouseU';
-					txt = document.createTextNode(this.properties[secondIndex].houseBuy);
+					txt = document.createTextNode(this.properties[element.id].houseBuy);
 					buttom.appendChild(txt);
 					bottomDiv[0].appendChild(buttom);
 					
@@ -116,12 +122,12 @@ function fillBoard(){
 					buttom = document.createElement('buttom');
 					buttom.disabled = true;
 					buttom.className = 'buttomHouse';
-					txt = document.createTextNode((this.properties[secondIndex])[string]);
+					txt = document.createTextNode((this.properties[element.id])[string]);
 					buttom.appendChild(txt);
 					bottomDiv[0].appendChild(buttom);
 				}
 			}else{
-				element.style.backgroundImage = this.properties[secondIndex].img;
+				element.style.backgroundImage = this.properties[element.id].img;
 			}
 			
 			++secondIndex;
@@ -194,10 +200,13 @@ function addPlayer(playerNumber){
 				var player = {};
 				player.name = prompt("Por favor ingrese el nombre para el jugador "+playerNumber);
 				player.number = playerNumber;
-				player.liquidCash = 650;
-				player.richness = 650;
+				player.liquidCash = 800;
+				player.richness = 800;
 				document.getElementById("name"+playerNumber).innerHTML = player.name;
 				//player.position = "enter";
+				var paragraph = document.getElementById("name"+playerNumber).nextSibling;
+				var txt = document.createTextNode(player.liquidCash + '/' + player.richness);
+				paragraph.appendChild(txt);
 				var imgHeight =  Math.floor(enter.offsetHeight/5);
     			var imgWidth = Math.floor(enter.offsetWidth/3);
     			player.top = (enter.offsetParent.offsetTop+(imgHeight*activePlayers.length));
@@ -210,6 +219,10 @@ function addPlayer(playerNumber){
 			}
 		}
 	}
+	
+	//PRUEBA PARA COMPRA Y VENTA
+	fallBox();
+	
 }
 
 function loadColorSelector(name){
@@ -346,5 +359,64 @@ function moveUp(player, numCells){
     
 }
 
+
+
+// FALTA
+function fallBox(){
+	this.currentPlayer = activePlayers[0];
+	var representationProperty = document.getElementById(this.currentProperty);
+	var dataProperty = this.properties[this.currentProperty];
+	var buttom;
+	var buttomsBuy;
+	var buttomsH;
+	
+	if(dataProperty.isSold == false){
+		
+		if(this.currentPlayer.liquidCash > dataProperty.propertyBuy){
+			buttom = representationProperty.getElementsByClassName('propertyBuy');
+			buttom[0].style.opacity = '0.99';
+			buttom[0].disabled = false;
+			
+		}
+	}else{
+		buttom = representationProperty.getElementsByClassName('propertySell');
+		buttom[0].style.opacity = '0.99';
+		buttom[0].style.backgroundColor = '#7EB5EB';
+		buttom[0].style.border = '1px solid'
+		buttom[0].disabled = false;
+		if(dataProperty.countHouses == 0){
+			buttomsBuy = representationProperty.getElementsByClassName('buttomHouseU');
+			buttomsBuy[1].style.opacity = '0.99';
+			buttomsBuy[1].disabled = false;
+			buttomsBuy[0].innerText = dataProperty.houseSell;
+			buttomsBuy[0].style.textDecoration = 'line-through';
+			buttomsH = representationProperty.getElementsByClassName('buttomHouse');
+			buttomsH[0].style.opacity = '0.99';
+		}else if(dataProperty.countHouses < 4){
+			buttomsBuy = representationProperty.getElementsByClassName('buttomHouseU');
+			buttomsBuy[dataProperty.countHouses].style.opacity = '0.99';
+			buttomsBuy[dataProperty.countHouses].disabled = false;
+			buttomsBuy[dataProperty.countHouses].innerText = dataProperty.houseSell;
+			buttomsBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
+			buttomsBuy[dataProperty.countHouses+1].style.opacity = '0.99';
+			buttomsBuy[dataProperty.countHouses+1].disabled = false;
+			buttomsH = representationProperty.getElementsByClassName('buttomHouse');
+			buttomsH[dataProperty.countHouses].style.opacity = '0.99';
+		}else if(dataProperty.countHouses == 4){
+			buttomsBuy = representationProperty.getElementsByClassName('buttomHouseU');
+			buttomsBuy[dataProperty.countHouses].style.opacity = '0.99';
+			buttomsBuy[dataProperty.countHouses].disabled = false;
+			buttomsBuy[dataProperty.countHouses].innerText = dataProperty.houseSell;
+			buttomsBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
+			buttomsBuy[dataProperty.countHouses+1].style.opacity = '0.99';
+			buttomsBuy[dataProperty.countHouses+1].backgroundColor = 'red';
+			buttomsBuy[dataProperty.countHouses+1].disabled = false;
+			buttomsH = representationProperty.getElementsByClassName('buttomHouse');
+			buttomsH[dataProperty.countHouses].style.opacity = '0.99';
+		}
+	}
+}
+
 fillProperties();
 fillBoard();
+

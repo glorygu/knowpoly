@@ -20,6 +20,7 @@ img{
 
 .propertySell{
 	border:none;
+	text-decoration: line-through;
 }
 
 .player1, .player2, .player3, .player4{
@@ -27,6 +28,15 @@ img{
 	height: 50%;
 	padding-bottom: 50%;
 	font-size: 2em;
+}
+
+#name1, #name2, #name3, #name4, .count{
+	margin:0;
+	font-size: 18px;
+}
+
+#name3, #name4{
+	margin-bottom: 1em;
 }
 
 
