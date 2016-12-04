@@ -67,18 +67,16 @@ function fillProperties(){
 	Funcion para llenar el tablero
 */
 function fillBoard(){
-
+	//metodo para llenar tablero
 	var mainDiv = document.getElementsByClassName('prueba');
 	var elements = mainDiv[0].childNodes;
-	var indicator = false;
 	var index = 0;
 	var bodyDiv;
-	var secondIndex = 0;
 	var element;
 	var buttom;
 	var txt, headerDiv, bodyDiv, bottomDiv;
 	
-	while(indicator == false && index < elements.length){
+	while(index < elements.length){
 		element = elements[index];
 		if(this.properties.hasOwnProperty(element.id) == true){
 			
@@ -127,7 +125,6 @@ function fillBoard(){
 				element.style.backgroundImage = this.properties[element.id].img;
 			}
 			
-			++secondIndex;
 		}
 		++index;
 	}
@@ -353,7 +350,7 @@ function moveUp(player, numCells){
 
 
 
-// FALTA
+//metodo para habilitar y desahibilitar botones de compra y venta, tanto para propiedades como casas
 function fallBox(){
 	this.currentPlayer = activePlayers[0];
 	var representationProperty = document.getElementById(this.currentProperty);
