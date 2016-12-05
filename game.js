@@ -10,9 +10,9 @@ var availableColors = ["red","yellow","green","blue"];
 var addingPlayers = 'true';
 var upperSpace  = document.getElementById("upperSpace");
 var enter =  document.getElementById("enter");
-var questionsPool = []; 
+var questionsPool = [];
 var properties = {};
-var currentProperty = "property1"; //color id de la propiedad en la que está el jugador en turno(Falta)
+var currentProperty = "property1"; // id de la propiedad en la que está el jugador en turno(Falta)
 var currentPlayer; //id del jugador actual
 var arrayIndexesPlayer1 = new Array(); //para manejar el el id de la propiedad que pertenece a cada jugador
 var arrayIndexesPlayer2 = new Array();
@@ -23,15 +23,119 @@ var arrayIndexesPlayer4 = new Array();
 **/
 
 var enterOffset = getOffset(enter);
-var cellWidth = enterOffset.width; 
-var cellHeight = enterOffset.height; 
+var cellWidth = enterOffset.width;
+var cellHeight = enterOffset.height;
 
 /**
- Propiedades
-
+		It shows on the board a random question.
 **/
 
-function Property(type, id, name, url, propertyBuy, propertySell, houseBuy, houseSell, h0, h1, h2, h3, h4, h5 ){ //h0, h1, h2 ... corresponden a los hospedajes de cada casa 
+//Get a random number that will represent the question displayed. There are 63 questions.
+var questionNumber =  Math.floor(Math.random() * 64);
+showQuestion(questionNumber);
+showOptions(questionNumber);
+showGamePrice(questionNumber);
+function showQuestion(questionNumber){
+
+	//Get the question statement according to the number just generated.
+	var questionStatement = this.questions['web'][questionNumber]['text'];
+ //Get the number of option that answers correctly the question.
+//The question will be shown in the div with id "questionPlace".
+var questionPlaceDiv  = document.getElementById("questionPlace");
+	var questionTextElement = document.createElement("H1");
+	questionTextElement.id = "questionStatement";
+	//Create a text node which will be a child of div questionPlace.
+	var questionTextNode =  document.createTextNode(questionStatement);
+	questionTextElement.appendChild(questionTextNode);
+	//Add that node  as a child of div questionPlace
+	questionPlaceDiv.appendChild(questionTextElement);
+}
+
+function showOptions(questionNumber){
+	//Get the possible options that may answer that question. Stored in a array.
+	var it =1;
+	var questionOptions = this.questions['web'][questionNumber]['options'];
+	//The options will be shown in the div with id "optionsPlace".
+	var optionsPlaceDiv  = document.getElementById("optionsPlace");
+	//Iterate through options, and in each option we must create  a div with a radio button.
+	for(var q in questionOptions){
+		//Create input elements
+		var inputRadioElement = document.createElement("INPUT");
+		inputRadioElement.setAttribute("TYPE", "radio");
+		inputRadioElement.setAttribute("NAME", "options");
+		inputRadioElement.setAttribute("VALUE", it); it++;
+		//Create a label which will contain the text and radio button
+		var label = document.createElement("LABEL");
+		//Create a text node which will be a child of the input type radio element.
+		var optionTextNode = document.createTextNode(questionOptions[q]);
+		inputRadioElement.appendChild(optionTextNode);
+		//Append the input to the options div
+		label.appendChild(inputRadioElement);
+		label.appendChild(optionTextNode);
+		optionsPlaceDiv.appendChild(label);
+		var brElement = document.createElement("BR");
+		optionsPlaceDiv.appendChild(brElement);
+	}
+	var buttonSelect = document.createElement("BUTTON");
+	buttonSelect.id= "btnSelect";
+	buttonSelect.setAttribute("onClick","verifyAnswer("+questionNumber+")");
+	buttonSelect.appendChild(document.createTextNode("Seleccionar"));
+	optionsPlaceDiv.appendChild(buttonSelect);
+}
+
+
+function showGamePrice(questionNumber){
+	var gamePriceDiv  = document.getElementById("gamePrice");
+	//Get difficulty
+	var questionDifficulty = this.questions['web'][questionNumber]['difficulty'];
+	var price = questionDifficulty * 200;
+	var priceElement = document.createElement("H1");
+	var priceNodeText =  document.createTextNode("Premio de la pregunta: " +price.toString()+"USD");
+	priceElement.id= "priceText";
+	priceElement.appendChild(priceNodeText);
+	gamePriceDiv.appendChild(priceElement);
+}
+
+function verifyAnswer(questionNumber){
+
+	var questionAnswer = this.questions['web'][questionNumber]['answer'];
+	//Get user-selected answer
+	var selectedAnswer =  document.querySelector('input[name = "options"]:checked').value;
+	var correctness = 0;
+	if(selectedAnswer === questionAnswer){
+		alert("Opción correcta!");
+		correctness = 1;
+		//We will increase the player's liquid money
+
+	}else{
+		//we will decrease the player's loquid money
+		alert("Opción incorrecta!");
+	}
+	var questionDifficulty = this.questions['web'][questionNumber]['difficulty'];
+	var amount = questionDifficulty * 200;
+	for (var p in this.activePlayers){ // Iterate through palyers array
+				if(this.activePlayers[p].number ===  this.currentPlayer ){ //When we find our player
+					  var playerLiquidCash =this.activePlayers[p].liquidCash; //Get his/her liquid cash
+						if(correctness === 0 && playerLiquidCash- amount > 0){ //If the answer was wrong and he/she has money left (no negative cash)
+							this.activePlayers[p].liquidCash = playerLiquidCash - amount/2 ; // Substract due amount.
+						}else{
+								if(correctness === 1){ //If aswer is right add due amount
+									this.activePlayers[p].liquidCash = playerLiquidCash + amount;
+								}else{ // If answer is wrong but if substracted he/she would have negative numbers, then reset it to zero.
+									this.activePlayers[p].liquidCash = 0;
+								}
+
+						}
+				}
+
+	}
+
+}
+
+
+
+
+function Property(type, id, name, url, propertyBuy, propertySell, houseBuy, houseSell, h0, h1, h2, h3, h4, h5 ){ //h0, h1, h2 ... corresponden a los hospedajes de cada casa
 	this.type = type; //property, enter, cave, hotChair
 	this.id = id;
 	this.name = name;
@@ -42,15 +146,15 @@ function Property(type, id, name, url, propertyBuy, propertySell, houseBuy, hous
 		this.countHouses = 0;
 		this.propertyBuy = propertyBuy;
 		this.propertySell = propertySell;
-		this.houseBuy = houseBuy; 
+		this.houseBuy = houseBuy;
 		this.houseSell = houseSell;
 		this.h0 = h0;
-		this.h1 = h1; 
-		this.h2 = h2; 
-		this.h3 = h3; 
-		this.h4 = h4; 
+		this.h1 = h1;
+		this.h2 = h2;
+		this.h3 = h3;
+		this.h4 = h4;
 		this.h5 = h5;
-	} 
+	}
 
 }
 
@@ -75,11 +179,11 @@ function fillBoard(){
 	var element;
 	var buttom;
 	var txt, headerDiv, bodyDiv, bottomDiv;
-	
+
 	while(index < elements.length){
 		element = elements[index];
 		if(this.properties.hasOwnProperty(element.id) == true){
-			
+
 			if(this.properties[element.id].type == 'property'){
 				buttom = document.createElement('buttom');
 				txt = document.createTextNode(this.properties[element.id].propertyBuy);
@@ -110,7 +214,7 @@ function fillBoard(){
 					txt = document.createTextNode(this.properties[element.id].houseBuy);
 					buttom.appendChild(txt);
 					bottomDiv[0].appendChild(buttom);
-					
+
 				}
 				for(var i = 0; i < 6; ++i){
 					var string = 'h'+i;
@@ -124,11 +228,11 @@ function fillBoard(){
 			}else{
 				element.style.backgroundImage = this.properties[element.id].img;
 			}
-			
+
 		}
 		++index;
 	}
-	
+
 }
 
 
@@ -138,11 +242,11 @@ Objeto player contiene la informacion del jugador, como su numero, nombre, punta
 /**
 function Player(number, name, color, liquidCash, richness, position ){
 	this.number = number;
-	this.name = name; 
-	this.color = color; 
-	this.liquidCash = liquidCash; 
-	this.richness = richness; 
-	this.position = position; 
+	this.name = name;
+	this.color = color;
+	this.liquidCash = liquidCash;
+	this.richness = richness;
+	this.position = position;
 	this.img = document.createElement('img');
 	this.img.src = ('img/'+color+'.png');
 	this.img.setAttribute("height",imgHeight);
@@ -157,19 +261,19 @@ Funciones auxiliares
 function removeFromArray(srcArray, item){
 
 	var index = srcArray.indexOf(item);
-	
+
 	if (index!=-1){
 
 		srcArray.splice(index, 1);
 	}
-	
+
 
 }
- 
+
 
 function getOffset(el) {
   el = el.getBoundingClientRect();
-  
+
   return {
     left: el.left + window.scrollX,
     top: el.top + window.scrollY,
@@ -178,7 +282,7 @@ function getOffset(el) {
   }
 }
 /**
-Agregar jugadores 
+Agregar jugadores
 **/
 function addPlayer(playerNumber){
 	var alreadyExists = playerExists(playerNumber);
@@ -198,20 +302,20 @@ function addPlayer(playerNumber){
 				paragraph.appendChild(txt);
 				var imgHeight =  Math.floor(enter.offsetHeight/5);
     			var imgWidth = Math.floor(enter.offsetWidth/3);
-    			player.top = (enter.offsetParent.offsetTop+(imgHeight*activePlayers.length));
-    			player.left = (enter.offsetParent.offsetLeft); 
-				activePlayers.push(player);
-				
+    			player.top = (enter.offsetParent.offsetTop+(imgHeight*this.activePlayers.length));
+    			player.left = (enter.offsetParent.offsetLeft);
+				this.activePlayers.push(player);
+
 				loadColorSelector(player.name);
-				
-				
+
+
 			}
 		}
 	}
-	
+
 	//PRUEBA PARA COMPRA Y VENTA
 	fallBox();
-	
+
 }
 
 function loadColorSelector(name){
@@ -248,7 +352,7 @@ function selectColor ( ){
 		this.setAttribute("height",Math.floor(enter.offsetHeight/5));
 		this.setAttribute("width",Math.floor(enter.offsetWidth/3));
 		this.style.left = enterOffset.left + enterOffset.width/3;
-		this.style.top = enterOffset.top + ((enterOffset.height/5) * activePlayers.length); 
+		this.style.top = enterOffset.top + ((enterOffset.height/5) * activePlayers.length);
 		this.onclick = none; //cqmbiar
 		enter.appendChild(this);
 		console.log(activePlayers);
@@ -264,7 +368,7 @@ function none(){
 }
 
 function playerExists(playerNumber){
-	
+
 	for (var i=0; i < activePlayers.length; i++ ){
 		if(activePlayers[i].number == playerNumber){
 			console.log('jale buchon');
@@ -276,7 +380,7 @@ function playerExists(playerNumber){
 }
 
 function getPlayer(playerNumber){
-	
+
 	for (var i = 0; i < activePlayers.length; i++){
 		if (activePlayers[i].number == playerNumber){
 			return activePlayers[i];
@@ -304,48 +408,48 @@ function move( ){
     var player = activePlayers[activePlayers.length-1];
     //moveRight(player,5);
     moveDown(player,3);
-    
-    
+
+
 }
 function moveRight(player, numCells){
-    
+
     for (var i = 0; i < numCells; i++){
         player.left += enterOffset.width;
         console.log(player.img);
         player.img.style.left = (player.left)+"px";
         player.img.style.transitionDuration = "1s";
     }
-    
+
 }
 
 function moveLeft(player, numCells){
-    
+
     for (var i = 0; i < numCells; i++){
         player.left -= enterOffset.width;
         player.img.style.left = (player.left)+"px";
         player.img.style.transitionDuration = "1s";
     }
-    
+
 }
 
 function moveDown(player, numCells){
-    
+
     for (var i = 0; i < numCells; i++){
         player.top += enterOffset.height;
         player.img.style.top = (player.top)+"px";
         player.img.style.transitionDuration = "1s";
     }
-    
+
 }
 
 function moveUp(player, numCells){
-    
+
     for (var i = 0; i < numCells; i++){
         player.top -= enterOffset.height;
         player.img.style.top = (player.top)+"px";
         player.img.style.transitionDuration = "1s";
     }
-    
+
 }
 
 
@@ -358,34 +462,34 @@ function fallBox(){
 	var buttom;
 	var buttomsBuy;
 	var buttomsH;
-	
+
 	if(dataProperty.isSold == false){
-		
+
 		if(this.currentPlayer.liquidCash > dataProperty.propertyBuy){
 			buttom = representationProperty.getElementsByClassName('propertyBuy');
 			buttom[0].style.opacity = '0.99';
 			buttom[0].disabled = false;
 		}
 	}else{
-		
+
 		this.arrayIndexesPlayer1.push('property1');
 		paintBox();
-	
-		
+
+
 	}
 }
 
 
 function paintBox(){
-	
-	
+
+
 	var propertiesIndexes;
 	var representationProperty = document.getElementById(this.currentProperty);
 	var dataProperty = this.properties[this.currentProperty];
 	var buttom;
 	var buttomsBuy;
 	var buttomsH;
-	
+
 	switch(this.currentPlayer.number){
 		case 1:
 			propertiesIndexes = this.arrayIndexesPlayer1;
@@ -400,11 +504,11 @@ function paintBox(){
 			propertiesIndexes = this.arrayIndexesPlayer4;
 			break;
 	}
-	
+
 	for(var c = 0; c < propertiesIndexes.length; ++c){
 		representationProperty = document.getElementById(propertiesIndexes[c]);
 		dataProperty = this.properties[propertiesIndexes[c]];
-		
+
 		if(dataProperty.countHouses == 0){
 			buttom = representationProperty.getElementsByClassName('propertySell');
 			buttom[0].style.opacity = '0.99';
@@ -440,13 +544,12 @@ function paintBox(){
 			buttomsH = representationProperty.getElementsByClassName('buttomHouse');
 			buttomsH[dataProperty.countHouses].style.opacity = '0.99';
 		}
-		
-	
+
+
 	}
-	
-	
+
+
 }
 
 fillProperties();
 fillBoard();
-

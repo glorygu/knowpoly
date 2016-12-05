@@ -9,6 +9,51 @@ img{
 	position:relative;
 }
 
+
+#silla{
+padding-left: 2em;
+float: left;;
+
+}
+#questionStatement, #priceText{
+	font-size: 1.5em;
+	color:#607B8B;
+	text-align: center;
+padding: 0 1em 0 1em;
+}
+#priceText{
+color: rgba(255,0,0,0.7);
+
+}
+#silla{
+	margin-left: 4em;
+}
+
+#btnSelect{
+margin-top: 1em;
+
+}
+#optionsPlace{
+	background-color: rgba(192,192,192,0.3);
+	text-align: left;
+	width: 50%;
+	margin-right: 5em;
+	padding: 1em;
+	float: right;
+	max-height: 50%;
+	display: inline-block;
+
+}
+
+
+#prueba{
+
+}
+
+#dice{
+
+}
+
 .propertyBuy, .propertySell{
 	height:50%;
 }
@@ -153,7 +198,7 @@ buttom{
 	margin-left: 1px;
 	height:auto;
 	width:auto;
-	
+
 }
 
 #enter{
@@ -165,7 +210,8 @@ buttom{
 	width: calc(100%/6 - 2px);
 	background-color: rgb(196,215,196);
 	border: 1px solid black;
-	max-height: calc(100%/3);
+	max-height: calc(100%/4);
+	height: 25%;
 	display:flex;
 	flex-direction: column;
 	flex-wrap: wrap;
@@ -175,22 +221,22 @@ buttom{
 .space{
 	width: calc(calc(100%/6)*4);
 	max-height: calc(100%/3);
-	
+
 }
 
 @media (max-width: 1024px) {
 	.player1 p, .player2 p, .player3 p, .player4 p{
 		font-size: 18px;
 	}
-	
+
 	.buttomHouse, .buttomHouseU{
 		font-size: 10px;
 	}
-	
+
 	.propertyBuy, .propertySell, .peaje{
 		font-size: 10px;
 	}
 
-	
+
 
 }

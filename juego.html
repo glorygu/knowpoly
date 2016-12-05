@@ -3,6 +3,9 @@
 	<head>
 		<meta charset="utf-8"/>
 		<link rel="stylesheet" type="text/css" href="style.css" media = "screen"/>
+		<script src="dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.min.css">
 		<title>Knowpoly</title>
 	</head>
 	<body>
@@ -64,10 +67,11 @@
 				</div>
 			</div>
 			<div class = "space" id = "upperSpace">
-				<button onclick="moveFullBoard()">Mover</button>
-					<button onclick="move()">Mover Derecha</button>
-				<div id= "dice">
-					 <img src = "img/d1.png" width ="75"/>
+
+				<div id= "questionPlace">
+				</div>
+				<img src="img/sillaCaliente.gif" id = "silla"  />
+				<div id= "optionsPlace">
 				</div>
 
 			</div>
@@ -89,7 +93,14 @@
 				<div class = "bottom">
 				</div>
 			</div>
-			<div class = "space" id = "lowerSpace"></div>
+			<div class = "space" id = "lowerSpace">
+				<div id= "gamePrice">
+				</div>
+				<div>
+					<img src="img/d1.png" id = "dice"  />
+				</div>
+
+			</div>
 			<div id = "property8">
 
 				<div class ="header">
@@ -141,7 +152,8 @@
 			<div id = "curve">Cueva de la icnoransia</div>
 		</div>
 	<div>
-	<script src="game.js"></script>
+		<script src="questions.js"></script>
+		<script src="game.js"></script>
 	<!--<script src="movePlayers.js"></script>-->
 	</body>
 </html>
