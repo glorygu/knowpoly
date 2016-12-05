@@ -160,9 +160,61 @@ function Property(type, id, name, url, propertyBuy, propertySell, houseBuy, hous
 
 function fillProperties(){
 	var enter = new Property('enter', 'enter', 'Costa Rica', 'url(img/img_costa_rica.jpg)');
-	var property1 = new Property('property', 'property1', 'Avenida Central', 'url(img/av_central.png)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+	var property1 = new Property('property', 'property1', 'Avenida Central', 'url(img/av_central2.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
 	this.properties['enter'] = enter;
 	this.properties['property1'] = property1;
+
+	var property2 = new Property('property', 'property2', 'Volcán Arenal', 'url(img/costaRica2.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+	this.properties['property2'] = property2;
+
+
+
+		var property3 = new Property('property', 'property3', 'Teatro Nacional', 'url(img/costaRica3.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+		this.properties['property3'] = property3;
+
+
+
+			var property4 = new Property('property', 'property4', 'Zarcero', 'url(img/costaRica4.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+			this.properties['property4'] = property4;
+
+
+
+				var property5 = new Property('property', 'property5', 'Esferas de Costa Rica', 'url(img/costaRica5.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+				this.properties['property5'] = property5;
+
+
+
+					var property6 = new Property('property', 'property6', 'Museo de los niños', 'url(img/costaRica6.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+					this.properties['property6'] = property6;
+
+
+
+						var property7 = new Property('property', 'property7', 'Universidad de Costa Rica', 'url(img/costaRica7.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+						this.properties['property7'] = property7;
+
+
+
+							var property8 = new Property('property', 'property8', 'Estadio Nacional', 'url(img/costaRica8.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+							this.properties['property8'] = property8;
+
+
+								var property9 = new Property('property', 'property9', 'Fortín de Heredia', 'url(img/costaRica9.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+								this.properties['property9'] = property9;
+
+
+									var property10 = new Property('property', 'property10', 'Monumento Nacional', 'url(img/costaRica10.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+									this.properties['property10'] = property10;
+
+
+										var property11 = new Property('property', 'property11', 'Casa de Gobierno', 'url(img/costaRica11.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+										this.properties['property11'] = property11;
+
+
+											var property12 = new Property('property', 'property12', 'Cerro Chirripó', 'url(img/costaRica12.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+											this.properties['property12'] = property12;
+
+
+
 }
 
 
@@ -204,7 +256,7 @@ function fillBoard(){
 				p.className = 'peaje';
 				header[0].appendChild(p);
 				bodyDiv = element.getElementsByClassName('prop');
-				bodyDiv[0].innerHTML = '<scan><p>' + this.properties[element.id].name + '</p></scan>';
+				bodyDiv[0].innerHTML = '<span><p class = "title">' + this.properties[element.id].name + '</p></span>';
 				bodyDiv[0].style.backgroundImage = this.properties[element.id].img;
 				bottomDiv = element.getElementsByClassName('bottom');
 				for(var c = 0; c < 6; ++c){

@@ -1,3 +1,8 @@
+*{
+	font-family: 'Quattrocento', sans-serif;
+
+
+}
 img{
 	position:absolute;
 }
@@ -23,6 +28,11 @@ padding: 0 1em 0 1em;
 }
 #priceText{
 color: rgba(255,0,0,0.7);
+
+}
+
+.title{
+background-color: rgba(255, 255, 255, 0.6);
 
 }
 #silla{
@@ -77,11 +87,15 @@ margin-top: 1em;
 
 #name1, #name2, #name3, #name4, .count{
 	margin:0;
-	font-size: 18px;
+	padding-left: 1em;
+	padding-top: 0.5em;
+	font-size: 1em;
 }
 
 #name3, #name4{
 	margin-bottom: 1em;
+	padding-left: 1em;
+
 }
 
 
@@ -204,8 +218,19 @@ buttom{
 #enter{
 	background-repeat: no-repeat;
 	background-size: cover;
-}
 
+}
+.specialTitle{
+	background-color: rgba(255, 255, 255, 0.6);
+	margin-top: 0;
+	padding-top: 0.5em;
+	font-size: 1.5em;
+	height: 13%;
+	text-align: center;
+
+	font-weight: lighter;;
+
+}
 #enter, #property1, #property2, #property3, #property4, #property5, #property6, #property7, #property8, #property9, #chair1,#property10, #property11, #property12, #chair2, #curve{
 	width: calc(100%/6 - 2px);
 	background-color: rgb(196,215,196);
