@@ -22,29 +22,6 @@ var enterOffset = getOffset(enter);
 var cellWidth = enterOffset.width; 
 var cellHeight = enterOffset.height; 
 
-/**
- Propiedades
-
-**/
-
-function Property(type, id, propertyBuy, propertySell, houseBuy, houseSell, h0, h1, h2, h3, h4, h5 ){ //h0, h1, h2 ... corresponden a los hospedajes de cada casa 
-	this.type = type; //property, enter, cave, hotChair
-	this.id = id; 
-	if (type == "property"){
-
-		this.propertyBuy = propertyBuy;
-		this.propertySell = propertySell;
-		this.houseBuy = houseBuy; 
-		this.houseSell = houseSell;
-		this.h0 = h0;
-		this.h1 = h1; 
-		this.h2 = h2; 
-		this.h3 = h3; 
-		this.h4 = h4; 
-		this.h5 = h5;
-	} 
-
-}
 
 
 /**
@@ -95,34 +72,6 @@ function getOffset(el) {
 /**
 Agregar jugadores 
 **/
-function addPlayer(playerNumber){
-	var alreadyExists = playerExists(playerNumber);
-	console.log(alreadyExists);
-	if(!alreadyExists){
-		if (addingPlayers){
-			if(activePlayers.length < 4){
-				var player = {};
-				player.name = prompt("Por favor ingrese el nombre para el jugador "+playerNumber);
-				player.number = playerNumber;
-				player.liquidCash = 650;
-				player.richness = 650;
-				document.getElementById("name"+playerNumber).innerHTML = player.name + "<p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p>/" +  "<p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
-				//player.position = "enter";
-				var imgHeight =  Math.floor(enter.offsetHeight/5);
-    			var imgWidth = Math.floor(enter.offsetWidth/3);
-    			player.top = (enter.offsetParent.offsetTop+(imgHeight*activePlayers.length));
-    			player.left = (enter.offsetParent.offsetLeft); 
-				activePlayers.push(player);
-				player.color=colors[playerNumber-1];
-				placePlayer(player);
-				//loadColorSelector(player.name);
-				
-				
-			}
-		}
-	}
-}
-
 
 function placePlayer(player){
 	var img = document.createElement('img');
@@ -159,113 +108,11 @@ function getPlayer(playerNumber){
 		}
 	}
 }
-/**
-Mover jugadores
-**/
 
-
-function movePlayer(playerNumber, numberOfCells){
-	var thisPlayer = getPlayer(playerNumber);
-
-
-}
-
-
-function calculateSequence (startingCell, numberOfCells)
-{
-
-}
-
-function moveFullBoard( ){
-    //var player = activePlayers[activePlayers.length-1];
-    //moveRight(player,5);
-    // setTimeout(function(){}, 1000);
-    //moveDown(player,3);
-    //moveLeft(player,5);
-    //moveUp(player,3);
-    for (var i = 0; i < activePlayers.length; i++){
-    	var player = activePlayers[i];
-        moveRight(player,5);
-    	
-    }
-    setTimeout(function(){console.log("stop wait a minute, julio, get the stretch")}, 10000);
-    for (var i = 0; i < activePlayers.length; i++){
-    	var player = activePlayers[i];
-        moveDown(player,3);
-    	
-    }
-    for (var i = 0; i < activePlayers.length; i++){
-    	var player = activePlayers[i];
-        moveLeft(player,5);
-    	
-    }
-    setTimeout(function(){console.log("stop wait a minute, julio, get the stretch")}, 10000);
-    for (var i = 0; i < activePlayers.length; i++){
-    	var player = activePlayers[i];
-        moveUp(player,3);
-    	
-    }
-    
-}
-function move( ){
-    var player = activePlayers[activePlayers.length-1];
-    //moveRight(player,5);
-    moveDown(player,3);
-    
-    
-}
-function moveRight(player, numCells){
-    
-    for (var i = 0; i < numCells; i++){
-        player.left += enter.offsetWidth;
-        
-        player.img.style.left = (player.left-60)+"px";
-        player.img.style.transitionDuration = "10s";
-          setTimeout(function(){console.log("stop wait a minute, julio, get the stretch")}, 3000);
-    }
-    
-}
-
-function moveLeft(player, numCells){
-    
-    for (var i = 0; i < numCells; i++){
-        player.left -=enter.offsetWidth;
-        player.img.style.left = (player.left-30)+"px";
-        player.img.style.transitionDuration = "1s";
-        setTimeout(function(){}, 1000);
-    }
-    
-}
-
-function moveDown(player, numCells){
-    
-    for (var i = 0; i < numCells; i++){
-        player.top += enter.offsetHeight;
-        player.img.style.top = (player.top)+"px";
-        player.img.style.transitionDuration = "10s";
-        setTimeout(function(){}, 1000);
-    }
-    
-}
-
-function moveUp(player, numCells){
-    
-    for (var i = 0; i < numCells; i++){
-        player.top -= enter.offsetHeight;
-        player.img.style.top = (player.top)+"px";
-        player.img.style.transitionDuration = "1s";
-        setTimeout(function(){}, 1000);
-    }
-    
-}
 
 var properties = new Array();
 
-function fillProperties(){
-	var property1 = new Property('property', 'p1', 'Avenida Central', 'url(img/av_central.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
-	this.properties.push(property1);
-	
-}
+
 
 
 
@@ -284,10 +131,6 @@ function fillBoard(){
 	body[0].style.backgroundImage = 'url(img/av_central.jpg)';
 }
 
-fillProperties();
-fillBoard();
-
-=======
 /**
 Variables globales
 **/
@@ -424,7 +267,7 @@ function verifyAnswer(questionNumber){
 
 
 
-function Property(type, id, name, url, propertyBuy, propertySell, houseBuy, houseSell, h0, h1, h2, h3, h4, h5 ){ //h0, h1, h2 ... corresponden a los hospedajes de cada casa
+function Property(type, id, name, nextDirection, nextPropId, url, propertyBuy, propertySell, houseBuy, houseSell, h0, h1, h2, h3, h4, h5){ //h0, h1, h2 ... corresponden a los hospedajes de cada casa
 	this.type = type; //property, enter, cave, hotChair
 	this.id = id;
 	this.name = name;
@@ -444,62 +287,68 @@ function Property(type, id, name, url, propertyBuy, propertySell, houseBuy, hous
 		this.h4 = h4;
 		this.h5 = h5;
 	}
-
+	this.nextDirection = nextDirection;
+	this.nextPropId = nextPropId;
 }
 
 function fillProperties(){
-	var enter = new Property('enter', 'enter', 'Costa Rica', 'url(img/img_costa_rica.jpg)');
-	var property1 = new Property('property', 'property1', 'Avenida Central', 'url(img/av_central2.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+	var enter = new Property('enter', 'enter', 'Costa Rica', 'right','property1' ,'url(img/img_costa_rica.jpg)');
+	var property1 = new Property('property', 'property1', 'Avenida Central', 'right','property2','url(img/av_central2.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
 	this.properties['enter'] = enter;
 	this.properties['property1'] = property1;
 
-	var property2 = new Property('property', 'property2', 'Volcán Arenal', 'url(img/costaRica2.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+	var property2 = new Property('property', 'property2', 'Volcán Arenal', 'right','property3','url(img/costaRica2.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
 	this.properties['property2'] = property2;
 
 
 
-		var property3 = new Property('property', 'property3', 'Teatro Nacional', 'url(img/costaRica3.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+		var property3 = new Property('property', 'property3', 'Teatro Nacional', 'right','property4','url(img/costaRica3.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
 		this.properties['property3'] = property3;
 
 
 
-			var property4 = new Property('property', 'property4', 'Zarcero', 'url(img/costaRica4.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+			var property4 = new Property('property', 'property4', 'Zarcero', 'right','hotChair1','url(img/costaRica4.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
 			this.properties['property4'] = property4;
 
+			var hotChair1 = new Property('hotChair', 'hotChair1', 'Silla Caliente', 'down','property6');
+			this.properties['hotChair1']=hotChair1;
 
-
-				var property5 = new Property('property', 'property5', 'Esferas de Costa Rica', 'url(img/costaRica5.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+				var property5 = new Property('property', 'property5', 'Esferas de Costa Rica','up', 'enter', 'url(img/costaRica5.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
 				this.properties['property5'] = property5;
 
 
 
-					var property6 = new Property('property', 'property6', 'Museo de los niños', 'url(img/costaRica6.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+					var property6 = new Property('property', 'property6', 'Museo de los niños', 'down','property8','url(img/costaRica6.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
 					this.properties['property6'] = property6;
 
 
 
-						var property7 = new Property('property', 'property7', 'Universidad de Costa Rica', 'url(img/costaRica7.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+						var property7 = new Property('property', 'property7', 'Universidad de Costa Rica', 'up', 'property5', 'url(img/costaRica7.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
 						this.properties['property7'] = property7;
 
 
 
-							var property8 = new Property('property', 'property8', 'Estadio Nacional', 'url(img/costaRica8.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+							var property8 = new Property('property', 'property8', 'Estadio Nacional', 'down','url(img/costaRica8.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
 							this.properties['property8'] = property8;
 
-
-								var property9 = new Property('property', 'property9', 'Fortín de Heredia', 'url(img/costaRica9.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+                            var cave = new Property('cave', 'cave', 'Cueva de la icnoransia', 'left', 'property12');
+                            this.properties['cave']= cave;
+                            
+								var property9 = new Property('property', 'property9', 'Fortín de Heredia', 'left', 'hotChair2', 'url(img/costaRica9.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
 								this.properties['property9'] = property9;
 
+								var hotChair2 = new Property('hotChair', 'hotChair2', 'Silla Caliente', 'up','property7');
+								this.properties['hotChair2']=hotChair2;
 
-									var property10 = new Property('property', 'property10', 'Monumento Nacional', 'url(img/costaRica10.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+									var property10 = new Property('property', 'property10', 'Monumento Nacional', 'left', 'property9', 'url(img/costaRica10.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
 									this.properties['property10'] = property10;
 
 
-										var property11 = new Property('property', 'property11', 'Casa de Gobierno', 'url(img/costaRica11.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+										var property11 = new Property('property', 'property11', 'Casa de Gobierno', 'left', 'property10', 'url(img/costaRica11.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
 										this.properties['property11'] = property11;
 
 
-											var property12 = new Property('property', 'property12', 'Cerro Chirripó', 'url(img/costaRica12.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+											var property12 = new Property('property', 'property12', 'Cerro Chirripó', 'left', 'propery11', 'url(img/costaRica12.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
 											this.properties['property12'] = property12;
 
 
@@ -519,7 +368,7 @@ function fillBoard(){
 	var bodyDiv;
 	var element;
 	var buttom;
-	var txt, headerDiv, bodyDiv, bottomDiv;
+	var txt, header, bodyDiv, bottomDiv;
 
 	while(index < elements.length){
 		element = elements[index];
@@ -540,7 +389,7 @@ function fillBoard(){
 				buttom.disabled = true;
 				buttom.appendChild(txt);
 				header[0].appendChild(buttom);
-				p = document.createElement('p');
+				var p = document.createElement('p');
 				txt = document.createTextNode('Peaje: '+this.properties[element.id].h0);
 				p.appendChild(txt);
 				p.className = 'peaje';
@@ -578,51 +427,7 @@ function fillBoard(){
 }
 
 
-/**
-Objeto player contiene la informacion del jugador, como su numero, nombre, puntaje, dinero liquido
-**/
-/**
-function Player(number, name, color, liquidCash, richness, position ){
-	this.number = number;
-	this.name = name;
-	this.color = color;
-	this.liquidCash = liquidCash;
-	this.richness = richness;
-	this.position = position;
-	this.img = document.createElement('img');
-	this.img.src = ('img/'+color+'.png');
-	this.img.setAttribute("height",imgHeight);
-    this.img.setAttribute("width",imgWidth);
-}
-**/
 
-/**
-Funciones auxiliares
-**/
-
-function removeFromArray(srcArray, item){
-
-	var index = srcArray.indexOf(item);
-
-	if (index!=-1){
-
-		srcArray.splice(index, 1);
-	}
-
-
-}
-
-
-function getOffset(el) {
-  el = el.getBoundingClientRect();
-
-  return {
-    left: el.left + window.scrollX,
-    top: el.top + window.scrollY,
-	height: el.height,
-	width: el.width
-  }
-}
 /**
 Agregar jugadores
 **/
@@ -635,167 +440,29 @@ function addPlayer(playerNumber){
 				var player = {};
 				player.name = prompt("Por favor ingrese el nombre para el jugador "+playerNumber);
 				player.number = playerNumber;
-				player.liquidCash = 800;
-				player.richness = 800;
-				document.getElementById("name"+playerNumber).innerHTML = player.name;
-				//player.position = "enter";
-				var paragraph = document.getElementById("name"+playerNumber).nextSibling;
-				var txt = document.createTextNode(player.liquidCash + '/' + player.richness);
-				paragraph.appendChild(txt);
-				var imgHeight =  Math.floor(enter.offsetHeight/5);
-    			var imgWidth = Math.floor(enter.offsetWidth/3);
-    			player.top = (enter.offsetParent.offsetTop+(imgHeight*this.activePlayers.length));
-    			player.left = (enter.offsetParent.offsetLeft);
-				this.activePlayers.push(player);
-
-				loadColorSelector(player.name);
-
-
-			}
-		}
-	}
-
-	//PRUEBA PARA COMPRA Y VENTA
-	fallBox();
-
-}
-
-function loadColorSelector(name){
-	var divSelectColor = document.createElement('div');
-	var msg = document.createTextNode(name+' , seleccione un color');
-	divSelectColor.appendChild(msg);
-	var upperSpaceOffset = getOffset(upperSpace);
-	divSelectColor.setAttribute("width",upperSpaceOffset.width - 20);
-	divSelectColor.setAttribute("height",upperSpaceOffset.height - 20);
-	divSelectColor.id = "colorSelector";
-	for(var i  = 0; i < availableColors.length; i++){
-		var img = document.createElement('img');
-		img.src = ('img/'+availableColors[i]+'.png');
-		img.setAttribute("height",upperSpaceOffset.height-80);
-		img.setAttribute("width",(upperSpaceOffset.width/4)-40);
-		img.setAttribute("class", "players");
-		img.id=availableColors[i];
-		//img.onclick = function (availableColors[i] ){ alert("Ha escogido el color " + availableColors[i]); color =availableColors[i]; }
-		img.onclick = selectColor;
-		divSelectColor.appendChild(img);
-	}
-	upperSpace.appendChild(divSelectColor);
-}
-function selectColor ( ){
-
-	if(addingPlayers){
-		var color = this.id;
-	if (color != null){
-		activePlayers[activePlayers.length-1].color = color;
-		activePlayers[activePlayers.length-1].img = this;
-		removeFromArray(availableColors, color);
-		this.parentNode.style.display = 'none';
-		var enterOffset = getOffset(enter);
-		this.setAttribute("height",Math.floor(enter.offsetHeight/5));
-		this.setAttribute("width",Math.floor(enter.offsetWidth/3));
-		this.style.left = enterOffset.left + enterOffset.width/3;
-		this.style.top = enterOffset.top + ((enterOffset.height/5) * activePlayers.length);
-		this.onclick = none; //cqmbiar
-		enter.appendChild(this);
-		console.log(activePlayers);
-		/*var colorSelector = document.getElementById("colorSelector");
-		console.log(colorSelector);
-		colorSelector.style.display = 'none';*/
-	}
-	}
-}
+				player.liquidCash = 650;
+				player.richness = 650;
+				document.getElementById("name"+playerNumber).innerHTML = player.name + "<p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p>/" +  "<p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
+ 				player.position = "enter";
+ 				var imgHeight =  Math.floor(enter.offsetHeight/5);
+     			var imgWidth = Math.floor(enter.offsetWidth/3);
+     			player.top = (enter.offsetParent.offsetTop+(imgHeight*activePlayers.length));
+     			player.left = (enter.offsetParent.offsetLeft); 
+ 				activePlayers.push(player);
+ 				player.color=colors[playerNumber-1];
+ 				placePlayer(player);
+ 				//loadColorSelector(player.name);
+ 				
+ 				
+ 			}
+ 		}
+ 	}
+ 	fallBox();
+ }
 
 function none(){
 //cambiar
 }
-
-function playerExists(playerNumber){
-
-	for (var i=0; i < activePlayers.length; i++ ){
-		if(activePlayers[i].number == playerNumber){
-			console.log('jale buchon');
-			return true;
-		}
-	}
-
-	return false;
-}
-
-function getPlayer(playerNumber){
-
-	for (var i = 0; i < activePlayers.length; i++){
-		if (activePlayers[i].number == playerNumber){
-			return activePlayers[i];
-		}
-	}
-}
-/**
-Mover jugadores
-**/
-
-
-function movePlayer(playerNumber, numberOfCells){
-	var thisPlayer = getPlayer(playerNumber);
-
-
-}
-
-
-function calculateSequence (startingCell, numberOfCells)
-{
-
-}
-
-function move( ){
-    var player = activePlayers[activePlayers.length-1];
-    //moveRight(player,5);
-    moveDown(player,3);
-
-
-}
-function moveRight(player, numCells){
-
-    for (var i = 0; i < numCells; i++){
-        player.left += enterOffset.width;
-        console.log(player.img);
-        player.img.style.left = (player.left)+"px";
-        player.img.style.transitionDuration = "1s";
-    }
-
-}
-
-function moveLeft(player, numCells){
-
-    for (var i = 0; i < numCells; i++){
-        player.left -= enterOffset.width;
-        player.img.style.left = (player.left)+"px";
-        player.img.style.transitionDuration = "1s";
-    }
-
-}
-
-function moveDown(player, numCells){
-
-    for (var i = 0; i < numCells; i++){
-        player.top += enterOffset.height;
-        player.img.style.top = (player.top)+"px";
-        player.img.style.transitionDuration = "1s";
-    }
-
-}
-
-function moveUp(player, numCells){
-
-    for (var i = 0; i < numCells; i++){
-        player.top -= enterOffset.height;
-        player.img.style.top = (player.top)+"px";
-        player.img.style.transitionDuration = "1s";
-    }
-
-}
-
-
-
 //metodo para habilitar y desahibilitar botones de compra y venta, tanto para propiedades como casas
 function fallBox(){
 	this.currentPlayer = activePlayers[0];
@@ -935,3 +602,78 @@ function paintBox(){
 fillProperties();
 fillBoard();
 
+/***** variables de la jugada actual *****/
+var activePlayer; 
+/**** funcion auxiliar para obtener una propiedad por su id ****/
+
+function getPropertyById(propId){
+	
+	for (var i = 0; i < properties.length; i++){
+		
+		if(properties[i].id == propId){
+			
+			return properties[i];
+		}
+	}
+}
+/***** inicia juego ***/
+function startGame(){
+	
+	activePlayer = activePlayers[0];
+}
+/***** parte rodar dado ****/
+
+/**** Funcion para lanzar el dado ****/
+function rollDice(){
+			var randomNumber = Math.floor((Math.random() * 6) + 1);
+			console.log(randomNumber);
+			var diceFace = document.getElementById("diceFace");
+			diceFace.src = "img/d"+randomNumber+".png";
+			var rollButton = document.getElementById("diceRollButton");
+			rollButton.style.display="none";
+			movePlayer(activePlayer, randomNumber);
+			return randomNumber; 
+		}
+
+
+/***** mover jugadores *****/
+function movePlayer(player, numberOfCells){
+	var actualPosition = getPropertyById(player.position);
+	for (var i = 0; i < numberOfCells; i++){
+		
+		moveNext(player, actualPosition.nextDirection);
+		actualPosition = getPropertyById(actualPosition.nextDirection);
+	}
+	
+	
+	
+}
+
+/***** funcion que permite que el jugador (activo) se mueva una casilla y se mueve en la direccion indicada por la posicion en la que esta***/
+function moveNext(player, direction){
+	switch(direction){
+		case 'right': 
+			player.left += enter.offsetWidth;
+	        player.img.style.left = (player.left-60)+"px";
+	        player.img.style.transitionDuration = "1s";	
+        break;
+        case 'left': 
+        	player.left -=enter.offsetWidth;
+	        player.img.style.left = (player.left-30)+"px";
+	        player.img.style.transitionDuration = "1s";
+        break; 
+        case 'up': 
+        	player.top -= enter.offsetHeight;
+        	player.img.style.top = (player.top)+"px";
+        	player.img.style.transitionDuration = "1s";
+    	break; 
+    	case 'down':
+    		player.top += enter.offsetHeight;
+        	player.img.style.top = (player.top)+"px";
+        	player.img.style.transitionDuration = "1s";
+		break;
+	        
+	}
+	
+	
+}

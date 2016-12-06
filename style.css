@@ -11,8 +11,9 @@ img{
 	
 	width: 25%;
 	height: 30%;
-	top: 25%;
+	top: 10%;
 	position: relative;
+	z-index: 5;
 
 }
 .cointainer{
@@ -137,15 +138,17 @@ margin-top: 1em;
 .player3 span, .player4 span{
 	
 	position: absolute;
-	bottom: 2%;
+	bottom: 0.3%;
 
 
 }
 
 #playerIcon3{
+	width: 2.5%;
+	height: 2.5%;
 	position: absolute;
-	bottom: 2%;
-	left: 4em;
+	bottom: 1%;
+	left: 10%;
 	
 }
 
@@ -153,9 +156,11 @@ p{
 	display: inline-block;
 }
  #playerIcon4 {
+	width: 2.5%;
+	height: 2.5%;
 	position: absolute;
-	bottom: 2%;
-	left: 16em;
+	bottom: 1%;
+	left: 60%;
 	
 }
 
@@ -302,4 +307,23 @@ buttom{
 
 
 
+}
+
+#diceRoll{
+ bottom: 5%;
+ left: 5%;
+ width: 25%;
+
+}
+#diceFace{
+	width: 70%;
+	height: 70%;
+	left: 5%;
+	
+	
+}
+#diceRollButton{
+	height: 3%;
+	left: 15%;
+	
 }

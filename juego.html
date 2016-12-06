@@ -15,7 +15,8 @@
 
 		<div class = "player1" onclick="addPlayer(1)">
 			<span id="name1">Jugador 1</span>
-			<img class = "playerIcon"  id="playerIcon1" src="img/red.png"></div>
+			<img class = "playerIcon"  id="playerIcon1" src="img/red.png">
+			</div>
 		<div class = "player2" onclick="addPlayer(2)">
 			<span id="name2">Jugador 2</span>
 			<img class = "playerIcon" id="playerIcon2" src="img/green.png">
@@ -114,8 +115,14 @@
 			<div class = "space" id = "lowerSpace">
 				<div id= "gamePrice">
 				</div>
-				<div>
-					<img src="img/d1.png" id = "dice"  />
+				<div id="diceRoll">
+					<div id="dice">
+						<img id="diceFace" class="d1" src = "img/d1.png">
+						
+					</div>
+					<button id="diceRollButton" onclick="rollDice()">
+					Rodar dado
+					</button>
 				</div>
 
 			</div>
