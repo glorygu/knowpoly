@@ -3,6 +3,11 @@
 	<head>
 		<meta charset="utf-8"/>
 		<link rel="stylesheet" type="text/css" href="style.css" media = "screen"/>
+		<script src="dist/sweetalert.min.js"></script>
+<script src="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/sweetalert2/5.3.2/sweetalert2.min.css">
+<link href="https://fonts.googleapis.com/css?family=Quattrocento" rel="stylesheet">
+
 		<title>Knowpoly</title>
 	</head>
 	<body>
@@ -12,7 +17,7 @@
 		<div class = "player3" onclick="addPlayer(3)"><p id="name3">Jugador 3</p><p class = "count"></p></div>
 		<div class = "player4" onclick="addPlayer(4)"><p id="name4">Jugador 4</p><p class = "count"></p></div>
 		<div class = "prueba">
-			<div id = "enter">Entrada</div>
+			<div id = "enter"><p class="specialTitle">Entrada</p></div>
 			<div id = "property1">
 					<div class ="header">
 					</div>
@@ -53,7 +58,7 @@
 
 			</div>
 
-			<div id = "chair1">Silla caliente</div>
+			<div id = "chair1"><p class="specialTitle">Silla Caliente</p></div>
 			<div id = "property5">
 				<div class ="header">
 				</div>
@@ -64,10 +69,11 @@
 				</div>
 			</div>
 			<div class = "space" id = "upperSpace">
-				<button onclick="moveFullBoard()">Mover</button>
-					<button onclick="move()">Mover Derecha</button>
-				<div id= "dice">
-					 <img src = "img/d1.png" width ="75"/>
+
+				<div id= "questionPlace">
+				</div>
+				<img src="img/sillaCaliente.gif" id = "silla"  />
+				<div id= "optionsPlace">
 				</div>
 
 			</div>
@@ -89,7 +95,14 @@
 				<div class = "bottom">
 				</div>
 			</div>
-			<div class = "space" id = "lowerSpace"></div>
+			<div class = "space" id = "lowerSpace">
+				<div id= "gamePrice">
+				</div>
+				<div>
+					<img src="img/d1.png" id = "dice"  />
+				</div>
+
+			</div>
 			<div id = "property8">
 
 				<div class ="header">
@@ -100,7 +113,7 @@
 				<div class = "bottom">
 				</div>
 			</div>
-			<div id = "chair2">Silla caliente</div>
+			<div id = "chair2"><p class="specialTitle">Silla Caliente</p></div>
 			<div id = "property9">
 				<div class ="header">
 				</div>
@@ -138,10 +151,11 @@
 				<div class = "bottom">
 				</div>
 			</div>
-			<div id = "curve">Cueva de la icnoransia</div>
+			<div id = "curve"><p class="specialTitle">Cueva de la icnoransia</p></div>
 		</div>
 	<div>
-	<script src="game.js"></script>
+		<script src="questions.js"></script>
+		<script src="game.js"></script>
 	<!--<script src="movePlayers.js"></script>-->
 	</body>
 </html>
