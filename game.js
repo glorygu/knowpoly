@@ -15,7 +15,12 @@ var upperSpace  = document.getElementById("upperSpace");
 var enter =  document.getElementById("enter");
 var questionsPool = []; 
 var board = document.getElementById("board");
-
+var properties = {};
+var currentProperty = "property1"; // el id la propiedadvar currentPlayer; //id del jugador actual
+var arrayIndexesPlayer1 = new Array(); //para manejar el el id de la propiedad que pertenece a cada jugador
+var arrayIndexesPlayer2 = new Array();
+var arrayIndexesPlayer3 = new Array();
+var arrayIndexesPlayer4 = new Array();
 /**
 **/
 
@@ -90,7 +95,9 @@ function placePlayer(player){
 	enter.appendChild(img);
 	
 }
-
+/**
+funcion playerExists verifica si un jugador ya existe en el vector de activePlayers
+**/
 function playerExists(playerNumber){
 	
 	for (var i=0; i < activePlayers.length; i++ ){
@@ -102,7 +109,9 @@ function playerExists(playerNumber){
 
 	return false;
 }
-
+/**
+funcion getPlayer que retorna el objeto de player despues de haberlo buscado por su numero 
+**/
 function getPlayer(playerNumber){
 	
 	for (var i = 0; i < activePlayers.length; i++){
@@ -134,32 +143,6 @@ function fillBoard(){
 	body[0].style.backgroundImage = 'url(img/av_central.jpg)';
 }
 
-/**
-Variables globales
-**/
-
-var imgWidth = 80;
-var imgHeight = 80;
-var activePlayers = [];
-var cells = [];
-var availableColors = ["red","yellow","green","blue"];
-var addingPlayers = 'true';
-var upperSpace  = document.getElementById("upperSpace");
-var enter =  document.getElementById("enter");
-var questionsPool = [];
-var properties = {};
-var currentProperty = "property1"; // el id la propiedadvar currentPlayer; //id del jugador actual
-var arrayIndexesPlayer1 = new Array(); //para manejar el el id de la propiedad que pertenece a cada jugador
-var arrayIndexesPlayer2 = new Array();
-var arrayIndexesPlayer3 = new Array();
-var arrayIndexesPlayer4 = new Array();
-
-/**
-**/
-
-var enterOffset = getOffset(enter);
-var cellWidth = enterOffset.width;
-var cellHeight = enterOffset.height;
 
 /**
 		It shows on the board a random question.
@@ -174,9 +157,9 @@ function showQuestion(questionNumber){
 
 	//Get the question statement according to the number just generated.
 	var questionStatement = this.questions['web'][questionNumber]['text'];
- //Get the number of option that answers correctly the question.
-//The question will be shown in the div with id "questionPlace".
-var questionPlaceDiv  = document.getElementById("questionPlace");
+	 //Get the number of option that answers correctly the question.
+	//The question will be shown in the div with id "questionPlace".
+	var questionPlaceDiv  = document.getElementById("questionPlace");
 	var questionTextElement = document.createElement("H1");
 	questionTextElement.id = "questionStatement";
 	//Create a text node which will be a child of div questionPlace.
