@@ -1,3 +1,4 @@
+
 /**
 Variables globales
 **/
@@ -256,3 +257,32 @@ function moveUp(player, numCells){
     }
     
 }
+
+var properties = new Array();
+
+function fillProperties(){
+	var property1 = new Property('property', 'p1', 'Avenida Central', 'url(img/av_central.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500  );
+	this.properties.push(property1);
+	
+}
+
+
+
+/**
+	Funcion para llenar el tablero
+*/
+function fillBoard(){
+	var property = document.getElementById('property1');
+	var dataProperty = properties.pop();
+	var header = property.getElementsByClassName('header');
+	var buttom = document.createElement('buttom');
+	var txt = document.createTextNode(dataProperty.propertyBuy);
+	buttom.appendChild(txt);
+	header[0].appendChild(buttom);
+	var body = property.getElementsByClassName('prop');
+	body[0].style.backgroundImage = 'url(img/av_central.jpg)';
+}
+
+fillProperties();
+fillBoard();
+
