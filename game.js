@@ -1,5 +1,6 @@
 
 
+
 /**
 Variables globales
 **/
@@ -430,6 +431,9 @@ function fillBoard(){
 
 /**
 Agregar jugadores
+**/
+/**
+Funcion que se llama cuando se le da click a algun div de colores. Se crea el objeto del jugador y se mete en el array de activePlayers
 **/
 function addPlayer(playerNumber){
 	var alreadyExists = playerExists(playerNumber);
