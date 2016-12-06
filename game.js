@@ -12,7 +12,7 @@ var upperSpace  = document.getElementById("upperSpace");
 var enter =  document.getElementById("enter");
 var questionsPool = []; 
 var properties = {};
-var currentProperty = "property1"; //color id de la propiedad en la que está el jugador en turno(Falta)
+var currentProperty = "property1"; // el id la propiedad.
 var currentPlayer; //id del jugador actual
 var arrayIndexesPlayer1 = new Array(); //para manejar el el id de la propiedad que pertenece a cada jugador
 var arrayIndexesPlayer2 = new Array();
