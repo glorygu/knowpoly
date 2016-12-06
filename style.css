@@ -1,3 +1,8 @@
+*{
+	font-family: 'Quattrocento', sans-serif;
+
+
+}
 img{
 	
 }
@@ -18,12 +23,89 @@ img{
 	position:relative;
 }
 
+
+#silla{
+padding-left: 2em;
+float: left;;
+
+}
+#questionStatement, #priceText{
+	font-size: 1.5em;
+	color:#607B8B;
+	text-align: center;
+padding: 0 1em 0 1em;
+}
+#priceText{
+color: rgba(255,0,0,0.7);
+
+}
+
+.title{
+background-color: rgba(255, 255, 255, 0.6);
+
+}
+#silla{
+	margin-left: 4em;
+}
+
+#btnSelect{
+margin-top: 1em;
+
+}
+#optionsPlace{
+	background-color: rgba(192,192,192,0.3);
+	text-align: left;
+	width: 50%;
+	margin-right: 5em;
+	padding: 1em;
+	float: right;
+	max-height: 50%;
+	display: inline-block;
+
+}
+
+
+#prueba{
+
+}
+
+#dice{
+
+}
+
+.propertyBuy, .propertySell{
+	height:50%;
+}
+
+.propertyBuy{
+	background-color: #7EB5EB;
+	opacity: 0.30;
+}
+
+.propertySell{
+	border:none;
+	text-decoration: line-through;
+}
+
 .player1, .player2, .player3, .player4{
 	width: 50%;
 	height: 50%;
 	padding-bottom: 50%;
 	font-size: 2em;
 		display: inline-block
+}
+
+#name1, #name2, #name3, #name4, .count{
+	margin:0;
+	padding-left: 1em;
+	padding-top: 0.5em;
+	font-size: 1em;
+}
+
+#name3, #name4{
+	margin-bottom: 1em;
+	padding-left: 1em;
+
 }
 
 
@@ -86,60 +168,138 @@ p{
 	height: 4%;
 }
 .header{
-background-color: gray;
-height: 20%
-
-}
-
-#dice{
-text-align: right;
-margin-right: 3em;
-margin-top: 3em;
-
-}
-.prop{
-	height: 40%;
-	background-color: lightgray;
-	text-align: center;
-}
-
-.bottom{
-	height: 40%;
 	background-color: gray;
-
-}
-
-.prueba{
-	position: absolute;
-	left: 5em;
-	top: 5em;
-	bottom: 5em;
-	background-color: white;
-	right: 5em;
+	height: 10%;
 	display:flex;
 	flex-direction: row;
 	flex-wrap: wrap;
 }
 
+#dice{
+	text-align: right;
+	margin-right: 3em;
+	margin-top: 3em;
+
+}
+
+.peaje{
+	margin-top:0;
+	margin-bottom: 0;
+	margin-left: 2em;
+	text-align: end;
+	font-size: 14px;
+
+}
+
+.prop{
+	height: 70%;
+	background-color: lightgray;
+	text-align: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+
+.bottom{
+	height: 20%;
+	background-color: gray;
+	display:flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+
+}
 
 
+img{
+	height:auto;
+	width:auto;
+}
+
+.prueba{
+	position: absolute;
+	left: 2em;
+	top: 5em;
+	bottom: 5em;
+	background-color: white;
+	right: 2em;
+	display:flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+scan p{
+	background-color: white;
+}
+
+.buttomHouseU{
+	background-color:#2EB420;
+}
+
+.buttomHouse{
+	background-color: #F2F928;
+}
+
+.buttomHouse, .buttomHouseU{
+	width: calc(100%/7);
+	margin-bottom: 0;
+	height:auto;
+	opacity: 0.30;
+}
+
+buttom{
+	border: 1px solid;
+	margin-left: 1px;
+	height:auto;
+	width:auto;
+
+}
+
+#enter{
+	background-repeat: no-repeat;
+	background-size: cover;
+
+}
+.specialTitle{
+	background-color: rgba(255, 255, 255, 0.6);
+	margin-top: 0;
+	padding-top: 0.5em;
+	font-size: 1.5em;
+	height: 13%;
+	text-align: center;
+
+	font-weight: lighter;;
+
+}
 #enter, #property1, #property2, #property3, #property4, #property5, #property6, #property7, #property8, #property9, #chair1,#property10, #property11, #property12, #chair2, #curve{
 	width: calc(100%/6 - 2px);
 	background-color: rgb(196,215,196);
 	border: 1px solid black;
-	max-height: calc(100%/3);
+	max-height: calc(100%/4);
+	height: 25%;
+	display:flex;
+	flex-direction: column;
+	flex-wrap: wrap;
 }
 
 
 .space{
 	width: calc(calc(100%/6)*4);
 	max-height: calc(100%/3);
-	
+
 }
 
 @media (max-width: 1024px) {
 	.player1 p, .player2 p, .player3 p, .player4 p{
 		font-size: 18px;
 	}
+
+	.buttomHouse, .buttomHouseU{
+		font-size: 10px;
+	}
+
+	.propertyBuy, .propertySell, .peaje{
+		font-size: 10px;
+	}
+
+
 
 }
