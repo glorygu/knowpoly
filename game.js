@@ -73,7 +73,9 @@ function getOffset(el) {
 /**
 Agregar jugadores 
 **/
-
+/**
+Funcion para colocar las fichas de los jugadores en el tablero
+*/
 function placePlayer(player){
 	var img = document.createElement('img');
 	img.src = ('img/'+player.color+'.png');
