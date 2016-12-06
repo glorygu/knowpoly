@@ -450,6 +450,7 @@ function addPlayer(playerNumber){
      			player.left = (enter.offsetParent.offsetLeft); 
  				activePlayers.push(player);
  				player.color=colors[playerNumber-1];
+ 				player.ownedProperties = new Array();
  				placePlayer(player);
  				//loadColorSelector(player.name);
  				
