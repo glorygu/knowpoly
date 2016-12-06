@@ -240,6 +240,7 @@ function fillBoard(){
 				txt = document.createTextNode(this.properties[element.id].propertyBuy);
 				buttom.className = 'propertyBuy';
 				buttom.disabled = true;
+				buttom.onClick = buyProperty;
 				buttom.appendChild(txt);
 				header = element.getElementsByClassName('header');
 				header[0].appendChild(buttom);
@@ -528,6 +529,45 @@ function fallBox(){
 
 
 	}
+}
+
+
+function buyProperty(){
+	
+	
+	
+	if(this.properties.hasOwnProperty(this.currentProperty) == true){
+		var property = this.properties[this.currentProperty];
+		if(this.currentPlayer.liquidCash > property.propertyBuy){
+			var representationProperty = document.getElementById(this.currentProperty);
+			var buttom = representationProperty.getElementsByClassName('propertyBuy');
+			representationProperty.style.backgroundColor = 'red';
+			this.properties[this.currentProperty].isSold = true;
+			switch(this.currentPlayer.number){
+				case 1:
+					this.arrayIndexesPlayer1.push(this.currentProperty);
+					break;
+				case 2:
+					this.arrayIndexesPlayer2.push(this.currentProperty);
+					break;
+				case 3:
+					this.arrayIndexesPlayer3.push(this.currentProperty);
+					break;
+				default:
+					this.arrayIndexesPlayer4.push(this.currentProperty);
+					break;
+			}
+			this.currentPlayer.liquidCash -= property.propertyBuy;
+			this.currentPlayer.richness += property.propertyBuy;
+			paintBox
+			var paragraph = document.getElementById("player"+this.currentPlayer.number).nextSibling;
+			var txt = document.createTextNode(this.currentPlayer.liquidCash + '/' + this.currentPlayer.richness);
+			paragraph.appendChild(txt);
+		}
+		
+	}
+		
+	
 }
 
 
