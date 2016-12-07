@@ -16,11 +16,6 @@ var enter =  document.getElementById("enter");
 var questionsPool = []; 
 var board = document.getElementById("board");
 var properties = {};
-var currentProperty = "property1"; // el id la propiedadvar currentPlayer; //id del jugador actual
-var arrayIndexesPlayer1 = new Array(); //para manejar el el id de la propiedad que pertenece a cada jugador
-var arrayIndexesPlayer2 = new Array();
-var arrayIndexesPlayer3 = new Array();
-var arrayIndexesPlayer4 = new Array();
 /**
 **/
 
@@ -120,12 +115,6 @@ function getPlayer(playerNumber){
 		}
 	}
 }
-
-
-var properties = new Array();
-
-
-
 
 
 /**
@@ -383,25 +372,8 @@ function fillBoard(){
 				bodyDiv = element.getElementsByClassName('prop');
 				bodyDiv[0].innerHTML = '<span><p class = "title">' + this.properties[element.id].name + '</p></span>';
 				bodyDiv[0].style.backgroundImage = this.properties[element.id].img;
-				bottomDiv = element.getElementsByClassName('bottom');
-				for(var c = 0; c < 6; ++c){
-					buttom = document.createElement('buttom');
-					buttom.disabled = true;
-					buttom.className = 'buttomHouseU';
-					txt = document.createTextNode(this.properties[element.id].houseBuy);
-					buttom.appendChild(txt);
-					bottomDiv[0].appendChild(buttom);
-
-				}
-				for(var i = 0; i < 6; ++i){
-					var string = 'h'+i;
-					buttom = document.createElement('buttom');
-					buttom.disabled = true;
-					buttom.className = 'buttomHouse';
-					txt = document.createTextNode((this.properties[element.id])[string]);
-					buttom.appendChild(txt);
-					bottomDiv[0].appendChild(buttom);
-				}
+				drawBottomTable(element);
+				
 			}else{
 				element.style.backgroundImage = this.properties[element.id].img;
 			}
@@ -410,6 +382,31 @@ function fillBoard(){
 		++index;
 	}
 
+}
+
+
+//dibujar la parte inferior de la tabla que tiene cada propiedad
+function drawBottomTable(element){
+	var buttonDiv = element.getElementsByClassName('bottom');
+	var txt, button;
+	for(var c = 0; c < 6; ++c){
+		button = document.createElement('buttom');
+		button.disabled = true;
+		button.className = 'buttomHouseU';
+		txt = document.createTextNode(this.properties[element.id].houseBuy);
+		button.appendChild(txt);
+		buttonDiv[0].appendChild(button);
+
+	}
+	for(var i = 0; i < 6; ++i){
+		var string = 'h'+i;
+		button = document.createElement('buttom');
+		button.disabled = true;
+		button.className = 'buttomHouse';
+		txt = document.createTextNode((this.properties[element.id])[string]);
+		button.appendChild(txt);
+		buttonDiv[0].appendChild(button);
+	}
 }
 
 
@@ -447,6 +444,7 @@ function addPlayer(playerNumber){
  			}
  		}
  	}
+	startGame();
  	fallBox();
  }
 
@@ -455,23 +453,22 @@ function none(){
 }
 //metodo para habilitar y desahibilitar botones de compra y venta, tanto para propiedades como casas
 function fallBox(){
-	this.currentPlayer = activePlayers[0];
-	var representationProperty = document.getElementById(this.currentProperty);
-	var dataProperty = this.properties[this.currentProperty];
-	var buttom;
-	var buttomsBuy;
-	var buttomsH;
+
+	this.activePlayer.position = 'property1';
+	var representationProperty = document.getElementById(this.activePlayer.position);
+	var dataProperty = this.properties[this.activePlayer.position];
+	var button;
 
 	if(dataProperty.isSold == false){
 
-		if(this.currentPlayer.liquidCash > dataProperty.propertyBuy){
-			buttom = representationProperty.getElementsByClassName('propertyBuy');
-			buttom[0].style.opacity = '0.99';
-			buttom[0].disabled = false;
+		if(this.activePlayer.liquidCash > dataProperty.propertyBuy){
+			button = representationProperty.getElementsByClassName('propertyBuy');
+			button[0].style.opacity = '0.99';
+			button[0].disabled = false;
 		}
 	}else{
-
-		this.arrayIndexesPlayer1.push('property1');
+		
+		this.activePlayer.ownedProperties.push('property1');
 		paintBox();
 
 
@@ -479,37 +476,26 @@ function fallBox(){
 }
 
 
+
+// metodo para comprar una propiedad
 function buyProperty(){
 	
 	
-	
-	if(this.properties.hasOwnProperty(this.currentProperty) == true){
-		var property = this.properties[this.currentProperty];
-		if(this.currentPlayer.liquidCash > property.propertyBuy){
-			var representationProperty = document.getElementById(this.currentProperty);
-			var buttom = representationProperty.getElementsByClassName('propertyBuy');
-			representationProperty.style.backgroundColor = 'red';
-			this.properties[this.currentProperty].isSold = true;
-			switch(this.currentPlayer.number){
-				case 1:
-					this.arrayIndexesPlayer1.push(this.currentProperty);
-					break;
-				case 2:
-					this.arrayIndexesPlayer2.push(this.currentProperty);
-					break;
-				case 3:
-					this.arrayIndexesPlayer3.push(this.currentProperty);
-					break;
-				default:
-					this.arrayIndexesPlayer4.push(this.currentProperty);
-					break;
-			}
-			this.currentPlayer.liquidCash -= property.propertyBuy;
-			this.currentPlayer.richness += property.propertyBuy;
-			paintBox
-			var paragraph = document.getElementById("player"+this.currentPlayer.number).nextSibling;
-			var txt = document.createTextNode(this.currentPlayer.liquidCash + '/' + this.currentPlayer.richness);
-			paragraph.appendChild(txt);
+	if(this.properties.hasOwnProperty(this.activePlayer.position) == true){
+		var property = this.properties[this.activePlayer.position];
+		if(this.activePlayer.liquidCash > property.propertyBuy){
+			var representationProperty = document.getElementById(this.activePlayer.position);
+			var button = representationProperty.getElementsByClassName('propertyBuy');
+			button.style.opacity = '0.30';
+			button.disabled = 'true';
+			representationProperty.style.backgroundColor = this.activePlayer.color;
+			this.properties[this.activePlayer.position].isSold = true;
+			this.activePlayer.ownedProperties.push(this.activePlayer.position);
+			this.activePlayer.liquidCash -= property.propertyBuy;
+			this.activePlayer.richness += property.propertyBuy;
+			paintBox();
+			var paragraphOne = representationProperty.getElementById("player"+this.activePlayer.number + 'Cash').innerText = this.activePlayer.liquidCash;
+			var paragraphOne = representationProperty.getElementById("player"+this.activePlayer.number + 'Richness').innerText = this.activePlayer.richness;
 		}
 		
 	}
@@ -518,75 +504,47 @@ function buyProperty(){
 }
 
 
+
+//metodo para poder pintar las propiedad  del lugar que tiene el turno
 function paintBox(){
 
 
-	var propertiesIndexes;
-	var representationProperty = document.getElementById(this.currentProperty);
-	var dataProperty = this.properties[this.currentProperty];
-	var buttom;
-	var buttomsBuy;
-	var buttomsH;
+	var button;
+	var buttonBuy;
+	var buttonH;
 
-	switch(this.currentPlayer.number){
-		case 1:
-			propertiesIndexes = this.arrayIndexesPlayer1;
-			break;
-		case 2:
-			propertiesIndexes = this.arrayIndexesPlayer2;
-			break;
-		case 3:
-			propertiesIndexes = this.arrayIndexesPlayer3;
-			break;
-		default:
-			propertiesIndexes = this.arrayIndexesPlayer4;
-			break;
-	}
-
-	for(var c = 0; c < propertiesIndexes.length; ++c){
-		representationProperty = document.getElementById(propertiesIndexes[c]);
-		dataProperty = this.properties[propertiesIndexes[c]];
+	for(var c = 0; c < this.activePlayer.ownedProperties.length; ++c){
+		representationProperty = document.getElementById(this.activePlayer.ownedProperties[c]);
+		dataProperty = this.properties[this.activePlayer.ownedProperties[c]];
 
 		if(dataProperty.countHouses == 0){
-			buttom = representationProperty.getElementsByClassName('propertySell');
-			buttom[0].style.opacity = '0.99';
-			buttom[0].style.backgroundColor = '#7EB5EB';
-			buttom[0].style.border = '1px solid'
-			buttom[0].disabled = false;
-			buttomsBuy = representationProperty.getElementsByClassName('buttomHouseU');
-			buttomsBuy[1].style.opacity = '0.99';
-			buttomsBuy[1].disabled = false;
-			buttomsBuy[0].innerText = dataProperty.houseSell;
-			buttomsBuy[0].style.textDecoration = 'line-through';
-			buttomsH = representationProperty.getElementsByClassName('buttomHouse');
-			buttomsH[0].style.opacity = '0.99';
-		}else if(dataProperty.countHouses < 4){
-			buttomsBuy = representationProperty.getElementsByClassName('buttomHouseU');
-			buttomsBuy[dataProperty.countHouses].style.opacity = '0.99';
-			buttomsBuy[dataProperty.countHouses].disabled = false;
-			buttomsBuy[dataProperty.countHouses].innerText = dataProperty.houseSell;
-			buttomsBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
-			buttomsBuy[dataProperty.countHouses+1].style.opacity = '0.99';
-			buttomsBuy[dataProperty.countHouses+1].disabled = false;
-			buttomsH = representationProperty.getElementsByClassName('buttomHouse');
-			buttomsH[dataProperty.countHouses].style.opacity = '0.99';
-		}else if(dataProperty.countHouses == 4){
-			buttomsBuy = representationProperty.getElementsByClassName('buttomHouseU');
-			buttomsBuy[dataProperty.countHouses].style.opacity = '0.99';
-			buttomsBuy[dataProperty.countHouses].disabled = false;
-			buttomsBuy[dataProperty.countHouses].innerText = dataProperty.houseSell;
-			buttomsBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
-			buttomsBuy[dataProperty.countHouses+1].style.opacity = '0.99';
-			buttomsBuy[dataProperty.countHouses+1].backgroundColor = 'red';
-			buttomsBuy[dataProperty.countHouses+1].disabled = false;
-			buttomsH = representationProperty.getElementsByClassName('buttomHouse');
-			buttomsH[dataProperty.countHouses].style.opacity = '0.99';
+			button = representationProperty.getElementsByClassName('propertySell');
+			button[0].style.opacity = '0.99';
+			button[0].style.backgroundColor = '#7EB5EB';
+			button[0].style.border = '1px solid'
+			button[0].disabled = false;
 		}
-
-
+		paintButton(representationProperty, dataProperty);
 	}
+}
 
 
+//pintar botones de la tabla que tiene cada propiedad
+function paintButton(representationProperty,dataProperty){
+	buttonBuy = representationProperty.getElementsByClassName('buttomHouseU');
+	if(dataProperty.countHouses != 0){
+		buttonBuy[dataProperty.countHouses].style.opacity = '0.99';
+		buttonBuy[dataProperty.countHouses].disabled = false;
+	}
+	buttonBuy[dataProperty.countHouses].innerText = dataProperty.houseSell;
+	buttonBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
+	buttonBuy[dataProperty.countHouses+1].style.opacity = '0.99';
+	buttonBuy[dataProperty.countHouses+1].disabled = false;
+	if(dataProperty.countHouses == 4){
+		buttonBuy[dataProperty.countHouses+1].backgroundColor = 'red';
+	}
+	buttonH = representationProperty.getElementsByClassName('buttomHouse');
+	buttonH[dataProperty.countHouses].style.opacity = '0.99';
 }
 
 fillProperties();
