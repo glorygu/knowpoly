@@ -118,7 +118,7 @@ function getPlayer(playerNumber) {
 **/
 
 //Get a random number that will represent the question displayed. There are 63 questions.
-this.currentPlayer = this.activePlayers[]; // for  test purposes
+
 var questionNumber = Math.floor(Math.random() * 64);
 showQuestion(questionNumber);
 showOptions(questionNumber);
@@ -347,9 +347,8 @@ function fillProperties() {
 
     var property11 = new Property('property', 'property11', 'Casa de Gobierno', 'left', 'property10', 'url(img/costaRica11.jpg)', 190, 170, 200, 100, 23, 70, 205, 575, 1150, 1840);
     this.properties['property11'] = property11;
-
-																																																																200	180	200	100	25	75	225	625	1250	2000
-    var property12 = new Property('property', 'property12', 'Cerro Chirripó', 'left', 'propery11', 'url(img/costaRica12.jpg)', 200, 180, 200, 100, 25, 75, 225, 625, 1250, 2000);
+	
+	var property12 = new Property('property', 'property12', 'Cerro Chirripó', 'left', 'propery11', 'url(img/costaRica12.jpg)', 200, 180, 200, 100, 25, 75, 225, 625, 1250, 2000);
     this.properties['property12'] = property12;
 
 
@@ -552,16 +551,6 @@ function buyProperty(){
 }
 
 
-
-//ver si debe pagar hospedaje o no
-function selectAction(){
-	
-	if(this.properties.hasOwnProperty(this.activePlayer.position) == true){
-		var property = this.properties[this.activePlayer.position];
-		if(property.owner != this.activePlayer.name){
-			
-		}
-	}
 function selectAction(){
 	
 	if(this.properties.hasOwnProperty(this.activePlayer.position) == true){
