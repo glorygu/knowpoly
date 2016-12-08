@@ -168,8 +168,7 @@ margin-top: 1em;
 }
 
 #playerIcon3{
-	width: 2.5%;
-	height: 2.5%;
+	
 	position: absolute;
 	bottom: 1%;
 	left: 10%;
@@ -180,8 +179,7 @@ p{
 	display: inline-block;
 }
  #playerIcon4 {
-	width: 2.5%;
-	height: 2.5%;
+	
 	position: absolute;
 	bottom: 1%;
 	left: 60%;
@@ -193,8 +191,8 @@ p{
 	background-color:#ffff33;
 }
 .playerIcon{
-	width: 4%;
-	height: 4%;
+	width: 1em;
+	height: 1.5em;
 }
 .header{
 	background-color: gray;

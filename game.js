@@ -5,14 +5,16 @@ var imgWidth = 80;
 var imgHeight = 80;
 var activePlayers = [];
 var cells = [];
-var colors = ["red", "green", "blue", "yellow"];
-var addingPlayers = 'true';
-var upperSpace = document.getElementById("upperSpace");
-var enter = document.getElementById("enter");
-var questionsPool = [];
+var colors = ["red","green","blue","yellow"];
+var addingPlayers = true;
+var upperSpace  = document.getElementById("upperSpace");
+var enter =  document.getElementById("enter");
+var questionsPool = []; 
 var board = document.getElementById("board");
 var properties = {};
-
+var currentPlayer = {};
+/**
+**/
 
 var enterOffset = getOffset(enter);
 var cellWidth = enterOffset.width;
@@ -71,23 +73,26 @@ Agregar jugadores
 /**
 Funcion para colocar las fichas de los jugadores en el tablero
 */
-function placePlayer(player) {
-    var img = document.createElement('img');
-    img.src = ('img/' + player.color + '.png');
-    img.setAttribute("class", "playerToken");
-    img.id = player.color;
-    imgHeight = img.offsetHeight;
-    imgWidth = img.offsetWidth;
-    console.log("eh" + imgWidth + "enter top " + enter.offsetParent.offsetTop + "this top" + (enter.offsetParent.offsetTop + (imgHeight * (activePlayers.length))));
-    //img.style.top = (enter.offsetParent.offsetTop+(imgHeight*(activePlayers.length))) ;//+ 'px';
+
+function placePlayer(player){
+	var img = document.createElement('img');
+	img.src = ('img/'+player.color+'.png');
+	img.setAttribute("class", "playerToken");
+	img.id=player.color;
+	//imgHeight = img.offsetHeight; 
+	//imgWidth = img.offsetWidth;
+	//console.log("eh" + imgWidth +"enter top " + enter.offsetParent.offsetTop + "this top" +(enter.offsetParent.offsetTop+(imgHeight*(this.activePlayers.length))));
+	//img.style.top = (enter.offsetParent.offsetTop+(imgHeight*(activePlayers.length))) ;//+ 'px';
+
     //img.style.left = (enter.offsetParent.offsetLeft+imgWidth) + 'px';
     player.img = img;
     enter.appendChild(img);
 
 }
 /**
-funcion playerExists verifica si un jugador ya existe en el vector de activePlayers
+funcion playerExists verifica si un jugador ya existe en el vector dethis.activePlayers
 **/
+
 function playerExists(playerNumber) {
 
     for (var i = 0; i < this.activePlayers.length; i++) {
@@ -102,6 +107,11 @@ function playerExists(playerNumber) {
 /**
 funcion getPlayer que retorna el objeto de player despues de haberlo buscado por su numero
 **/
+
+
+//var properties = new Array();
+
+
 function getPlayer(playerNumber) {
 
     for (var i = 0; i < this.activePlayers.length; i++) {
@@ -118,6 +128,9 @@ function getPlayer(playerNumber) {
 **/
 
 //Get a random number that will represent the question displayed. There are 63 questions.
+
+
+//this.currentPlayer = 1; // for  test purposes
 
 var questionNumber = Math.floor(Math.random() * 64);
 showQuestion(questionNumber);
@@ -138,6 +151,7 @@ function showQuestion(questionNumber) {
     questionTextElement.appendChild(questionTextNode);
     //Add that node  as a child of div questionPlace
     questionPlaceDiv.appendChild(questionTextElement);
+
 }
 
 function showOptions(questionNumber) {
@@ -347,8 +361,10 @@ function fillProperties() {
 
     var property11 = new Property('property', 'property11', 'Casa de Gobierno', 'left', 'property10', 'url(img/costaRica11.jpg)', 190, 170, 200, 100, 23, 70, 205, 575, 1150, 1840);
     this.properties['property11'] = property11;
-	
-	var property12 = new Property('property', 'property12', 'Cerro Chirripó', 'left', 'propery11', 'url(img/costaRica12.jpg)', 200, 180, 200, 100, 25, 75, 225, 625, 1250, 2000);
+
+    var property12 = new Property('property', 'property12', 'Cerro Chirripó', 'left', 'propery11', 'url(img/costaRica12.jpg)', 200, 180, 200, 100, 25, 75, 225, 625, 1250, 2000);
+
+
     this.properties['property12'] = property12;
 
 
@@ -440,14 +456,49 @@ function drawBottomTable(element) {
 Agregar jugadores
 **/
 /**
-Funcion que se llama cuando se le da click a algun div de colores. Se crea el objeto del jugador y se mete en el array de activePlayers
+Funcion que se llama cuando se le da click a algun div de colores. Se crea el objeto del jugador y se mete en el array dethis.activePlayers
 **/
 
-function Player() {
+function addPlayer(playerNumber){
+	var alreadyExists = playerExists(playerNumber);
+	console.log(alreadyExists);
+	if(!alreadyExists){
+		if (addingPlayers){
+			if(activePlayers.length < 4){
+				var name = prompt("Por favor ingrese el nombre para el jugador "+playerNumber);
+				if (name != null){
+					console.log("entre papillos");
+					var player = {};
+					player.name = name;
+					player.number = playerNumber;
+					player.liquidCash = 650;
+					player.richness = 650;
+					document.getElementById("name"+playerNumber).innerHTML = player.name + "<p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p>/" +  "<p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
+	 				player.position = "enter";
+	 				var imgHeight =  Math.floor(enter.offsetHeight/5);
+	     			var imgWidth = Math.floor(enter.offsetWidth/3);
+	     			player.top = (enter.offsetParent.offsetTop+(imgHeight*this.activePlayers.length));
+	     			player.left = (enter.offsetParent.offsetLeft); 
+	 				player.color=colors[playerNumber-1];
+	 				player.ownedProperties = new Array();
+	 				this.activePlayers.push(player);
+	 				console.log(this.activePlayers + "come on lil marco");
+	 				placePlayer(player);
+	 				//loadColorSelector(player.name);
+	 				if(this.activePlayers.length==2)
+	 				{//si hay mas de dos jugadores 
+						enableStartButton();
+	 				}
+				}
+ 			}
+ 		}
+ 	}
+ 	//fallBox();
+ }
 
-
+function none(){
+//cambiar
 }
-
 
 function addPlayer(playerNumber) {
     var alreadyExists = playerExists(playerNumber);
@@ -482,9 +533,9 @@ function addPlayer(playerNumber) {
 
 function none() {
     //cambiar
-}
-//metodo para habilitar y desahibilitar botones de compra y venta, tanto para propiedades como casas
+}//metodo para habilitar y desahibilitar botones de compra y venta, tanto para propiedades como casas
 function fallBox() {
+
 
     this.activePlayer.position = 'property1';
     var representationProperty = document.getElementById(this.activePlayer.position);
@@ -503,7 +554,6 @@ function fallBox() {
     }
 }
 
-
 //funcion para colocar boton terminar en tablero y hacerlo funcional
 function putStatusButton() {
     var space = document.getElementById('lowerSpace');
@@ -516,13 +566,14 @@ function putStatusButton() {
 	divButton.appendChild(button);
 
     space.appendChild(divButton);
+
 }
 
 
 
 function buyProperty(){
-	
-	
+
+
 	if(this.properties.hasOwnProperty(this.activePlayer.position) == true){
 		var property = this.properties[this.activePlayer.position];
 		if(this.activePlayer.liquidCash > property.propertyBuy){
@@ -540,22 +591,21 @@ function buyProperty(){
 			var paragraphOne = representationProperty.getElementById("player"+this.activePlayer.number + 'Cash').innerText = this.activePlayer.liquidCash;
 			var paragraphOne = representationProperty.getElementById("player"+this.activePlayer.number + 'Richness').innerText = this.activePlayer.richness;
 		}
-		
+
 	}
-		
-	
+
+
 }
 
 
 function selectAction(){
-	
+
 	if(this.properties.hasOwnProperty(this.activePlayer.position) == true){
 		var property = this.properties[this.activePlayer.position];
 		if(property.owner != this.activePlayer.number){
-			payLodgement();
-		}
+			payLodgement();		}
 	}
-	paintBox();
+		paintBox();
 }
 
 //pagar hospedaje
@@ -575,7 +625,7 @@ function payLodgement(){
 		var index = 0;
 		var idPlayer = "";
 		var cash = 0;
-		
+
 		while(index < this.activePlayers.length && indicator == false){
 			if(this.activePlayers[index].number == property.num){
 				cash = property[lodgement] + this.activePlayers[index].liquidCash;
@@ -632,11 +682,33 @@ function paintButton(representationProperty, dataProperty) {
     buttonH[dataProperty.countHouses].style.opacity = '0.99';
 }
 
-fillProperties();
-fillBoard();
-
 /***** variables de la jugada actual *****/
-var activePlayer;
+
+
+/**** funcion auxiliar para obtener una propiedad por su id ****/
+/*
+function getPropertyById(propId){
+	
+	for (var i = 0; i < properties.length; i++){
+		
+		if(properties[i].id == propId){
+			
+			return properties[i];
+		}
+	}
+}*/
+/***** inicia juego ***/
+function startGame(){
+	var button = document.getElementById("startButton");
+	button.style.display = "none";
+	console.log("bebes jugadores " + activePlayers[0]);
+	currentPlayer = activePlayers[0];
+	console.log("currrrent" + currentPlayer.position);
+	alert("Comencemos a jugar. Empieza el turno de" + currentPlayer.name );
+	addingPlayers = false;
+
+}
+
 /**** funcion auxiliar para obtener una propiedad por su id ****/
 
 function getPropertyById(propId) {
@@ -649,64 +721,86 @@ function getPropertyById(propId) {
         }
     }
 }
-/***** inicia juego ***/
-function startGame() {
 
-    activePlayer = activePlayers[0];
-}
 /***** parte rodar dado ****/
 
 /**** Funcion para lanzar el dado ****/
-function rollDice() {
-    var randomNumber = Math.floor((Math.random() * 6) + 1);
-    console.log(randomNumber);
-    var diceFace = document.getElementById("diceFace");
-    diceFace.src = "img/d" + randomNumber + ".png";
-    var rollButton = document.getElementById("diceRollButton");
-    rollButton.style.display = "none";
-    movePlayer(activePlayer, randomNumber);
-    return randomNumber;
+
+function rollDice(){
+	var randomNumber = Math.floor((Math.random() * 6) + 1);
+	console.log(randomNumber);
+	var diceFace = document.getElementById("diceFace");
+	diceFace.src = "img/d"+randomNumber+".png";
+	var rollButton = document.getElementById("diceRollButton");
+	rollButton.style.display="none";
+	console.log("current" + currentPlayer);
+	movePlayer(randomNumber);
+	return randomNumber; 
+
 }
 
 
 /***** mover jugadores *****/
-function movePlayer(player, numberOfCells) {
-    var actualPosition = getPropertyById(player.position);
-    for (var i = 0; i < numberOfCells; i++) {
 
-        moveNext(player, actualPosition.nextDirection);
-        actualPosition = getPropertyById(actualPosition.nextDirection);
-    }
-
-
-
+function movePlayer(numberOfCells){
+	//console.log("jugador tosty" + player);
+	var playerPos = currentPlayer.position;
+	console.log(currentPlayer.position);
+	var actualPosition = properties[playerPos];
+	console.log(actualPosition);
+	for (var i = 0; i < numberOfCells; i++){
+		
+		moveNext(currentPlayer, actualPosition.nextDirection);
+		actualPosition = properties[actualPosition.nextPropId];
+	}
+	
+	
+	
 }
 
 /***** funcion que permite que el jugador (activo) se mueva una casilla y se mueve en la direccion indicada por la posicion en la que esta***/
-function moveNext(player, direction) {
-    switch (direction) {
-        case 'right':
-            player.left += enter.offsetWidth;
-            player.img.style.left = (player.left - 60) + "px";
-            player.img.style.transitionDuration = "1s";
-            break;
-        case 'left':
-            player.left -= enter.offsetWidth;
-            player.img.style.left = (player.left - 30) + "px";
-            player.img.style.transitionDuration = "1s";
-            break;
-        case 'up':
-            player.top -= enter.offsetHeight;
-            player.img.style.top = (player.top) + "px";
-            player.img.style.transitionDuration = "1s";
-            break;
-        case 'down':
-            player.top += enter.offsetHeight;
-            player.img.style.top = (player.top) + "px";
-            player.img.style.transitionDuration = "1s";
-            break;
-
-    }
-
-
+function moveNext(player, direction){
+	switch(direction){
+		case 'right': 
+			player.left += enter.offsetWidth;
+	        player.img.style.left = (player.left-60)+"px";
+	        player.img.style.transitionDuration = "1s";	
+        break;
+        case 'left': 
+        	player.left -=enter.offsetWidth;
+	        player.img.style.left = (player.left-30)+"px";
+	        player.img.style.transitionDuration = "1s";
+        break; 
+        case 'up': 
+        	player.top -= enter.offsetHeight;
+        	player.img.style.top = (player.top)+"px";
+        	player.img.style.transitionDuration = "1s";
+    	break; 
+    	case 'down':
+    		player.top += enter.offsetHeight;
+        	player.img.style.top = (player.top)+"px";
+        	player.img.style.transitionDuration = "1s";
+		break;
+	        
+	}
+	
+	
 }
+
+/** funcion enableStartButton, se llama cuando se han agregado 2 o mas jugadores y permite que el juego empiece **/
+function enableStartButton(){
+	
+	var startButton = document.createElement('button');
+	startButton.setAttribute("id","startButton" );
+	startButton.onclick = startGame;
+	startButton.value = "Iniciar juego";
+	var up = document.getElementById("upperSpace");
+	up.appendChild(startButton);
+	startButton.style.top = "50%";
+	startButton.style.left="50%";
+}
+
+
+
+fillProperties();
+fillBoard();
