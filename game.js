@@ -117,21 +117,6 @@ function getPlayer(playerNumber){
 }
 
 
-/**
-	Funcion para llenar el tablero
-*/
-function fillBoard(){
-	var property = document.getElementById('property1');
-	var dataProperty = properties.pop();
-	var header = property.getElementsByClassName('header');
-	var buttom = document.createElement('buttom');
-	var txt = document.createTextNode(dataProperty.propertyBuy);
-	buttom.appendChild(txt);
-	header[0].appendChild(buttom);
-	var body = property.getElementsByClassName('prop');
-	body[0].style.backgroundImage = 'url(img/av_central.jpg)';
-}
-
 
 /**
 		It shows on the board a random question.
@@ -342,28 +327,28 @@ function fillBoard(){
 	var index = 0;
 	var bodyDiv;
 	var element;
-	var buttom;
-	var txt, header, bodyDiv, bottomDiv;
+	var button;
+	var txt, header, bodyDiv, buttonDiv;
 
 	while(index < elements.length){
 		element = elements[index];
 		if(this.properties.hasOwnProperty(element.id) == true){
 
 			if(this.properties[element.id].type == 'property'){
-				buttom = document.createElement('buttom');
+				button = document.createElement('button');
 				txt = document.createTextNode(this.properties[element.id].propertyBuy);
-				buttom.className = 'propertyBuy';
-				buttom.disabled = true;
-				buttom.onClick = buyProperty;
-				buttom.appendChild(txt);
+				button.className = 'propertyBuy';
+				button.disabled = true;
+				button.onClick = buyProperty;
+				button.appendChild(txt);
 				header = element.getElementsByClassName('header');
-				header[0].appendChild(buttom);
-				buttom = document.createElement('buttom');
+				header[0].appendChild(button);
+				button = document.createElement('button');
 				txt = document.createTextNode(this.properties[element.id].propertySell);
-				buttom.className = 'propertySell';
-				buttom.disabled = true;
-				buttom.appendChild(txt);
-				header[0].appendChild(buttom);
+				button.className = 'propertySell';
+				button.disabled = true;
+				button.appendChild(txt);
+				header[0].appendChild(button);
 				var p = document.createElement('p');
 				txt = document.createTextNode('Peaje: '+this.properties[element.id].h0);
 				p.appendChild(txt);
@@ -381,7 +366,7 @@ function fillBoard(){
 		}
 		++index;
 	}
-
+	putStatusButton();
 }
 
 
@@ -390,9 +375,9 @@ function drawBottomTable(element){
 	var buttonDiv = element.getElementsByClassName('bottom');
 	var txt, button;
 	for(var c = 0; c < 6; ++c){
-		button = document.createElement('buttom');
+		button = document.createElement('button');
 		button.disabled = true;
-		button.className = 'buttomHouseU';
+		button.className = 'buttonHouseU';
 		txt = document.createTextNode(this.properties[element.id].houseBuy);
 		button.appendChild(txt);
 		buttonDiv[0].appendChild(button);
@@ -400,9 +385,9 @@ function drawBottomTable(element){
 	}
 	for(var i = 0; i < 6; ++i){
 		var string = 'h'+i;
-		button = document.createElement('buttom');
+		button = document.createElement('button');
 		button.disabled = true;
-		button.className = 'buttomHouse';
+		button.className = 'buttonHouse';
 		txt = document.createTextNode((this.properties[element.id])[string]);
 		button.appendChild(txt);
 		buttonDiv[0].appendChild(button);
@@ -476,6 +461,17 @@ function fallBox(){
 }
 
 
+//funcion para colocar boton terminar en tablero y hacerlo funcional
+function putStatusButton(){
+	var space = document.getElementById('lowerSpace');
+	var button = document.createElement('button');
+	var txt = document.createTextNode('Iniciar partida');
+	button.id = 'statusButton';
+	button.appendChild(txt);
+	space.appendChild(button);
+}
+
+
 
 // metodo para comprar una propiedad
 function buyProperty(){
@@ -490,6 +486,7 @@ function buyProperty(){
 			button.disabled = 'true';
 			representationProperty.style.backgroundColor = this.activePlayer.color;
 			this.properties[this.activePlayer.position].isSold = true;
+			this.properties[this.activePlayer.position].owner = this.activePlayer.name;
 			this.activePlayer.ownedProperties.push(this.activePlayer.position);
 			this.activePlayer.liquidCash -= property.propertyBuy;
 			this.activePlayer.richness += property.propertyBuy;
@@ -501,6 +498,18 @@ function buyProperty(){
 	}
 		
 	
+}
+
+
+
+function selectAction(){
+	
+	if(this.properties.hasOwnProperty(this.activePlayer.position) == true){
+		var property = this.properties[this.activePlayer.position];
+		if(property.owner != this.activePlayer.name){
+			
+		}
+	}
 }
 
 
@@ -531,7 +540,7 @@ function paintBox(){
 
 //pintar botones de la tabla que tiene cada propiedad
 function paintButton(representationProperty,dataProperty){
-	buttonBuy = representationProperty.getElementsByClassName('buttomHouseU');
+	buttonBuy = representationProperty.getElementsByClassName('buttonHouseU');
 	if(dataProperty.countHouses != 0){
 		buttonBuy[dataProperty.countHouses].style.opacity = '0.99';
 		buttonBuy[dataProperty.countHouses].disabled = false;
@@ -543,7 +552,7 @@ function paintButton(representationProperty,dataProperty){
 	if(dataProperty.countHouses == 4){
 		buttonBuy[dataProperty.countHouses+1].backgroundColor = 'red';
 	}
-	buttonH = representationProperty.getElementsByClassName('buttomHouse');
+	buttonH = representationProperty.getElementsByClassName('buttonHouse');
 	buttonH[dataProperty.countHouses].style.opacity = '0.99';
 }
 
