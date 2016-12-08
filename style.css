@@ -4,11 +4,11 @@
 
 }
 img{
-	
+
 }
 
 .playerToken {
-	
+
 	width: 25%;
 	height: 30%;
 	top: 10%;
@@ -49,9 +49,26 @@ background-color: rgba(255, 255, 255, 0.6);
 	margin-left: 4em;
 }
 
+.center{
+	text-align: center;
+
+}
+
 #btnSelect{
 margin-top: 1em;
 
+}
+#diceRoll {
+	width: 99%;
+	margin:0 auto;
+
+}
+
+
+#diceRollButton{
+
+	margin-top: 1em;
+	margin-bottom: : 1em;
 }
 #optionsPlace{
 	background-color: rgba(192,192,192,0.3);
@@ -59,6 +76,7 @@ margin-top: 1em;
 	width: 50%;
 	margin-right: 5em;
 	padding: 1em;
+	padding-bottom: 1.5em;
 	float: right;
 	max-height: 50%;
 	display: inline-block;
@@ -74,8 +92,12 @@ margin-top: 1em;
 
 }
 
+#lowerSpace #statusGame{
+	font-align: end;
+}
+
 .propertyBuy, .propertySell{
-	height:50%;
+	height:auto;
 }
 
 .propertyBuy{
@@ -86,6 +108,8 @@ margin-top: 1em;
 .propertySell{
 	border:none;
 	text-decoration: line-through;
+	background-color: #73c5ec;
+	opacity: 0.30;
 }
 
 .player1, .player2, .player3, .player4{
@@ -136,7 +160,7 @@ margin-top: 1em;
 	background-color:#3333ff;
 }
 .player3 span, .player4 span{
-	
+
 	position: absolute;
 	bottom: 0.3%;
 
@@ -148,7 +172,7 @@ margin-top: 1em;
 	position: absolute;
 	bottom: 1%;
 	left: 10%;
-	
+
 }
 
 p{
@@ -159,7 +183,7 @@ p{
 	position: absolute;
 	bottom: 1%;
 	left: 60%;
-	
+
 }
 
 
@@ -233,27 +257,28 @@ scan p{
 	background-color: white;
 }
 
-.buttomHouseU{
+.buttonHouseU{
 	background-color:#2EB420;
 }
 
-.buttomHouse{
+.buttonHouse{
 	background-color: #F2F928;
 }
 
-.buttomHouse, .buttomHouseU{
-	width: calc(100%/7);
+.buttonHouse, .buttonHouseU{
+	max-width: calc(100%/7);
+	width:auto;
 	margin-bottom: 0;
 	height:auto;
 	opacity: 0.30;
 }
 
-buttom{
+button{
 	border: 1px solid;
 	margin-left: 1px;
 	height:auto;
 	width:auto;
-
+	color: black;
 }
 
 #enter{
@@ -317,11 +342,11 @@ buttom{
 	width: 70%;
 	height: 70%;
 	left: 5%;
-	
-	
+
+
 }
 #diceRollButton{
 	height: 3%;
 	left: 15%;
-	
+
 }
