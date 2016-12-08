@@ -348,7 +348,6 @@ function fillProperties() {
     var property11 = new Property('property', 'property11', 'Casa de Gobierno', 'left', 'property10', 'url(img/costaRica11.jpg)', 190, 170, 200, 100, 23, 70, 205, 575, 1150, 1840);
     this.properties['property11'] = property11;
 
-																																																																200	180	200	100	25	75	225	625	1250	2000
     var property12 = new Property('property', 'property12', 'Cerro Chirripó', 'left', 'propery11', 'url(img/costaRica12.jpg)', 200, 180, 200, 100, 25, 75, 225, 625, 1250, 2000);
     this.properties['property12'] = property12;
 
