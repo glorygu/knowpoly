@@ -295,62 +295,61 @@ function Property(type, id, name, nextDirection, nextPropId, url, propertyBuy, p
 
 function fillProperties() {
     var enter = new Property('enter', 'enter', 'Costa Rica', 'right', 'property1', 'url(img/img_costa_rica.jpg)');
-    var property1 = new Property('property', 'property1', 'Avenida Central', 'right', 'property2', 'url(img/av_central2.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500);
+    var property1 = new Property('property', 'property1', 'Avenida Central', 'right', 'property2', 'url(img/av_central2.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 400);
     this.properties['enter'] = enter;
     this.properties['property1'] = property1;
 
-    var property2 = new Property('property', 'property2', 'Volcán Arenal', 'right', 'property3', 'url(img/costaRica2.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500);
+    var property2 = new Property('property', 'property2', 'Volcán Arenal', 'right', 'property3', 'url(img/costaRica2.jpg)', 60, 55, 50, 25, 6, 20, 55, 150, 300, 480);
     this.properties['property2'] = property2;
 
 
 
-    var property3 = new Property('property', 'property3', 'Teatro Nacional', 'right', 'property4', 'url(img/costaRica3.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500);
+    var property3 = new Property('property', 'property3', 'Teatro Nacional', 'right', 'property4', 'url(img/costaRica3.jpg)', 75, 70, 75, 40, 8, 25, 70, 200, 400, 640);
     this.properties['property3'] = property3;
 
 
 
-    var property4 = new Property('property', 'property4', 'Zarcero', 'right', 'hotChair1', 'url(img/costaRica4.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500);
+    var property4 = new Property('property', 'property4', 'Zarcero', 'right', 'hotChair1', 'url(img/costaRica4.jpg)', 85, 75, 75, 40, 9, 25, 80, 225, 450, 720);
     this.properties['property4'] = property4;
 
     var hotChair1 = new Property('hotChair', 'hotChair1', 'Silla Caliente', 'down', 'property6');
     this.properties['hotChair1'] = hotChair1;
-
-    var property5 = new Property('property', 'property5', 'Esferas de Costa Rica', 'up', 'enter', 'url(img/costaRica5.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500);
+    var property5 = new Property('property', 'property5', 'Esferas de Costa Rica', 'up', 'enter', 'url(img/costaRica5.jpg)', 105, 95, 100, 50, 11, 35, 100, 275, 550, 880);
     this.properties['property5'] = property5;
 
 
 
-    var property6 = new Property('property', 'property6', 'Museo de los niños', 'down', 'property8', 'url(img/costaRica6.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500);
+    var property6 = new Property('property', 'property6', 'Museo de los niños', 'down', 'property8', 'url(img/costaRica6.jpg)', 115, 105, 100, 50, 12, 35, 110, 300, 600, 960);
     this.properties['property6'] = property6;
 
 
 
-    var property7 = new Property('property', 'property7', 'Universidad de Costa Rica', 'up', 'property5', 'url(img/costaRica7.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500);
+    var property7 = new Property('property', 'property7', 'Universidad de Costa Rica', 'up', 'property5', 'url(img/costaRica7.jpg)', 135, 120, 150, 75, 15, 45, 135, 375, 750, 1200);
     this.properties['property7'] = property7;
 
 
 
-    var property8 = new Property('property', 'property8', 'Estadio Nacional', 'down', 'url(img/costaRica8.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500);
+    var property8 = new Property('property', 'property8', 'Estadio Nacional', 'down', 'url(img/costaRica8.jpg)', 145, 130, 150, 75, 16, 50, 145, 400, 800, 1280);
     this.properties['property8'] = property8;
 
     var cave = new Property('cave', 'cave', 'Cueva de la icnoransia', 'left', 'property12');
     this.properties['cave'] = cave;
 
-    var property9 = new Property('property', 'property9', 'Fortín de Heredia', 'left', 'hotChair2', 'url(img/costaRica9.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500);
+    var property9 = new Property('property', 'property9', 'Fortín de Heredia', 'left', 'hotChair2', 'url(img/costaRica9.jpg)', 160, 145, 175, 90, 18, 55, 160, 450, 900, 1440);
     this.properties['property9'] = property9;
 
     var hotChair2 = new Property('hotChair', 'hotChair2', 'Silla Caliente', 'up', 'property7');
     this.properties['hotChair2'] = hotChair2;
 
-    var property10 = new Property('property', 'property10', 'Monumento Nacional', 'left', 'property9', 'url(img/costaRica10.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500);
+    var property10 = new Property('property', 'property10', 'Monumento Nacional', 'left', 'property9', 'url(img/costaRica10.jpg)', 170, 155, 175, 90, 20, 60, 180, 500, 1000, 1600);
     this.properties['property10'] = property10;
 
 
-    var property11 = new Property('property', 'property11', 'Casa de Gobierno', 'left', 'property10', 'url(img/costaRica11.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500);
+    var property11 = new Property('property', 'property11', 'Casa de Gobierno', 'left', 'property10', 'url(img/costaRica11.jpg)', 190, 170, 200, 100, 23, 70, 205, 575, 1150, 1840);
     this.properties['property11'] = property11;
 
-
-    var property12 = new Property('property', 'property12', 'Cerro Chirripó', 'left', 'propery11', 'url(img/costaRica12.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 500);
+																																																																200	180	200	100	25	75	225	625	1250	2000
+    var property12 = new Property('property', 'property12', 'Cerro Chirripó', 'left', 'propery11', 'url(img/costaRica12.jpg)', 200, 180, 200, 100, 25, 75, 225, 625, 1250, 2000);
     this.properties['property12'] = property12;
 
 
