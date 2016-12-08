@@ -10,7 +10,7 @@ var imgHeight = 80;
 var activePlayers = [];
 var cells = [];
 var colors = ["red","green","blue","yellow"];
-var addingPlayers = 'true';
+var addingPlayers = true;
 var upperSpace  = document.getElementById("upperSpace");
 var enter =  document.getElementById("enter");
 var questionsPool = []; 
@@ -21,6 +21,7 @@ var arrayIndexesPlayer1 = new Array(); //para manejar el el id de la propiedad q
 var arrayIndexesPlayer2 = new Array();
 var arrayIndexesPlayer3 = new Array();
 var arrayIndexesPlayer4 = new Array();
+var currentPlayer = {};
 /**
 **/
 
@@ -86,9 +87,9 @@ function placePlayer(player){
 	img.src = ('img/'+player.color+'.png');
 	img.setAttribute("class", "playerToken");
 	img.id=player.color;
-	imgHeight = img.offsetHeight; 
-	imgWidth = img.offsetWidth;
-	console.log("eh" + imgWidth +"enter top " + enter.offsetParent.offsetTop + "this top" +(enter.offsetParent.offsetTop+(imgHeight*(activePlayers.length))));
+	//imgHeight = img.offsetHeight; 
+	//imgWidth = img.offsetWidth;
+	//console.log("eh" + imgWidth +"enter top " + enter.offsetParent.offsetTop + "this top" +(enter.offsetParent.offsetTop+(imgHeight*(this.activePlayers.length))));
 	//img.style.top = (enter.offsetParent.offsetTop+(imgHeight*(activePlayers.length))) ;//+ 'px';
     //img.style.left = (enter.offsetParent.offsetLeft+imgWidth) + 'px';
 	player.img = img;
@@ -96,12 +97,12 @@ function placePlayer(player){
 	
 }
 /**
-funcion playerExists verifica si un jugador ya existe en el vector de activePlayers
+funcion playerExists verifica si un jugador ya existe en el vector dethis.activePlayers
 **/
 function playerExists(playerNumber){
 	
-	for (var i=0; i < activePlayers.length; i++ ){
-		if(activePlayers[i].number == playerNumber){
+	for (var i=0; i <this.activePlayers.length; i++ ){
+		if(this.activePlayers[i].number == playerNumber){
 			console.log('jale buchon');
 			return true;
 		}
@@ -114,9 +115,9 @@ funcion getPlayer que retorna el objeto de player despues de haberlo buscado por
 **/
 function getPlayer(playerNumber){
 	
-	for (var i = 0; i < activePlayers.length; i++){
-		if (activePlayers[i].number == playerNumber){
-			return activePlayers[i];
+	for (var i = 0; i <this.activePlayers.length; i++){
+		if (this.activePlayers[i].number == playerNumber){
+			return this.activePlayers[i];
 		}
 	}
 }
@@ -150,9 +151,15 @@ function fillBoard(){
 
 //Get a random number that will represent the question displayed. There are 63 questions.
 var questionNumber =  Math.floor(Math.random() * 64);
-showQuestion(questionNumber);
-showOptions(questionNumber);
-showGamePrice(questionNumber);
+// referencia funcion parametros
+window.addEventListener("load",function (){loadQuestions(3);},false);
+//div1.onclick = function
+function loadQuestions(){
+	showQuestion(questionNumber);
+	showOptions(questionNumber);
+	showGamePrice(questionNumber);
+}
+
 function showQuestion(questionNumber){
 
 	//Get the question statement according to the number just generated.
@@ -418,7 +425,7 @@ function fillBoard(){
 Agregar jugadores
 **/
 /**
-Funcion que se llama cuando se le da click a algun div de colores. Se crea el objeto del jugador y se mete en el array de activePlayers
+Funcion que se llama cuando se le da click a algun div de colores. Se crea el objeto del jugador y se mete en el array dethis.activePlayers
 **/
 function addPlayer(playerNumber){
 	var alreadyExists = playerExists(playerNumber);
@@ -426,24 +433,31 @@ function addPlayer(playerNumber){
 	if(!alreadyExists){
 		if (addingPlayers){
 			if(activePlayers.length < 4){
-				var player = {};
-				player.name = prompt("Por favor ingrese el nombre para el jugador "+playerNumber);
-				player.number = playerNumber;
-				player.liquidCash = 650;
-				player.richness = 650;
-				document.getElementById("name"+playerNumber).innerHTML = player.name + "<p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p>/" +  "<p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
- 				player.position = "enter";
- 				var imgHeight =  Math.floor(enter.offsetHeight/5);
-     			var imgWidth = Math.floor(enter.offsetWidth/3);
-     			player.top = (enter.offsetParent.offsetTop+(imgHeight*activePlayers.length));
-     			player.left = (enter.offsetParent.offsetLeft); 
- 				activePlayers.push(player);
- 				player.color=colors[playerNumber-1];
- 				player.ownedProperties = new Array();
- 				placePlayer(player);
- 				//loadColorSelector(player.name);
- 				
- 				
+				var name = prompt("Por favor ingrese el nombre para el jugador "+playerNumber);
+				if (name != null){
+					console.log("entre papillos");
+					var player = {};
+					player.name = name;
+					player.number = playerNumber;
+					player.liquidCash = 650;
+					player.richness = 650;
+					document.getElementById("name"+playerNumber).innerHTML = player.name + "<p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p>/" +  "<p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
+	 				player.position = "enter";
+	 				var imgHeight =  Math.floor(enter.offsetHeight/5);
+	     			var imgWidth = Math.floor(enter.offsetWidth/3);
+	     			player.top = (enter.offsetParent.offsetTop+(imgHeight*this.activePlayers.length));
+	     			player.left = (enter.offsetParent.offsetLeft); 
+	 				player.color=colors[playerNumber-1];
+	 				player.ownedProperties = new Array();
+	 				this.activePlayers.push(player);
+	 				console.log(this.activePlayers + "come on lil marco");
+	 				placePlayer(player);
+	 				//loadColorSelector(player.name);
+	 				if(this.activePlayers.length==2)
+	 				{//si hay mas de dos jugadores 
+						enableStartButton();
+	 				}
+				}
  			}
  		}
  	}
@@ -455,7 +469,7 @@ function none(){
 }
 //metodo para habilitar y desahibilitar botones de compra y venta, tanto para propiedades como casas
 function fallBox(){
-	this.currentPlayer = activePlayers[0];
+	this.currentPlayer =this.activePlayers[0];
 	var representationProperty = document.getElementById(this.currentProperty);
 	var dataProperty = this.properties[this.currentProperty];
 	var buttom;
@@ -506,7 +520,7 @@ function buyProperty(){
 			}
 			this.currentPlayer.liquidCash -= property.propertyBuy;
 			this.currentPlayer.richness += property.propertyBuy;
-			paintBox
+			//paintBox
 			var paragraph = document.getElementById("player"+this.currentPlayer.number).nextSibling;
 			var txt = document.createTextNode(this.currentPlayer.liquidCash + '/' + this.currentPlayer.richness);
 			paragraph.appendChild(txt);
@@ -589,13 +603,10 @@ function paintBox(){
 
 }
 
-fillProperties();
-fillBoard();
-
 /***** variables de la jugada actual *****/
-var activePlayer; 
-/**** funcion auxiliar para obtener una propiedad por su id ****/
 
+/**** funcion auxiliar para obtener una propiedad por su id ****/
+/*
 function getPropertyById(propId){
 	
 	for (var i = 0; i < properties.length; i++){
@@ -605,34 +616,43 @@ function getPropertyById(propId){
 			return properties[i];
 		}
 	}
-}
+}*/
 /***** inicia juego ***/
 function startGame(){
-	
-	activePlayer = activePlayers[0];
+	var button = document.getElementById("startButton");
+	button.style.display = "none";
+	console.log("bebes jugadores " + activePlayers);
+	this.currentPlayer = activePlayers[0];
+	alert("Comencemos a jugar. Empieza el turno de" + this.currentPlayer.name );
+	addingPlayers = false;
+
 }
 /***** parte rodar dado ****/
 
 /**** Funcion para lanzar el dado ****/
 function rollDice(){
-			var randomNumber = Math.floor((Math.random() * 6) + 1);
-			console.log(randomNumber);
-			var diceFace = document.getElementById("diceFace");
-			diceFace.src = "img/d"+randomNumber+".png";
-			var rollButton = document.getElementById("diceRollButton");
-			rollButton.style.display="none";
-			movePlayer(activePlayer, randomNumber);
-			return randomNumber; 
-		}
+	var randomNumber = Math.floor((Math.random() * 6) + 1);
+	console.log(randomNumber);
+	var diceFace = document.getElementById("diceFace");
+	diceFace.src = "img/d"+randomNumber+".png";
+	var rollButton = document.getElementById("diceRollButton");
+	rollButton.style.display="none";
+	movePlayer(this.currentPlayer, randomNumber);
+	return randomNumber; 
+}
 
 
 /***** mover jugadores *****/
 function movePlayer(player, numberOfCells){
-	var actualPosition = getPropertyById(player.position);
+	console.log("jugador tosty" + player);
+	var playerPos = player.position;
+	console.log(playerPos);
+	var actualPosition = properties[playerPos];
+	console.log(actualPosition);
 	for (var i = 0; i < numberOfCells; i++){
 		
 		moveNext(player, actualPosition.nextDirection);
-		actualPosition = getPropertyById(actualPosition.nextDirection);
+		actualPosition = properties[actualPosition.nextPropId];
 	}
 	
 	
@@ -667,3 +687,21 @@ function moveNext(player, direction){
 	
 	
 }
+
+/** funcion enableStartButton, se llama cuando se han agregado 2 o mas jugadores y permite que el juego empiece **/
+function enableStartButton(){
+	
+	var startButton = document.createElement('button');
+	startButton.setAttribute("id","startButton" );
+	startButton.onclick = startGame;
+	startButton.value = "Iniciar juego";
+	var up = document.getElementById("upperSpace");
+	up.appendChild(startButton);
+	startButton.style.top = "50%";
+	startButton.style.left="50%";
+}
+
+
+
+fillProperties();
+fillBoard();
