@@ -486,7 +486,7 @@ function buyProperty(){
 			button.disabled = 'true';
 			representationProperty.style.backgroundColor = this.activePlayer.color;
 			this.properties[this.activePlayer.position].isSold = true;
-			this.properties[this.activePlayer.position].owner = this.activePlayer.name;
+			this.properties[this.activePlayer.position].owner = this.activePlayer.number;
 			this.activePlayer.ownedProperties.push(this.activePlayer.position);
 			this.activePlayer.liquidCash -= property.propertyBuy;
 			this.activePlayer.richness += property.propertyBuy;
@@ -501,14 +501,47 @@ function buyProperty(){
 }
 
 
-
+//ver si debe pagar hospedaje o no
 function selectAction(){
 	
 	if(this.properties.hasOwnProperty(this.activePlayer.position) == true){
 		var property = this.properties[this.activePlayer.position];
-		if(property.owner != this.activePlayer.name){
+		if(property.owner != this.activePlayer.number){
 			
 		}
+	}
+	
+	paintBox();
+}
+
+
+//pagar hospedaje
+function payLodgement(){
+	if(this.activePlayer.liquidCash < this.properties[this.activePlayer.position]){
+		//colocar mensaje que debe vender
+		var button = document.getElementById('statusGame');
+		button.innerText = 'Terminar partida';
+		button.style.opacity = '0.30';
+		button.disabled = true;
+	}else{
+		var property = this.properties[this.activePlayer.position];
+		var lodgement = 'h' + property.countHouses;
+		this.activePlayer.liquidCash -= property[lodgement];
+		var againstPlayer = property.owner;
+		var indicator = false;
+		var index = 0;
+		var idPlayer = "";
+		var cash = 0;
+		
+		while(index < this.activePlayers.length && indicator == false){
+			if(this.activePlayers[index].number == property.num){
+				cash = property[lodgement] + this.activePlayers[index].liquidCash;
+				indicator = true;
+				updateLiquidCash(cash,  this.activePlayers[index]);
+			}
+			++index;
+		}
+		updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer);
 	}
 }
 
