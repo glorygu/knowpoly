@@ -379,7 +379,7 @@ function fillBoard() {
                 txt = document.createTextNode(this.properties[element.id].propertyBuy);
                 button.className = 'propertyBuy';
                 button.disabled = true;
-                button.onClick = buyProperty;
+                button.addEventListener('onclick',buyProperty,false);
                 button.appendChild(txt);
                 header = element.getElementsByClassName('header');
                 header[0].appendChild(button);
@@ -476,8 +476,8 @@ function addPlayer(playerNumber) {
             }
         }
     }
-    startGame();
-    fallBox();
+	startGame();
+	fallBox();
 }
 
 function none() {
@@ -499,11 +499,7 @@ function fallBox() {
             button[0].disabled = false;
         }
     } else {
-
-        this.activePlayer.ownedProperties.push('property1');
-        paintBox();
-
-
+        selectAction();
     }
 }
 
@@ -512,12 +508,12 @@ function fallBox() {
 function putStatusButton() {
     var space = document.getElementById('lowerSpace');
     var button = document.createElement('button');
-		var divButton = document.createElement('div');
-		divButton.setAttribute("class","center");
+	var divButton = document.createElement('div');
+	divButton.setAttribute("class","center");
     var txt = document.createTextNode('Iniciar partida');
     button.id = 'statusButton';
     button.appendChild(txt);
-		divButton.appendChild(button);
+	divButton.appendChild(button);
 
     space.appendChild(divButton);
 }
@@ -556,10 +552,9 @@ function selectAction(){
 	if(this.properties.hasOwnProperty(this.activePlayer.position) == true){
 		var property = this.properties[this.activePlayer.position];
 		if(property.owner != this.activePlayer.number){
-			
+			payLodgement();
 		}
 	}
-	
 	paintBox();
 }
 
