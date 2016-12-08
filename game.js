@@ -118,7 +118,7 @@ function getPlayer(playerNumber) {
 **/
 
 //Get a random number that will represent the question displayed. There are 63 questions.
-this.currentPlayer = 1; // for  test purposes
+this.currentPlayer = this.activePlayers[]; // for  test purposes
 var questionNumber = Math.floor(Math.random() * 64);
 showQuestion(questionNumber);
 showOptions(questionNumber);
@@ -209,7 +209,7 @@ function verifyAnswer(questionNumber) {
 		var updatedRichness = null;
 
     for (var p in this.activePlayers) { // Iterate through palyers array
-        if (this.activePlayers[p].number == this.currentPlayer) { //When we find our player
+        if (this.activePlayers[p].number == this.currentPlayer["number"]) { //When we find our player
 					var playerLiquidCash = this.activePlayers[p].liquidCash; //Get his/her liquid cash
 					var playerRichness = this.activePlayers[p].richness; //Get his/her liquid cash
 
@@ -230,8 +230,8 @@ function verifyAnswer(questionNumber) {
             }
 						this.activePlayers[p].liquidCash = updatedCash;
 						this.activePlayers[p].richness = updatedRichness; // Substract due amount.
-						updateLiquidCash(updatedCash, this.currentPlayer);
-						updateRichness(updatedRichness, this.currentPlayer);
+						updateLiquidCash(updatedCash, this.currentPlayer["number"]);
+						updateRichness(updatedRichness, this.currentPlayer["number"]);
         }
     }
 }
