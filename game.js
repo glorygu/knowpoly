@@ -396,6 +396,7 @@ function fillBoard() {
                 button.className = 'propertyBuy';
                 button.disabled = true;
                 button.addEventListener('onclick',buyProperty,false);
+				button.setAttribute("onClick", "buyProperty()");
                 button.appendChild(txt);
                 header = element.getElementsByClassName('header');
                 header[0].appendChild(button);
@@ -471,8 +472,8 @@ function addPlayer(playerNumber){
 					var player = {};
 					player.name = name;
 					player.number = playerNumber;
-					player.liquidCash = 650;
-					player.richness = 650;
+					player.liquidCash = 800;
+					player.richness = 800;
 					document.getElementById("name"+playerNumber).innerHTML = player.name + "<p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p>/" +  "<p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
 	 				player.position = "enter";
 	 				var imgHeight =  Math.floor(enter.offsetHeight/5);
@@ -509,8 +510,8 @@ function addPlayer(playerNumber) {
                 var player = {};
                 player.name = prompt("Por favor ingrese el nombre para el jugador " + playerNumber);
                 player.number = playerNumber;
-                player.liquidCash = 650;
-                player.richness = 650;
+                player.liquidCash = 800;
+                player.richness = 800;
                 document.getElementById("name" + playerNumber).innerHTML = player.name + "<p id=\"player" + playerNumber + "Cash\">" + player.liquidCash + "</p>/" + "<p id=\"player" + playerNumber + "Richness\">" + player.richness + "</p>";
                 player.position = "enter";
                 var imgHeight = Math.floor(enter.offsetHeight / 5);
@@ -533,7 +534,9 @@ function addPlayer(playerNumber) {
 
 function none() {
     //cambiar
-}//metodo para habilitar y desahibilitar botones de compra y venta, tanto para propiedades como casas
+}
+
+//metodo para habilitar y desahibilitar botones de compra y venta, tanto para propiedades como casas
 function fallBox() {
 
 
@@ -579,8 +582,8 @@ function buyProperty(){
 		if(this.activePlayer.liquidCash > property.propertyBuy){
 			var representationProperty = document.getElementById(this.activePlayer.position);
 			var button = representationProperty.getElementsByClassName('propertyBuy');
-			button.style.opacity = '0.30';
-			button.disabled = 'true';
+			button[0].style.opacity = '0.30';
+			button[0].disabled = 'true';
 			representationProperty.style.backgroundColor = this.activePlayer.color;
 			this.properties[this.activePlayer.position].isSold = true;
 			this.properties[this.activePlayer.position].owner = this.activePlayer.number;
@@ -588,8 +591,8 @@ function buyProperty(){
 			this.activePlayer.liquidCash -= property.propertyBuy;
 			this.activePlayer.richness += property.propertyBuy;
 			paintBox();
-			var paragraphOne = representationProperty.getElementById("player"+this.activePlayer.number + 'Cash').innerText = this.activePlayer.liquidCash;
-			var paragraphOne = representationProperty.getElementById("player"+this.activePlayer.number + 'Richness').innerText = this.activePlayer.richness;
+			updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer);
+			updateRichness(this.activePlayer.richness, this.activePlayer);
 		}
 
 	}
@@ -700,9 +703,9 @@ function getPropertyById(propId){
 /***** inicia juego ***/
 function startGame(){
 	var button = document.getElementById("startButton");
-	button.style.display = "none";
+	//button.style.display = "none";
 	console.log("bebes jugadores " + activePlayers[0]);
-	currentPlayer = activePlayers[0];
+	this.activePlayer = activePlayers[0];
 	console.log("currrrent" + currentPlayer.position);
 	alert("Comencemos a jugar. Empieza el turno de" + currentPlayer.name );
 	addingPlayers = false;
@@ -798,6 +801,7 @@ function enableStartButton(){
 	up.appendChild(startButton);
 	startButton.style.top = "50%";
 	startButton.style.left="50%";
+	
 }
 
 
