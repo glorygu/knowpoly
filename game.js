@@ -309,21 +309,21 @@ function Property(type, id, name, nextDirection, nextPropId, url, propertyBuy, p
 
 function fillProperties() {
     var enter = new Property('enter', 'enter', 'Costa Rica', 'right', 'property1', 'url(img/img_costa_rica.jpg)');
-    var property1 = new Property('property', 'property1', 'Avenida Central', 'right', 'property2', 'url(img/av_central2.jpg)', 50, 45, 50, 25, 5, 15, 45, 125, 250, 400);
+    var property1 = new Property('property', 'property1', 'Avenida Central', 'right', 'property2', 'url(img/av_central2.jpg)', 50, 45, 50, 25, 05, 15, 45, 125, 250, 400);
     this.properties['enter'] = enter;
     this.properties['property1'] = property1;
 
-    var property2 = new Property('property', 'property2', 'Volcán Arenal', 'right', 'property3', 'url(img/costaRica2.jpg)', 60, 55, 50, 25, 6, 20, 55, 150, 300, 480);
+    var property2 = new Property('property', 'property2', 'Volcán Arenal', 'right', 'property3', 'url(img/costaRica2.jpg)', 60, 55, 50, 25, 06, 20, 55, 150, 300, 480);
     this.properties['property2'] = property2;
 
 
 
-    var property3 = new Property('property', 'property3', 'Teatro Nacional', 'right', 'property4', 'url(img/costaRica3.jpg)', 75, 70, 75, 40, 8, 25, 70, 200, 400, 640);
+    var property3 = new Property('property', 'property3', 'Teatro Nacional', 'right', 'property4', 'url(img/costaRica3.jpg)', 75, 70, 75, 40, 08, 25, 70, 200, 400, 640);
     this.properties['property3'] = property3;
 
 
 
-    var property4 = new Property('property', 'property4', 'Zarcero', 'right', 'hotChair1', 'url(img/costaRica4.jpg)', 85, 75, 75, 40, 9, 25, 80, 225, 450, 720);
+    var property4 = new Property('property', 'property4', 'Zarcero', 'right', 'hotChair1', 'url(img/costaRica4.jpg)', 85, 75, 75, 40, 09, 25, 80, 225, 450, 720);
     this.properties['property4'] = property4;
 
     var hotChair1 = new Property('hotChair', 'hotChair1', 'Silla Caliente', 'down', 'property6');
@@ -584,7 +584,10 @@ function buyProperty(){
 			var button = representationProperty.getElementsByClassName('propertyBuy');
 			button[0].style.opacity = '0.30';
 			button[0].disabled = 'true';
-			representationProperty.style.backgroundColor = this.activePlayer.color;
+			var div = representationProperty.getElementsByTagName('div');
+			for(var c = 0; c < div.length; ++c){
+				div[c].style.backgroundColor = this.activePlayer.color;
+			}
 			this.properties[this.activePlayer.position].isSold = true;
 			this.properties[this.activePlayer.position].owner = this.activePlayer.number;
 			this.activePlayer.ownedProperties.push(this.activePlayer.position);

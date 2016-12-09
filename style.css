@@ -267,7 +267,7 @@ scan p{
 
 .buttonHouse, .buttonHouseU{
 	max-width: calc(100%/7);
-	width:auto;
+	width:calc(100%/7);
 	margin-bottom: 0;
 	height:auto;
 	opacity: 0.30;
