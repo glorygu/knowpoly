@@ -9,7 +9,7 @@ var colors = ["red","green","blue","yellow"];
 var addingPlayers = true;
 var upperSpace  = document.getElementById("upperSpace");
 var enter =  document.getElementById("enter");
-var questionsPool = []; 
+var questionsPool = [];
 var board = document.getElementById("board");
 var properties = {};
 var currentPlayer = {};
@@ -79,7 +79,7 @@ function placePlayer(player){
 	img.src = ('img/'+player.color+'.png');
 	img.setAttribute("class", "playerToken");
 	img.id=player.color;
-	//imgHeight = img.offsetHeight; 
+	//imgHeight = img.offsetHeight;
 	//imgWidth = img.offsetWidth;
 	//console.log("eh" + imgWidth +"enter top " + enter.offsetParent.offsetTop + "this top" +(enter.offsetParent.offsetTop+(imgHeight*(this.activePlayers.length))));
 	//img.style.top = (enter.offsetParent.offsetTop+(imgHeight*(activePlayers.length))) ;//+ 'px';
@@ -480,7 +480,7 @@ function addPlayer(playerNumber){
 	 				var imgHeight =  Math.floor(enter.offsetHeight/5);
 	     			var imgWidth = Math.floor(enter.offsetWidth/3);
 	     			player.top = (enter.offsetParent.offsetTop+(imgHeight*this.activePlayers.length));
-	     			player.left = (enter.offsetParent.offsetLeft); 
+	     			player.left = (enter.offsetParent.offsetLeft);
 	 				player.color=colors[playerNumber-1];
 	 				player.ownedProperties = new Array();
 	 				this.activePlayers.push(player);
@@ -488,7 +488,7 @@ function addPlayer(playerNumber){
 	 				placePlayer(player);
 	 				//loadColorSelector(player.name);
 	 				if(this.activePlayers.length==2)
-	 				{//si hay mas de dos jugadores 
+	 				{//si hay mas de dos jugadores
 						enableStartButton();
 	 				}
 				}
@@ -574,6 +574,47 @@ function putStatusButton() {
 }
 
 
+/*If it's my turn, I can sell any property I have. Doesn't matter if the
+property I intent to sell is not the same as the one Im positioned*/
+function sellProperty(){
+    // Prompt a message of confirmation
+    var cfm = confirm("¿Desea vender esta propiedad?");
+    if(cfm){
+        var propertyId = this.parentNode.parentNode.id;
+        var saleAmount = window.properties[propertyId].propertySell;//Cost of selling property
+        //Update  active Player-s money
+        for(var p in this.activePlayers){
+            if(this.activePlayers[p].number == this.activePlayer.number ){ //Finde the activePlayer in my activePLayers Array
+              this.activePlayers[p].liquidCash += saleAmount;
+              this.activePlayers[p].richness +=saleAmount;
+            }
+        }
+
+        //Update window
+        
+
+
+
+        var headerDiv = this.parentNode;
+        var houses = dataProperty.countHouses+1;
+        var topButtons, downButtons;
+        topButtons = container.getElementsByClassName('buttonHouseU');
+        downButtons = container.getElementsByClassName('buttonHouse');
+        if(dataProperty.countHouses < 5 && window.activePlayer.liquidCash > dataProperty.houseBuy){
+          window.activePlayer.liquidCash -= dataProperty.houseBuy;
+          window.activePlayer.richness += dataProperty.houseBuy;
+          topButtons[dataProperty.countHouses].style.opacity = '0.30';
+          topButtons[dataProperty.countHouses].disabled = true;
+          downButtons[dataProperty.countHouses].style.opacity = '0.30';
+          downButtons[dataProperty.countHouses].disabled = true;
+          ++window.properties[this.parentNode.parentNode.id].countHouses;
+          paintButton(this.parentNode.parentNode, dataProperty);
+          updateLiquidCash(window.activePlayer.liquidCash, window.activePlayer.number);
+          updateRichness(window.activePlayer.richness, window.activePlayer.number);
+
+    }
+
+}
 
 function buyProperty(){
 
@@ -695,11 +736,11 @@ function paintButton(representationProperty, dataProperty) {
 /**** funcion auxiliar para obtener una propiedad por su id ****/
 /*
 function getPropertyById(propId){
-	
+
 	for (var i = 0; i < properties.length; i++){
-		
+
 		if(properties[i].id == propId){
-			
+
 			return properties[i];
 		}
 	}
@@ -742,7 +783,7 @@ function rollDice(){
 	rollButton.style.display="none";
 	console.log("current" + currentPlayer);
 	movePlayer(randomNumber);
-	return randomNumber; 
+	return randomNumber;
 
 }
 
@@ -756,42 +797,42 @@ function movePlayer(numberOfCells){
 	var actualPosition = properties[playerPos];
 	console.log(actualPosition);
 	for (var i = 0; i < numberOfCells; i++){
-		
+
 		moveNext(currentPlayer, actualPosition.nextDirection);
 		actualPosition = properties[actualPosition.nextPropId];
 	}
-	
-	
-	
+
+
+
 }
 
 /***** funcion que permite que el jugador (activo) se mueva una casilla y se mueve en la direccion indicada por la posicion en la que esta***/
 function moveNext(player, direction){
 	switch(direction){
-		case 'right': 
+		case 'right':
 			player.left += enter.offsetWidth;
 	        player.img.style.left = (player.left-60)+"px";
-	        player.img.style.transitionDuration = "1s";	
+	        player.img.style.transitionDuration = "1s";
         break;
-        case 'left': 
+        case 'left':
         	player.left -=enter.offsetWidth;
 	        player.img.style.left = (player.left-30)+"px";
 	        player.img.style.transitionDuration = "1s";
-        break; 
-        case 'up': 
+        break;
+        case 'up':
         	player.top -= enter.offsetHeight;
         	player.img.style.top = (player.top)+"px";
         	player.img.style.transitionDuration = "1s";
-    	break; 
+    	break;
     	case 'down':
     		player.top += enter.offsetHeight;
         	player.img.style.top = (player.top)+"px";
         	player.img.style.transitionDuration = "1s";
 		break;
-	        
+
 	}
-	
-	
+
+
 }
 
 
@@ -816,12 +857,12 @@ function createBuilding(){
 		updateLiquidCash(window.activePlayer.liquidCash, window.activePlayer.number);
 		updateRichness(window.activePlayer.richness, window.activePlayer.number);
 	}
-	
+
 }
 
 /** funcion enableStartButton, se llama cuando se han agregado 2 o mas jugadores y permite que el juego empiece **/
 function enableStartButton(){
-	
+
 	var startButton = document.createElement('button');
 	startButton.setAttribute("id","startButton" );
 	startButton.onclick = startGame;
@@ -830,7 +871,7 @@ function enableStartButton(){
 	up.appendChild(startButton);
 	startButton.style.top = "50%";
 	startButton.style.left="50%";
-	
+
 }
 
 
