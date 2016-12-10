@@ -11,7 +11,7 @@ var upperSpace  = document.getElementById("upperSpace");
 var enter =  document.getElementById("enter");
 var questionsPool = [];
 var board = document.getElementById("board");
-var properties = {};
+var properties = {}; //almacena todas las propiedades, es decir, los datos que conforman cada propiedad.
 var currentPlayer = {};
 /**
 **/
@@ -307,6 +307,8 @@ function Property(type, id, name, nextDirection, nextPropId, url, propertyBuy, p
     this.nextPropId = nextPropId;
 }
 
+
+//metodo para llenar los datos de cada propiedad
 function fillProperties() {
     var enter = new Property('enter', 'enter', 'Costa Rica', 'right', 'property1', 'url(img/img_costa_rica.jpg)');
     var property1 = new Property('property', 'property1', 'Avenida Central', 'right', 'property2', 'url(img/av_central2.jpg)', 50, 45, 50, 25, 05, 15, 45, 125, 250, 400);
@@ -374,29 +376,26 @@ function fillProperties() {
 
 
 /**
-	Funcion para llenar el tablero
+	Funcion para llenar el tablero, se va colocando los datos, botones, imagenes de cada propiedad en el documento HTML
 */
 function fillBoard() {
-    //metodo para llenar tablero
-    var mainDiv = document.getElementsByClassName('prueba');
-    var elements = mainDiv[0].childNodes;
+    var mainDiv = document.getElementById('board');
+    var elements = mainDiv.childNodes;
     var index = 0;
     var bodyDiv;
     var element;
     var button;
     var txt, header, bodyDiv, buttonDiv;
-
     while (index < elements.length) {
         element = elements[index];
         if (this.properties.hasOwnProperty(element.id) == true) {
-
+			//preguntar si es una propiedad para colocar los elementos caracteristicos de una propiedad
             if (this.properties[element.id].type == 'property') {
                 button = document.createElement('button');
                 txt = document.createTextNode(this.properties[element.id].propertyBuy);
                 button.className = 'propertyBuy';
                 button.disabled = true;
-                button.addEventListener('onclick',buyProperty,false);
-				button.setAttribute("onClick", "buyProperty()");
+				button.setAttribute("onClick", "buyProperty()"); //se coloca el metodo de compra de propiedad.
                 button.appendChild(txt);
                 header = element.getElementsByClassName('header');
                 header[0].appendChild(button);
@@ -434,8 +433,8 @@ function drawBottomTable(element) {
     for (var c = 0; c < 6; ++c) {
         button = document.createElement('button');
         button.disabled = true;
-        button.className = 'buttonHouseU';
-		button.onclick = createBuilding;
+        button.className = 'btnActionHouse';
+		button.onclick = createBuilding; //metodo para construir casas en las propiedades
         txt = document.createTextNode(this.properties[element.id].houseBuy);
         button.appendChild(txt);
         buttonDiv[0].appendChild(button);
@@ -445,7 +444,7 @@ function drawBottomTable(element) {
         var string = 'h' + i;
         button = document.createElement('button');
         button.disabled = true;
-        button.className = 'buttonHouse';
+        button.className = 'btnLodgement';
         txt = document.createTextNode((this.properties[element.id])[string]);
         button.appendChild(txt);
         buttonDiv[0].appendChild(button);
@@ -537,7 +536,8 @@ function none() {
     //cambiar
 }
 
-//metodo para habilitar y desahibilitar botones de compra y venta, tanto para propiedades como casas
+
+//metodo para decidir que hacer al caer en una propiedad
 function fallBox() {
 
 
@@ -546,8 +546,10 @@ function fallBox() {
     var dataProperty = this.properties[this.activePlayer.position];
     var button;
 
+	//preguntar si la propiedad fue vendida
     if (dataProperty.isSold == false) {
-
+		
+		//habilitar el botón de compra en caso que el jugador pueda realizar dicha acción
         if (this.activePlayer.liquidCash > dataProperty.propertyBuy) {
             button = representationProperty.getElementsByClassName('propertyBuy');
             button[0].style.opacity = '0.99';
@@ -635,7 +637,7 @@ function buyProperty(){
 			this.activePlayer.ownedProperties.push(this.activePlayer.position);
 			this.activePlayer.liquidCash -= property.propertyBuy;
 			this.activePlayer.richness += property.propertyBuy;
-			paintBox();
+			paintProperties();
 			updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer.number);
 			updateRichness(this.activePlayer.richness, this.activePlayer.number);
 		}
@@ -645,15 +647,16 @@ function buyProperty(){
 
 }
 
-//en proceso
+//metodo para determinar si la propiedad le pertenece a otro jugador, en esa caso se debe pagar hospedaje.
 function selectAction(){
 
 	if(this.properties.hasOwnProperty(this.activePlayer.position) == true){
 		var property = this.properties[this.activePlayer.position];
 		if(property.owner != this.activePlayer.number){
-			payLodgement();		}
+			payLodgement();		
+		}
 	}
-		paintBox();
+		paintProperties();
 }
 
 //pagar hospedaje
@@ -689,7 +692,7 @@ function payLodgement(){
 
 
 //metodo para poder pintar las propiedad  del lugar que tiene el turno
-function paintBox() {
+function paintProperties() {
 
 
     var button;
@@ -707,14 +710,14 @@ function paintBox() {
             button[0].style.border = '1px solid'
             button[0].disabled = false;
         }
-        paintButton(representationProperty, dataProperty);
+        paintLodgementProperty(representationProperty, dataProperty);
     }
 }
 
 
-//pintar botones de la tabla que tiene cada propiedad
-function paintButton(representationProperty, dataProperty) {
-    buttonBuy = representationProperty.getElementsByClassName('buttonHouseU');
+//pintar botones compra de casas y monto de hospedaje en la tabla inferior de cada propiedad
+function paintLodgementProperty(representationProperty, dataProperty) {
+    buttonBuy = representationProperty.getElementsByClassName('btnActionHouse');
     if (dataProperty.countHouses != 0) {
         buttonBuy[dataProperty.countHouses].style.opacity = '0.99';
         buttonBuy[dataProperty.countHouses].disabled = false;
@@ -726,7 +729,7 @@ function paintButton(representationProperty, dataProperty) {
     if (dataProperty.countHouses == 4) {
         buttonBuy[dataProperty.countHouses + 1].backgroundColor = 'red';
     }
-    buttonH = representationProperty.getElementsByClassName('buttonHouse');
+    buttonH = representationProperty.getElementsByClassName('btnLodgement');
     buttonH[dataProperty.countHouses].style.opacity = '0.99';
 }
 
@@ -843,8 +846,8 @@ function createBuilding(){
 	var container = this.parentNode;
 	var houses = dataProperty.countHouses+1;
 	var topButtons, downButtons;
-	topButtons = container.getElementsByClassName('buttonHouseU');
-	downButtons = container.getElementsByClassName('buttonHouse');
+	topButtons = container.getElementsByClassName('btnActionHouse');
+	downButtons = container.getElementsByClassName('btnLodgement');
 	if(dataProperty.countHouses < 5 && window.activePlayer.liquidCash > dataProperty.houseBuy){
 		window.activePlayer.liquidCash -= dataProperty.houseBuy;
 		window.activePlayer.richness += dataProperty.houseBuy;
@@ -853,7 +856,7 @@ function createBuilding(){
 		downButtons[dataProperty.countHouses].style.opacity = '0.30';
 		downButtons[dataProperty.countHouses].disabled = true;
 		++window.properties[this.parentNode.parentNode.id].countHouses;
-		paintButton(this.parentNode.parentNode, dataProperty);
+		paintLodgementProperty(this.parentNode.parentNode, dataProperty);
 		updateLiquidCash(window.activePlayer.liquidCash, window.activePlayer.number);
 		updateRichness(window.activePlayer.richness, window.activePlayer.number);
 	}
