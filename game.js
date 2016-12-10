@@ -435,6 +435,7 @@ function drawBottomTable(element) {
         button = document.createElement('button');
         button.disabled = true;
         button.className = 'buttonHouseU';
+		button.onclick = createBuilding;
         txt = document.createTextNode(this.properties[element.id].houseBuy);
         button.appendChild(txt);
         buttonDiv[0].appendChild(button);
@@ -594,8 +595,8 @@ function buyProperty(){
 			this.activePlayer.liquidCash -= property.propertyBuy;
 			this.activePlayer.richness += property.propertyBuy;
 			paintBox();
-			updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer);
-			updateRichness(this.activePlayer.richness, this.activePlayer);
+			updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer.number);
+			updateRichness(this.activePlayer.richness, this.activePlayer.number);
 		}
 
 	}
@@ -603,7 +604,7 @@ function buyProperty(){
 
 }
 
-
+//en proceso
 function selectAction(){
 
 	if(this.properties.hasOwnProperty(this.activePlayer.position) == true){
@@ -790,6 +791,31 @@ function moveNext(player, direction){
 	        
 	}
 	
+	
+}
+
+
+//function para construir en propiedades
+function createBuilding(){
+
+	var dataProperty = window.properties[this.parentNode.parentNode.id];
+	var container = this.parentNode;
+	var houses = dataProperty.countHouses+1;
+	var topButtons, downButtons;
+	topButtons = container.getElementsByClassName('buttonHouseU');
+	downButtons = container.getElementsByClassName('buttonHouse');
+	if(dataProperty.countHouses < 5 && window.activePlayer.liquidCash > dataProperty.houseBuy){
+		window.activePlayer.liquidCash -= dataProperty.houseBuy;
+		window.activePlayer.richness += dataProperty.houseBuy;
+		topButtons[dataProperty.countHouses].style.opacity = '0.30';
+		topButtons[dataProperty.countHouses].disabled = true;
+		downButtons[dataProperty.countHouses].style.opacity = '0.30';
+		downButtons[dataProperty.countHouses].disabled = true;
+		++window.properties[this.parentNode.parentNode.id].countHouses;
+		paintButton(this.parentNode.parentNode, dataProperty);
+		updateLiquidCash(window.activePlayer.liquidCash, window.activePlayer.number);
+		updateRichness(window.activePlayer.richness, window.activePlayer.number);
+	}
 	
 }
 
