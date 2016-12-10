@@ -130,13 +130,6 @@ function getPlayer(playerNumber) {
 //Get a random number that will represent the question displayed. There are 63 questions.
 
 
-//this.currentPlayer = 1; // for  test purposes
-
-var questionNumber = Math.floor(Math.random() * 64);
-showQuestion(questionNumber);
-showOptions(questionNumber);
-showQuestionPrize(questionNumber);
-
 function showQuestion(questionNumber) {
 
     //Get the question statement according to the number just generated.
@@ -402,6 +395,7 @@ function fillBoard() {
                 button = document.createElement('button');
                 txt = document.createTextNode(this.properties[element.id].propertySell);
                 button.className = 'propertySell';
+                button.setAttribute("onClick","sellProperty.call(this)");
                 button.disabled = true;
                 button.appendChild(txt);
                 header[0].appendChild(button);
@@ -548,7 +542,7 @@ function fallBox() {
 
 	//preguntar si la propiedad fue vendida
     if (dataProperty.isSold == false) {
-		
+
 		//habilitar el botón de compra en caso que el jugador pueda realizar dicha acción
         if (this.activePlayer.liquidCash > dataProperty.propertyBuy) {
             button = representationProperty.getElementsByClassName('propertyBuy');
@@ -580,41 +574,47 @@ function putStatusButton() {
 property I intent to sell is not the same as the one Im positioned*/
 function sellProperty(){
     // Prompt a message of confirmation
+    //REMOVEREMOVE REMOVE REMOVEREMOVE
+      activePlayer=window.activePlayers[0];
+
+    //REMOVE REMOVE REMOVE
     var cfm = confirm("¿Desea vender esta propiedad?");
     if(cfm){
-        var propertyId = this.parentNode.parentNode.id;
+        var propertyId = this.parentNode.parentNode.id; //From HTML
+        var propertyHeaderDiv = this.parentNode;
         var saleAmount = window.properties[propertyId].propertySell;//Cost of selling property
-        //Update  active Player-s money
-        for(var p in this.activePlayers){
-            if(this.activePlayers[p].number == this.activePlayer.number ){ //Finde the activePlayer in my activePLayers Array
-              this.activePlayers[p].liquidCash += saleAmount;
-              this.activePlayers[p].richness +=saleAmount;
+        //Update  active Player's money
+        for(var p in window.activePlayers){
+            if(window.activePlayers[p].number == window.activePlayer.number ){ //Finde the activePlayer in my activePLayers Array
+              window.activePlayers[p].liquidCash += saleAmount;
             }
         }
+        //mark property as bank's
+        window.properties[propertyId].owner = "Bank";
+        window.properties[propertyId].isSold = false;
 
-        //Update window
-        
+        //Get sell and buy element (buttons) to update them
+        var buyButton = propertyHeaderDiv.getElementsByClassName('propertyBuy');
+        var sellButton = propertyHeaderDiv.getElementsByClassName('propertySell');
+        //We must disable the sell button and paint the header gray.
 
+        sellButton[0].style.opacity='0.30';
+        sellButton[0].disabled=true;
+        propertyHeaderDiv.backgroundColor="gray";
+        //Me must enable the buy button if player has enough money
+        if(activePlayer.liquidCash > saleAmount){
+          buyButton[0].style.opacity='1';
+          buyButton[0].disabled=false;
 
-
-        var headerDiv = this.parentNode;
-        var houses = dataProperty.countHouses+1;
-        var topButtons, downButtons;
-        topButtons = container.getElementsByClassName('buttonHouseU');
-        downButtons = container.getElementsByClassName('buttonHouse');
-        if(dataProperty.countHouses < 5 && window.activePlayer.liquidCash > dataProperty.houseBuy){
-          window.activePlayer.liquidCash -= dataProperty.houseBuy;
-          window.activePlayer.richness += dataProperty.houseBuy;
-          topButtons[dataProperty.countHouses].style.opacity = '0.30';
-          topButtons[dataProperty.countHouses].disabled = true;
-          downButtons[dataProperty.countHouses].style.opacity = '0.30';
-          downButtons[dataProperty.countHouses].disabled = true;
-          ++window.properties[this.parentNode.parentNode.id].countHouses;
-          paintButton(this.parentNode.parentNode, dataProperty);
-          updateLiquidCash(window.activePlayer.liquidCash, window.activePlayer.number);
-          updateRichness(window.activePlayer.richness, window.activePlayer.number);
+        }else{
+          buyButton[0].style.opacity='0.30';
+          buyButton[0].disabled=true;
+        }
 
     }
+
+    //VER SI SE RESTA RICHNESS O SUMA VER VER VER VER VER VER VER
+    updateLiquidCash(  window.activePlayers[p].liquidCash,window.activePlayer.number);
 
 }
 
@@ -653,7 +653,7 @@ function selectAction(){
 	if(this.properties.hasOwnProperty(this.activePlayer.position) == true){
 		var property = this.properties[this.activePlayer.position];
 		if(property.owner != this.activePlayer.number){
-			payLodgement();		
+			payLodgement();
 		}
 	}
 		paintProperties();
