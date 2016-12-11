@@ -576,7 +576,7 @@ function putStatusButton() {
 }
 
 
-
+//metodo para comprar una propiedad
 function buyProperty(){
 
 
@@ -620,6 +620,7 @@ function selectAction(){
 
 //pagar hospedaje
 function payLodgement(){
+
 	if(this.activePlayer.liquidCash < this.properties[this.activePlayer.position]){
 		//colocar mensaje que debe vender
 		var button = document.getElementById('statusGame');
