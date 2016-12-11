@@ -282,7 +282,7 @@ function Property(type, id, name, nextDirection, nextPropId, url, propertyBuy, p
     this.name = name;
     this.img = url
     this.isSold = false;
-    this.owner = 'Bank'
+    this.owner = -1;
     if (type == "property") {
         this.countHouses = 0;
         this.propertyBuy = propertyBuy;
@@ -469,6 +469,7 @@ function addPlayer(playerNumber){
 					player.liquidCash = 800;
 					player.richness = 800;
 					player.indebtedness = 0;
+					player.debtOwner = -1;
 					document.getElementById("name"+playerNumber).innerHTML = player.name + "<p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p>/" +  "<p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
 	 				player.position = "enter";
 	 				var imgHeight =  Math.floor(enter.offsetHeight/5);
@@ -673,6 +674,7 @@ function payLodgement(){
 		finishButton.disabled = true;
 		alert("Necesita efectivo para pagar el hospedaje");
 		this.activePlayer.indebtedness = this.properties[lodgement];
+		this.activePlayer.debtOwner = proper
 		
 	}else{
 		
@@ -908,6 +910,14 @@ function verifyIndebtedness(){
 			initialButton.disabled = false;
 			finishButton.disabled = false;
 			alert('Puede seguir jugando, ya no tiene deudas');
+			for(var counter = 0; counter < this.activePlayers.length; ++counter){
+				//buscar a quién hay que pagar
+				if(this.activePlayer.debtOwner == this.activePlayer[counter].number){
+					updateLiquidCash(this.activePlayers[counter].liquidCash + this.activePlayer.indebtedness, this.activePlayers[counter].number);
+					updateRichness(this.activePlayers[counter].richness + this.activePlayer.indebtedness, this.activePlayers[counter].number);
+					this.activePlayer.debtOwner = -1;
+				}
+			}
 		}else{
 			alert('Necesita más efectivo');
 		}
