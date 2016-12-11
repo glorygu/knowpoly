@@ -9,7 +9,7 @@ var colors = ["red","green","blue","yellow"];
 var addingPlayers = true;
 var upperSpace  = document.getElementById("upperSpace");
 var enter =  document.getElementById("enter");
-var questionsPool = []; 
+var questionsPool = [];
 var board = document.getElementById("board");
 var properties = {}; //almacena todas las propiedades, es decir, los datos que conforman cada propiedad.
 var currentPlayer = {};
@@ -79,7 +79,7 @@ function placePlayer(player){
 	img.src = ('img/'+player.color+'.png');
 	img.setAttribute("class", "playerToken");
 	img.id=player.color;
-	//imgHeight = img.offsetHeight; 
+	//imgHeight = img.offsetHeight;
 	//imgWidth = img.offsetWidth;
 	//console.log("eh" + imgWidth +"enter top " + enter.offsetParent.offsetTop + "this top" +(enter.offsetParent.offsetTop+(imgHeight*(this.activePlayers.length))));
 	//img.style.top = (enter.offsetParent.offsetTop+(imgHeight*(activePlayers.length))) ;//+ 'px';
@@ -129,13 +129,6 @@ function getPlayer(playerNumber) {
 
 //Get a random number that will represent the question displayed. There are 63 questions.
 
-
-//this.currentPlayer = 1; // for  test purposes
-
-var questionNumber = Math.floor(Math.random() * 64);
-showQuestion(questionNumber);
-showOptions(questionNumber);
-showQuestionPrize(questionNumber);
 
 function showQuestion(questionNumber) {
 
@@ -402,6 +395,7 @@ function fillBoard() {
                 button = document.createElement('button');
                 txt = document.createTextNode(this.properties[element.id].propertySell);
                 button.className = 'propertySell';
+                button.setAttribute("onClick","sellProperty.call(this)");
                 button.disabled = true;
                 button.appendChild(txt);
                 header[0].appendChild(button);
@@ -474,12 +468,13 @@ function addPlayer(playerNumber){
 					player.number = playerNumber;
 					player.liquidCash = 800;
 					player.richness = 800;
+					player.indebtedness = 0;
 					document.getElementById("name"+playerNumber).innerHTML = player.name + "<p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p>/" +  "<p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
 	 				player.position = "enter";
 	 				var imgHeight =  Math.floor(enter.offsetHeight/5);
 	     			var imgWidth = Math.floor(enter.offsetWidth/3);
 	     			player.top = (enter.offsetParent.offsetTop+(imgHeight*this.activePlayers.length));
-	     			player.left = (enter.offsetParent.offsetLeft); 
+	     			player.left = (enter.offsetParent.offsetLeft);
 	 				player.color=colors[playerNumber-1];
 	 				player.ownedProperties = new Array();
 	 				this.activePlayers.push(player);
@@ -487,7 +482,7 @@ function addPlayer(playerNumber){
 	 				placePlayer(player);
 	 				//loadColorSelector(player.name);
 	 				if(this.activePlayers.length==2)
-	 				{//si hay mas de dos jugadores 
+	 				{//si hay mas de dos jugadores
 						enableStartButton();
 	 				}
 				}
@@ -548,7 +543,7 @@ function fallBox() {
 
 	//preguntar si la propiedad fue vendida
     if (dataProperty.isSold == false) {
-		
+
 		//habilitar el botón de compra en caso que el jugador pueda realizar dicha acción
         if (this.activePlayer.liquidCash > dataProperty.propertyBuy) {
             button = representationProperty.getElementsByClassName('propertyBuy');
@@ -576,7 +571,53 @@ function putStatusButton() {
 }
 
 
-//metodo para comprar una propiedad
+/*If it's my turn, I can sell any property I have. Doesn't matter if the
+property I intent to sell is not the same as the one Im positioned*/
+function sellProperty(){
+    // Prompt a message of confirmation
+    //REMOVEREMOVE REMOVE REMOVEREMOVE
+      activePlayer=window.activePlayers[0];
+    //REMOVE REMOVE REMOVE
+    var cfm = confirm("¿Desea vender esta propiedad?");
+    if(cfm){
+        var propertyId = this.parentNode.parentNode.id; //From HTML
+        var propertyHeaderDiv = this.parentNode;
+        var saleAmount = window.properties[propertyId].propertySell;//Cost of selling property
+        //Update  active Player's money
+        for(var p in window.activePlayers){
+            if(window.activePlayers[p].number == window.activePlayer.number ){ //Finde the activePlayer in my activePLayers Array
+              window.activePlayers[p].liquidCash += saleAmount;
+            }
+        }
+        //mark property as bank's
+        window.properties[propertyId].owner = "Bank";
+        window.properties[propertyId].isSold = false;
+
+        //Get sell and buy element (buttons) to update them
+        var buyButton = propertyHeaderDiv.getElementsByClassName('propertyBuy');
+        var sellButton = propertyHeaderDiv.getElementsByClassName('propertySell');
+        //We must disable the sell button and paint the header gray.
+
+        sellButton[0].style.opacity='0.30';
+        sellButton[0].disabled=true;
+        propertyHeaderDiv.backgroundColor="gray";
+        //Me must enable the buy button if player has enough money
+        if(activePlayer.liquidCash > saleAmount){
+          buyButton[0].style.opacity='1';
+          buyButton[0].disabled=false;
+
+        }else{
+          buyButton[0].style.opacity='0.30';
+          buyButton[0].disabled=true;
+        }
+
+    }
+
+    //VER SI SE RESTA RICHNESS O SUMA VER VER VER VER VER VER VER
+    updateLiquidCash(  window.activePlayers[p].liquidCash,window.activePlayer.number);
+
+}
+
 function buyProperty(){
 
 
@@ -595,7 +636,8 @@ function buyProperty(){
 			this.properties[this.activePlayer.position].owner = this.activePlayer.number;
 			this.activePlayer.ownedProperties.push(this.activePlayer.position);
 			this.activePlayer.liquidCash -= property.propertyBuy;
-			this.activePlayer.richness += property.propertyBuy;
+			this.activePlayer.richness -= property.propertyBuy;
+			this.activePlayer.richness += property.propertySell;
 			paintProperties();
 			updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer.number);
 			updateRichness(this.activePlayer.richness, this.activePlayer.number);
@@ -612,7 +654,7 @@ function selectAction(){
 	if(this.properties.hasOwnProperty(this.activePlayer.position) == true){
 		var property = this.properties[this.activePlayer.position];
 		if(property.owner != this.activePlayer.number){
-			payLodgement();		
+			payLodgement();
 		}
 	}
 		paintProperties();
@@ -621,17 +663,21 @@ function selectAction(){
 //pagar hospedaje
 function payLodgement(){
 
-	if(this.activePlayer.liquidCash < this.properties[this.activePlayer.position]){
-		//colocar mensaje que debe vender
-		var button = document.getElementById('statusGame');
-		button.innerText = 'Terminar partida';
-		button.style.opacity = '0.30';
-		button.disabled = true;
+	var property = this.properties[this.activePlayer.position];
+	var lodgement = 'h' + property.countHouses;
+	
+	if(this.activePlayer.liquidCash < this.properties[lodgement]){
+		var initialButton = document.getElementById('statusButton');
+		var finishButton = document.getElementById('endTurn');
+		initialButton.disabled = true;
+		finishButton.disabled = true;
+		alert("Necesita efectivo para pagar el hospedaje");
+		this.activePlayer.indebtedness = this.properties[lodgement];
+		
 	}else{
-		var property = this.properties[this.activePlayer.position];
-		var lodgement = 'h' + property.countHouses;
+		
 		this.activePlayer.liquidCash -= property[lodgement];
-		var againstPlayer = property.owner;
+		this.activePlayer.richness -= property[lodgement];
 		var indicator = false;
 		var index = 0;
 		var idPlayer = "";
@@ -642,10 +688,12 @@ function payLodgement(){
 				cash = property[lodgement] + this.activePlayers[index].liquidCash;
 				indicator = true;
 				updateLiquidCash(cash,  this.activePlayers[index]);
+				updateRichness(property[lodgement]+this.activePlayers[index].richness, this.activePlayers[index]);
 			}
 			++index;
 		}
 		updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer);
+		updateRichness(this.activePlayer.richness, this.activePlayer);
 	}
 }
 
@@ -670,27 +718,38 @@ function paintProperties() {
             button[0].style.border = '1px solid'
             button[0].disabled = false;
         }
-        paintLodgementProperty(representationProperty, dataProperty);
+        paintLodgementPart(representationProperty, dataProperty);
     }
 }
 
 
 //pintar botones compra de casas y monto de hospedaje en la tabla inferior de cada propiedad
-function paintLodgementProperty(representationProperty, dataProperty) {
-    buttonBuy = representationProperty.getElementsByClassName('btnActionHouse');
-    if (dataProperty.countHouses != 0) {
-        buttonBuy[dataProperty.countHouses].style.opacity = '0.99';
+function paintLodgementPart(representationProperty, dataProperty) {
+    var buttonBuy = representationProperty.getElementsByClassName('btnActionHouse');
+	var buttonLodgement;
+	if(dataProperty.countHouses == 0){
+		buttonBuy[dataProperty.countHouses].style.opacity = '0.30';
+        buttonBuy[dataProperty.countHouses].disabled = true;
+		buttonBuy[dataProperty.countHouses].innerText = dataProperty.houseSell;
+		buttonBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
+		buttonBuy[dataProperty.countHouses+1].style.opacity = '0.99';
+        buttonBuy[dataProperty.countHouses+1].disabled = false;
+		buttonLodgement = representationProperty.getElementsByClassName('btnLodgement');
+		buttonLodgement[dataProperty.countHouses].style.opacity = '0.99';
+	}else{
+		buttonLodgement = representationProperty.getElementsByClassName('btnLodgement');
+		buttonLodgement[dataProperty.countHouses].style.opacity = '0.99';
+		buttonBuy[dataProperty.countHouses].style.opacity = '0.99';
         buttonBuy[dataProperty.countHouses].disabled = false;
-    }
-    buttonBuy[dataProperty.countHouses].innerText = dataProperty.houseSell;
-    buttonBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
-    buttonBuy[dataProperty.countHouses + 1].style.opacity = '0.99';
-    buttonBuy[dataProperty.countHouses + 1].disabled = false;
-    if (dataProperty.countHouses == 4) {
-        buttonBuy[dataProperty.countHouses + 1].backgroundColor = 'red';
-    }
-    buttonH = representationProperty.getElementsByClassName('btnLodgement');
-    buttonH[dataProperty.countHouses].style.opacity = '0.99';
+		buttonBuy[dataProperty.countHouses].onclick = sellProperty; /////////////////////////////////////////////////////////////////////////////////////////////////////////////JOEL AQUI DEBE COLOCAR EL NOMBRE DEL METODO PARA VENDER CASA 
+		buttonBuy[dataProperty.countHouses].innerText = dataProperty.houseSell;
+		buttonBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
+		buttonBuy[dataProperty.countHouses+1].style.opacity = '0.99';
+        buttonBuy[dataProperty.countHouses+1].disabled = false;
+		buttonLodgement[dataProperty.countHouses-1].style.opacity = '0.30';
+		buttonBuy[dataProperty.countHouses-1].style.opacity = '0.30';
+        buttonBuy[dataProperty.countHouses-1].disabled = true;	
+	}
 }
 
 /***** variables de la jugada actual *****/
@@ -699,11 +758,11 @@ function paintLodgementProperty(representationProperty, dataProperty) {
 /**** funcion auxiliar para obtener una propiedad por su id ****/
 /*
 function getPropertyById(propId){
-	
+
 	for (var i = 0; i < properties.length; i++){
-		
+
 		if(properties[i].id == propId){
-			
+
 			return properties[i];
 		}
 	}
@@ -746,7 +805,7 @@ function rollDice(){
 	rollButton.style.display="none";
 	console.log("current" + currentPlayer);
 	movePlayer(randomNumber);
-	return randomNumber; 
+	return randomNumber;
 
 }
 
@@ -760,42 +819,42 @@ function movePlayer(numberOfCells){
 	var actualPosition = properties[playerPos];
 	console.log(actualPosition);
 	for (var i = 0; i < numberOfCells; i++){
-		
+
 		moveNext(currentPlayer, actualPosition.nextDirection);
 		actualPosition = properties[actualPosition.nextPropId];
 	}
-	
-	
-	
+
+
+
 }
 
 /***** funcion que permite que el jugador (activo) se mueva una casilla y se mueve en la direccion indicada por la posicion en la que esta***/
 function moveNext(player, direction){
 	switch(direction){
-		case 'right': 
+		case 'right':
 			player.left += enter.offsetWidth;
 	        player.img.style.left = (player.left-60)+"px";
-	        player.img.style.transitionDuration = "1s";	
+	        player.img.style.transitionDuration = "1s";
         break;
-        case 'left': 
+        case 'left':
         	player.left -=enter.offsetWidth;
 	        player.img.style.left = (player.left-30)+"px";
 	        player.img.style.transitionDuration = "1s";
-        break; 
-        case 'up': 
+        break;
+        case 'up':
         	player.top -= enter.offsetHeight;
         	player.img.style.top = (player.top)+"px";
         	player.img.style.transitionDuration = "1s";
-    	break; 
+    	break;
     	case 'down':
     		player.top += enter.offsetHeight;
         	player.img.style.top = (player.top)+"px";
         	player.img.style.transitionDuration = "1s";
 		break;
-	        
+
 	}
-	
-	
+
+
 }
 
 
@@ -804,28 +863,25 @@ function createBuilding(){
 
 	var dataProperty = window.properties[this.parentNode.parentNode.id];
 	var container = this.parentNode;
-	var houses = dataProperty.countHouses+1;
+	var houses = dataProperty.countHouses;
 	var topButtons, downButtons;
 	topButtons = container.getElementsByClassName('btnActionHouse');
 	downButtons = container.getElementsByClassName('btnLodgement');
 	if(dataProperty.countHouses < 5 && window.activePlayer.liquidCash > dataProperty.houseBuy){
 		window.activePlayer.liquidCash -= dataProperty.houseBuy;
-		window.activePlayer.richness += dataProperty.houseBuy;
-		topButtons[dataProperty.countHouses].style.opacity = '0.30';
-		topButtons[dataProperty.countHouses].disabled = true;
-		downButtons[dataProperty.countHouses].style.opacity = '0.30';
-		downButtons[dataProperty.countHouses].disabled = true;
+		window.activePlayer.richness -= dataProperty.houseBuy;
+		window.activePlayer.richness += dataProperty.houseSell;
 		++window.properties[this.parentNode.parentNode.id].countHouses;
-		paintLodgementProperty(this.parentNode.parentNode, dataProperty);
+		paintLodgementPart(this.parentNode.parentNode, dataProperty);
 		updateLiquidCash(window.activePlayer.liquidCash, window.activePlayer.number);
 		updateRichness(window.activePlayer.richness, window.activePlayer.number);
 	}
-	
+
 }
 
 /** funcion enableStartButton, se llama cuando se han agregado 2 o mas jugadores y permite que el juego empiece **/
 function enableStartButton(){
-	
+
 	var startButton = document.createElement('button');
 	startButton.setAttribute("id","startButton" );
 	startButton.onclick = startGame;
@@ -834,8 +890,32 @@ function enableStartButton(){
 	up.appendChild(startButton);
 	startButton.style.top = "50%";
 	startButton.style.left="50%";
-	
+
 }
+
+//verificar si tiene deudas por pagar
+function verifyIndebtedness(){
+	
+	if(this.activePlayer.indebtedness != 0){
+		if(this.activePlayer.liquidCash > this.activePlayer.indebtedness){
+			this.activePlayer.liquidCash -= this.activePlayer.indebtedness;
+			this.activePlayer.richness -= this.activePlayer.indebtedness;
+			this.activePlayer.indebtedness = 0;
+			updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer.number);
+			updateRichness(this.activePlayer.richness, this.activePlayer.number);
+			var initialButton = document.getElementById('statusButton');
+			var finishButton = document.getElementById('endTurn');
+			initialButton.disabled = false;
+			finishButton.disabled = false;
+			alert('Puede seguir jugando, ya no tiene deudas');
+		}else{
+			alert('Necesita más efectivo');
+		}
+	}
+		
+}
+
+
 
 
 
