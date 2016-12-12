@@ -317,6 +317,7 @@ function fillProperties() {
     this.properties['property3'] = property3;
 
 
+
     var property4 = new Property('property', 'property4', 'Zarcero', 'right', 'hotChair1', 'url(img/costaRica4.jpg)', 85, 75, 75, 40, 09, 25, 80, 225, 450, 720);
     this.properties['property4'] = property4;
 
@@ -337,12 +338,12 @@ function fillProperties() {
 
 
 
-    var property8 = new Property('property', 'property8', 'Estadio Nacional', 'down', 'url(img/costaRica8.jpg)', 145, 130, 150, 75, 16, 50, 145, 400, 800, 1280);
+    var property8 = new Property('property', 'property8', 'Estadio Nacional', 'down', 'cave', 'url(img/costaRica8.jpg)', 145, 130, 150, 75, 16, 50, 145, 400, 800, 1280);
     this.properties['property8'] = property8;
 
     var cave = new Property('cave', 'cave', 'Cueva de la icnoransia', 'left', 'property12');
     this.properties['cave'] = cave;
-
+ 
     var property9 = new Property('property', 'property9', 'Fortín de Heredia', 'left', 'hotChair2', 'url(img/costaRica9.jpg)', 160, 145, 175, 90, 18, 55, 160, 450, 900, 1440);
     this.properties['property9'] = property9;
 
@@ -356,7 +357,7 @@ function fillProperties() {
     var property11 = new Property('property', 'property11', 'Casa de Gobierno', 'left', 'property10', 'url(img/costaRica11.jpg)', 190, 170, 200, 100, 23, 70, 205, 575, 1150, 1840);
     this.properties['property11'] = property11;
 
-    var property12 = new Property('property', 'property12', 'Cerro Chirripó', 'left', 'propery11', 'url(img/costaRica12.jpg)', 200, 180, 200, 100, 25, 75, 225, 625, 1250, 2000);
+    var property12 = new Property('property', 'property12', 'Cerro Chirripó', 'left', 'property11', 'url(img/costaRica12.jpg)', 200, 180, 200, 100, 25, 75, 225, 625, 1250, 2000);
 
 
     this.properties['property12'] = property12;
@@ -364,7 +365,6 @@ function fillProperties() {
 
 
 }
-
 
 
 /**
@@ -838,28 +838,28 @@ function moveNext(player, direction){
 
 
 		case 'right': 
-			player.left += enter.offsetWidth;//cellCS.width;//enter.offsetWidth; //le aumenta al left actual el tamano de la celda
+			player.left += 100;//cellCS.width;//enter.offsetWidth; //le aumenta al left actual el tamano de la celda
 
-	        player.img.style.left = (player.left)+"px";
+	        player.img.style.left = (player.left)+"%";
 	        player.img.style.transitionDuration = "1s";
         break;
 
         case 'left':
-        	player.left -=enter.offsetWidth; //le quita al left actual el tamano de la celda
-	        player.img.style.left = (player.left)+"px";
+        	player.left -=100; //le quita al left actual el tamano de la celda
+	        player.img.style.left = (player.left)+"%";
 
 
 
 	        player.img.style.transitionDuration = "1s";
         break;
         case 'up':
-        	player.top -= cellCS.height;
-        	player.img.style.top = (player.top)+"px";
+        	player.top -= 100;
+        	player.img.style.top = (player.top)+"%";
         	player.img.style.transitionDuration = "1s";
     	break;
     	case 'down':
-    		player.top += cellCS.height;
-        	player.img.style.top = (player.top)+"px";
+    		player.top += 100;
+        	player.img.style.top = (player.top)+"%";
         	player.img.style.transitionDuration = "1s";
 		break;
 
