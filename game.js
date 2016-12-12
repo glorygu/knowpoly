@@ -428,7 +428,9 @@ function drawBottomTable(element) {
         button = document.createElement('button');
         button.disabled = true;
         button.className = 'btnActionHouse';
-		button.onclick = createBuilding; //metodo para construir casas en las propiedades
+	    	button.onclick = createBuilding; //metodo para construir casas en las propiedades
+        button.setAttribute("onClick","sellConstruction.call(this)");
+
         txt = document.createTextNode(this.properties[element.id].houseBuy);
         button.appendChild(txt);
         buttonDiv[0].appendChild(button);
@@ -455,13 +457,13 @@ Funcion que se llama cuando se le da click a algun div de colores. Se crea el ob
 **/
 
 function addPlayer(playerNumber){
-	var alreadyExists = playerExists(playerNumber); //pregunta si ya existe el jugador 
+	var alreadyExists = playerExists(playerNumber); //pregunta si ya existe el jugador
 	if(!alreadyExists){
 		if (addingPlayers){ //pregunta que si se estan añadiendo jugadores
 			if(activePlayers.length < 4){ //pregunta q hayan menos de 4 jugadores
 				var name = prompt("Por favor ingrese el nombre para el jugador "+playerNumber); //pide nombre
 				if (name != null){
-					
+
 					var player = {};
 					player.name = name;
 					player.number = playerNumber;
@@ -487,7 +489,7 @@ function addPlayer(playerNumber){
 	 				//loadColorSelector(player.name);
                     console.log(activePlayers.length);
 	 				if(activePlayers.length==2)
-	 				{//si hay mas de dos jugadores 
+	 				{//si hay mas de dos jugadores
                         console.log("entrando a start");
 						enableStartButton();
 	 				}
@@ -541,6 +543,22 @@ function putStatusButton() {
 
 }
 
+function sellConstruction(){
+    //Get  positioned property id
+    var propertyId = this.parentNode.parentNode.id; //From HTML
+    var propertyBottonDiv = this.parentNode;
+    var saleAmount = window.properties[propertyId].houseSell;//Cost of selling a house
+    var buyAmount = window.properties[propertyId].houseBuy;//Cost of selling a house
+
+    //change from sale amount to buy amount
+    this.innerHTML = buyAmount;
+    //Get next sibbling to change its enable status.
+    //CHECK IF SIBBLING EXISTS
+    var nextButton =this.nextSibling;
+    alert(nextButton.innerHTML);
+
+
+}
 
 /*If it's my turn, I can sell any property I have. Doesn't matter if the
 property I intent to sell is not the same as the one Im positioned*/
@@ -636,7 +654,7 @@ function payLodgement(){
 
 	var property = this.properties[this.activePlayer.position];
 	var lodgement = 'h' + property.countHouses;
-	
+
 	if(this.activePlayer.liquidCash < this.properties[lodgement]){
 		var initialButton = document.getElementById('statusButton');
 		var finishButton = document.getElementById('endTurn');
@@ -645,9 +663,9 @@ function payLodgement(){
 		alert("Necesita efectivo para pagar el hospedaje");
 		this.activePlayer.indebtedness = this.properties[lodgement];
 		this.activePlayer.debtOwner = proper
-		
+
 	}else{
-		
+
 		this.activePlayer.liquidCash -= property[lodgement];
 		this.activePlayer.richness -= property[lodgement];
 		var indicator = false;
@@ -713,14 +731,14 @@ function paintLodgementPart(representationProperty, dataProperty) {
 		buttonLodgement[dataProperty.countHouses].style.opacity = '0.99';
 		buttonBuy[dataProperty.countHouses].style.opacity = '0.99';
         buttonBuy[dataProperty.countHouses].disabled = false;
-		buttonBuy[dataProperty.countHouses].onclick = sellProperty; /////////////////////////////////////////////////////////////////////////////////////////////////////////////JOEL AQUI DEBE COLOCAR EL NOMBRE DEL METODO PARA VENDER CASA 
+		buttonBuy[dataProperty.countHouses].onclick = sellProperty; /////////////////////////////////////////////////////////////////////////////////////////////////////////////JOEL AQUI DEBE COLOCAR EL NOMBRE DEL METODO PARA VENDER CASA
 		buttonBuy[dataProperty.countHouses].innerText = dataProperty.houseSell;
 		buttonBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
 		buttonBuy[dataProperty.countHouses+1].style.opacity = '0.99';
         buttonBuy[dataProperty.countHouses+1].disabled = false;
 		buttonLodgement[dataProperty.countHouses-1].style.opacity = '0.30';
 		buttonBuy[dataProperty.countHouses-1].style.opacity = '0.30';
-        buttonBuy[dataProperty.countHouses-1].disabled = true;	
+        buttonBuy[dataProperty.countHouses-1].disabled = true;
 	}
 }
 
@@ -797,7 +815,7 @@ function movePlayer(numberOfCells){
 	for (var i = 0; i < numberOfCells; i++){
 
 
-		
+
 		moveNext(activePlayer, actualPosition.nextDirection);
 
 
@@ -813,12 +831,12 @@ function moveNext(player, direction){
 	switch(direction){
 
 
-		case 'right': 
+		case 'right':
 			player.left += enter.offsetWidth; //le aumenta al left actual el tamano de la celda
 	        player.img.style.left = (player.left)+"px";
-	        player.img.style.transitionDuration = "1s";	
+	        player.img.style.transitionDuration = "1s";
         break;
-        case 'left': 
+        case 'left':
         	player.left -=enter.offsetWidth; //le quita al left actual el tamano de la celda
 	        player.img.style.left = (player.left)+"px";
 
@@ -880,7 +898,7 @@ function enableStartButton(){
 
 //verificar si tiene deudas por pagar
 function verifyIndebtedness(){
-	
+
 	if(this.activePlayer.indebtedness != 0){
 		if(this.activePlayer.liquidCash > this.activePlayer.indebtedness){
 			this.activePlayer.liquidCash -= this.activePlayer.indebtedness;
@@ -905,13 +923,13 @@ function verifyIndebtedness(){
 			alert('Necesita más efectivo');
 		}
 	}
-		
+
 }
 
 /**** function show dice que permite habilitar el dado ***/
 
 function showDice(){
-    
+
     var divDiceRoll = document.createElement("div");
     divDiceRoll.id = "diceRoll";
     var divDice = document.createElement("div");
@@ -931,7 +949,7 @@ function showDice(){
     divDiceRoll.appendChild(divCenter);
     var lowerSpace = document.getElementById("lowerSpace");
     lowerSpace.appendChild(divDiceRoll);
-            
+
 }
 
 function enableDiceRoll(){ //muestra el boton de lanzar dado
@@ -950,7 +968,7 @@ function removeFromActivePlayers(){
     var tempActivePlayer = activePlayer;
     if (activePlayers.length >2){
         changeTurn();
-        
+
     }
     removeFromArray(activePlayers, tempActivePlayer);
     console.log("quedan estos "+ activePlayers.length);
@@ -1005,7 +1023,7 @@ function changeTurn(){
    	if(button!=null){
     	button.style.display = "none";
    	}
-   	//cambia el activePlayer 
+   	//cambia el activePlayer
    	if(activePlayer.index == activePlayers.length-1 ){
    	    activePlayer = activePlayers[0];
    	} else
@@ -1021,15 +1039,15 @@ function initialize(){
     addingPlayers = true;
     upperSpace  = document.getElementById("upperSpace");
     enter =  document.getElementById("enter");
-    questionsPool = []; 
+    questionsPool = [];
     board = document.getElementById("board");
     properties = {};
     activePlayer = {};
-    
+
     enterOffset = getOffset(enter);
     cellWidth = enterOffset.width;
     cellHeight = enterOffset.height;
-    
+
     // llamados para llenar el tablero
     //fillProperties();
     //fillBoard();
