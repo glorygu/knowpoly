@@ -84,7 +84,7 @@ margin-top: 1em;
 }
 
 
-#prueba{
+#mainContainer{
 
 }
 
@@ -241,7 +241,7 @@ img{
 	width:auto;
 }
 
-.prueba{
+.mainContainer{
 	position: absolute;
 	left: 2em;
 	top: 5em;
@@ -257,17 +257,17 @@ scan p{
 	background-color: white;
 }
 
-.buttonHouseU{
+.btnActionHouse{
 	background-color:#2EB420;
 }
 
-.buttonHouse{
+.btnLodgement{
 	background-color: #F2F928;
 }
 
-.buttonHouse, .buttonHouseU{
+.btnLodgement, .btnActionHouse{
 	max-width: calc(100%/7);
-	width:auto;
+	width:calc(100%/7);
 	margin-bottom: 0;
 	height:auto;
 	opacity: 0.30;
