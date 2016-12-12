@@ -317,7 +317,6 @@ function fillProperties() {
     this.properties['property3'] = property3;
 
 
-
     var property4 = new Property('property', 'property4', 'Zarcero', 'right', 'hotChair1', 'url(img/costaRica4.jpg)', 85, 75, 75, 40, 09, 25, 80, 225, 450, 720);
     this.properties['property4'] = property4;
 
@@ -476,8 +475,8 @@ function addPlayer(playerNumber){
 	 				player.position = "enter";
 	 				//var imgHeight =  Math.floor(enter.offsetHeight/5);
 	     			//var imgWidth = Math.floor(enter.offsetWidth/3);
-	     			player.top = (enter.offsetParent.offsetTop+(imgHeight*this.activePlayers.length));
-	     			player.left = (enter.offsetParent.offsetLeft);
+	     			player.top = 0;//(enter.offsetParent.offsetTop+(imgHeight*this.activePlayers.length));
+	     			player.left = 40;//(enter.offsetParent.offsetLeft);
 	 				player.color=colors[playerNumber-1];
 	 				player.ownedProperties = new Array();
 	 				player.index = activePlayers.length;
@@ -507,20 +506,23 @@ function none(){
 function fallBox() {
 
 
-    this.activePlayer.position = 'property1';
+    //this.activePlayer.position = 'property1';
     var representationProperty = document.getElementById(this.activePlayer.position);
     var dataProperty = this.properties[this.activePlayer.position];
     var button;
 
 	//preguntar si la propiedad fue vendida
     if (dataProperty.isSold == false) {
-
-		//habilitar el botón de compra en caso que el jugador pueda realizar dicha acción
-        if (this.activePlayer.liquidCash > dataProperty.propertyBuy) {
-            button = representationProperty.getElementsByClassName('propertyBuy');
-            button[0].style.opacity = '0.99';
-            button[0].disabled = false;
-        }
+        
+	
+            if (activePlayer.liquidCash > dataProperty.propertyBuy) {
+                //alert(activePlayer.name + " ha comprado la propiedad " + dataProperty.name);
+                button = representationProperty.getElementsByClassName('propertyBuy');
+                button[0].style.opacity = '0.99';
+                button[0].disabled = false;
+                //buttonBuyProperty.style.display = "none";
+            }
+        //}
     } else {
         selectAction();
     }
@@ -588,7 +590,6 @@ function sellProperty(){
     updateLiquidCash(  window.activePlayers[p].liquidCash,window.activePlayer.number);
 
 }
-
 function buyProperty(){
 
 
@@ -619,6 +620,7 @@ function buyProperty(){
 
 }
 
+
 //metodo para determinar si la propiedad le pertenece a otro jugador, en esa caso se debe pagar hospedaje.
 function selectAction(){
 
@@ -637,14 +639,15 @@ function payLodgement(){
 	var property = this.properties[this.activePlayer.position];
 	var lodgement = 'h' + property.countHouses;
 	
-	if(this.activePlayer.liquidCash < this.properties[lodgement]){
-		var initialButton = document.getElementById('statusButton');
-		var finishButton = document.getElementById('endTurn');
-		initialButton.disabled = true;
-		finishButton.disabled = true;
-		alert("Necesita efectivo para pagar el hospedaje");
-		this.activePlayer.indebtedness = this.properties[lodgement];
-		this.activePlayer.debtOwner = proper
+	if(this.activePlayer.liquidCash < property[lodgement]){
+	
+		alert("Necesita efectivo para pagar el hospedaje. Tiene que vender");
+		
+		this.activePlayer.indebtedness = property[lodgement];
+		this.activePlayer.debtOwner = property.owner;
+		verifyRichness();
+		//this.activePlayer.debtOwner = proper
+		//verificar si puede vender
 		
 	}else{
 		
@@ -656,7 +659,7 @@ function payLodgement(){
 		var cash = 0;
 
 		while(index < this.activePlayers.length && indicator == false){
-			if(this.activePlayers[index].number == property.num){
+			if(this.activePlayers[index].number == property.owner){
 				cash = property[lodgement] + this.activePlayers[index].liquidCash;
 				indicator = true;
 				updateLiquidCash(cash,  this.activePlayers[index]);
@@ -742,7 +745,7 @@ function getPropertyById(propId){
 /***** inicia juego ***/
 function startGame(){
 	var button = document.getElementById("startButton");
-	//button.style.display = "none";
+	button.style.display = "none";
 	console.log("bebes jugadores " + activePlayers[0]);
 
 	activePlayer = activePlayers[0];
@@ -795,43 +798,43 @@ function movePlayer(numberOfCells){
 	var actualPosition = properties[playerPos];
 	console.log(actualPosition);
 	for (var i = 0; i < numberOfCells; i++){
-
-
-		
+        console.log("Estoy en " + actualPosition.name + "voy hacia " +actualPosition.nextDirection);
 		moveNext(activePlayer, actualPosition.nextDirection);
-
-
 		actualPosition = properties[actualPosition.nextPropId];
+		    
+		
 	}
-
-
-
+	activePlayer.position = actualPosition.id;
+	//addTokenOnProperty();
+    fallBox();
 }
 
 /***** funcion que permite que el jugador (activo) se mueva una casilla y se mueve en la direccion indicada por la posicion en la que esta***/
 function moveNext(player, direction){
+    var cellCS = getComputedStyle(enter, null);
+    //TODO cambiar por porcentajes
 	switch(direction){
 
 
 		case 'right': 
-			player.left += enter.offsetWidth; //le aumenta al left actual el tamano de la celda
+			player.left += enter.offsetWidth;//cellCS.width;//enter.offsetWidth; //le aumenta al left actual el tamano de la celda
 	        player.img.style.left = (player.left)+"px";
 	        player.img.style.transitionDuration = "1s";	
         break;
         case 'left': 
-        	player.left -=enter.offsetWidth; //le quita al left actual el tamano de la celda
-	        player.img.style.left = (player.left)+"px";
+        	player.left -=cellCS.width; //le quita al left actual el tamano de la celda
+	        player.img.style.left = (player.left);+"px";
 
 
 	        player.img.style.transitionDuration = "1s";
         break;
         case 'up':
-        	player.top -= enter.offsetHeight;
+        	player.top -= cellCS.height;
         	player.img.style.top = (player.top)+"px";
         	player.img.style.transitionDuration = "1s";
     	break;
     	case 'down':
-    		player.top += enter.offsetHeight;
+    		player.top += cellCS.height;
         	player.img.style.top = (player.top)+"px";
         	player.img.style.transitionDuration = "1s";
 		break;
@@ -888,10 +891,7 @@ function verifyIndebtedness(){
 			this.activePlayer.indebtedness = 0;
 			updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer.number);
 			updateRichness(this.activePlayer.richness, this.activePlayer.number);
-			var initialButton = document.getElementById('statusButton');
-			var finishButton = document.getElementById('endTurn');
-			initialButton.disabled = false;
-			finishButton.disabled = false;
+            enableEndTurnButton();
 			alert('Puede seguir jugando, ya no tiene deudas');
 			for(var counter = 0; counter < this.activePlayers.length; ++counter){
 				//buscar a quién hay que pagar
@@ -904,6 +904,9 @@ function verifyIndebtedness(){
 		}else{
 			alert('Necesita más efectivo');
 		}
+	} else 
+	{
+	    enableEndTurnButton();
 	}
 		
 }
@@ -988,10 +991,19 @@ function gameOver(){
  Funcion que permite habilitar el boton de terminar partida
  **/
 function enableEndTurnButton(){
-    var button = document.createElement("button");
+    var button = document.getElementById("endTurn");
+    if (button == null){
+    button = document.createElement("button");
     button.id = "endTurn";
     button.innerText = "Terminar turno";
     button.onclick=changeTurn;
+    upperSpace.appendChild(button);
+        
+    }
+    else 
+    {
+        button.style.display = "initial";
+    }
 	//button.style.display = "none";
 }
 
@@ -1009,7 +1021,10 @@ function changeTurn(){
    	if(activePlayer.index == activePlayers.length-1 ){
    	    activePlayer = activePlayers[0];
    	} else
-   	activePlayer = activePlayers[activePlayer.index+1];
+   	{
+   	    activePlayer = activePlayers[activePlayer.index+1];
+   	}
+   	enableDiceRoll();
 }
 
 
@@ -1036,6 +1051,42 @@ function initialize(){
 
 }
 
+function addTokenOnProperty(){
+    
+    var divPosition = document.getElementById(activePlayer.position);
+    var children = divPosition.childNodes;
+    
+    divPosition.appendChild(activePlayer.img);
+}
 
+
+function verifyRichness(){
+    if(activePlayer.richness<=0 || activePlayer.indebtness > activePlayer.richness){
+        alert(activePlayer.name +" no tiene suficiente riqueza para seguir jugando. Se elimina del juego");
+        removeFromActivePlayers();
+    }
+}
 fillProperties();
 fillBoard();
+//TODO metodo para asegurarse que las propiedades del jugador eliminado pasen a ser del banco
+
+/***
+ * 
+ * Logica del juego
+ * 
+ * despues de mover 
+ * fallBox
+ *      meter caso silla caliente
+ * 
+ *      meter caso cueva
+ * 
+ * cambio de turno
+ *      deshabilitar propiedades
+* cuando se elimina jugador 
+*       eliminar propiedades 
+* corregir mover 
+* corregir updates joel
+* 
+ * habilitar boton terminar turno
+ * 
+ * **/
