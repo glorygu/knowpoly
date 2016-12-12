@@ -555,7 +555,6 @@ function sellConstruction(){
     //Get next sibbling to change its enable status.
     //CHECK IF SIBBLING EXISTS
     var nextButton =this.nextSibling;
-    alert(nextButton.innerHTML);
 
 
 }
@@ -604,7 +603,7 @@ function sellProperty(){
 
     //VER SI SE RESTA RICHNESS O SUMA VER VER VER VER VER VER VER
     updateLiquidCash(  window.activePlayers[p].liquidCash,window.activePlayer.number);
-
+    verifyIndebtedness();
 }
 
 function buyProperty(){
