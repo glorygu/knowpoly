@@ -195,11 +195,8 @@ function showQuestionPrize(questionNumber) {
 
 function verifyAnswer(questionNumber) {
 	//Iterate through activeplayers.
-	for(var x in this.activePlayers){
-		alert(this.activePlayers[x].number);
 
-	}
-    var questionAnswer = this.questions['web'][questionNumber]['answer'];
+    var questionAnswer = window.questions['web'][questionNumber]['answer'];
     //Get user-selected answer
     var selectedAnswer = document.querySelector('input[name = "options"]:checked').value;
     var correctness = 0;
@@ -215,17 +212,15 @@ function verifyAnswer(questionNumber) {
     var updatedCash = null;
 		var updatedRichness = null;
 
-    for (var p in this.activePlayers) { // Iterate through palyers array
-        if (this.activePlayers[p].number == this.activePlayer["number"]) { //When we find our player
-					var playerLiquidCash = this.activePlayers[p].liquidCash; //Get his/her liquid cash
-					var playerRichness = this.activePlayers[p].richness; //Get his/her liquid cash
+					var playerLiquidCash = window.activePlayer.liquidCash; //Get his/her liquid cash
+					var playerRichness = window.activePlayer.richness; //Get his/her liquid cash
 
-            if (correctness === 0 && playerLiquidCash > amount / 2) { //If the answer was wrong and he/she has money left (no negative cash)
+            if (correctness == 0 && playerLiquidCash > amount / 2) { //If the answer was wrong and he/she has money left (no negative cash)
                 updatedCash = playerLiquidCash - (amount / 2);
 								updatedRichness = playerRichness - (amount / 2);
                 //Updates the view
             } else {
-                if (correctness === 1) { //If aswer is right add due amount
+                if (correctness == 1) { //If aswer is right add due amount
                     updatedCash = playerLiquidCash + amount;
 										updatedRichness = playerRichness + amount;
 
@@ -235,12 +230,12 @@ function verifyAnswer(questionNumber) {
                 }
 
             }
-						this.activePlayers[p].liquidCash = updatedCash;
-						this.activePlayers[p].richness = updatedRichness; // Substract due amount.
+						window.activePlayer.liquidCash = updatedCash;
+						window.activePlayer.richness = updatedRichness; // Substract due amount.
 						updateLiquidCash(updatedCash, this.activePlayer);
 						updateRichness(updatedRichness, this.activePlayer);
-        }
-    }
+
+
 }
 
 /*This funcion ONLY UPDATES in  the view, not the logic*/
@@ -514,7 +509,6 @@ function fallBox() {
                         button = representationProperty.getElementsByClassName('propertyBuy');
                         button[0].style.opacity = '0.99';
                         button[0].disabled = false;
-                        //buttonBuyProperty.style.display = "none";
                     }
                 //}
             } else {
@@ -532,7 +526,7 @@ function fallBox() {
       default:
            //showImage
             var img = document.getElementById("silla");
-            img.display="inline";
+            img.display="inline-block";
 
             var optionsPlaceDiv = document.getElementById("optionsPlace");
             optionsPlaceDiv.display= "inline-block";
@@ -656,6 +650,8 @@ function sellProperty(){
     if(cfm  && housesCount == 0){
         var propertyId = this.parentNode.parentNode.id; //From HTML
         var propertyHeaderDiv = this.parentNode;
+        var propertyBottomDiv = (this.parentNode.parentNode).getElementsByClassName('bottom'); //RETURNS ARRAY
+
         var saleAmount = window.properties[propertyId].propertySell;//Cost of selling property
         //Update  active Player's money
         window.activePlayer.liquidCash += saleAmount;
@@ -672,6 +668,10 @@ function sellProperty(){
         sellButton[0].style.opacity='0.30';
         sellButton[0].disabled=true;
         propertyHeaderDiv.style.backgroundColor="gray";
+        propertyBottomDiv[0].style.backgroundColor="gray";
+
+
+
         //Me must enable the buy button if player has enough money
         if(window.activePlayer.liquidCash > saleAmount){
           buyButton[0].style.opacity='1';
