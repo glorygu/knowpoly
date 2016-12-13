@@ -3,8 +3,8 @@
 
 
 }
-img{
-
+h1{
+ font-size: 1em;
 }
 
 .playerToken {
@@ -72,6 +72,7 @@ margin-top: 1em;
 	margin-top: 1em;
 	margin-bottom: : 1em;
 }
+/*
 #optionsPlace{
 	background-color: rgba(192,192,192,0.3);
 	text-align: left;
@@ -81,17 +82,12 @@ margin-top: 1em;
 	padding-bottom: 1.5em;
 	float: right;
 	max-height: 50%;
-	display: none; /*inline-block*/
-
+	display: inline-block;
 }
-
-
-#mainContainer{
-
-}
-
-#dice{
-
+*/
+#optionsPlace{
+	background-color: rgba(192,192,192,0.3);
+  max-height: 75%;
 }
 
 #lowerSpace #statusGame{
@@ -119,7 +115,7 @@ margin-top: 1em;
 	height: 50%;
 	padding-bottom: 50%;
 	font-size: 2em;
-		display: inline-block
+	display: inline-block
 }
 
 #name1, #name2, #name3, #name4, .count{
@@ -179,6 +175,10 @@ margin-top: 1em;
 
 p{
 	display: inline-block;
+}
+
+.title{
+	display:block;
 }
  #playerIcon4 {
 

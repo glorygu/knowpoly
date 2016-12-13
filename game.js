@@ -429,6 +429,8 @@ function drawBottomTable(element) {
         button = document.createElement('button');
         button.disabled = true;
         button.className = 'btnLodgement';
+        button.setAttribute("data-pos",c);
+
         txt = document.createTextNode((this.properties[element.id])[string]);
         button.appendChild(txt);
         buttonDiv[0].appendChild(button);
@@ -502,21 +504,51 @@ function fallBox() {
     var dataProperty = this.properties[this.activePlayer.position];
     var button;
 
-	//preguntar si la propiedad fue vendida
-    if (dataProperty.isSold == false) {
+    switch(dataProperty.type){
+      case "property":
+            if (dataProperty.isSold == false) {
 
 
-            if (activePlayer.liquidCash > dataProperty.propertyBuy) {
-                //alert(activePlayer.name + " ha comprado la propiedad " + dataProperty.name);
-                button = representationProperty.getElementsByClassName('propertyBuy');
-                button[0].style.opacity = '0.99';
-                button[0].disabled = false;
-                //buttonBuyProperty.style.display = "none";
+                    if (activePlayer.liquidCash > dataProperty.propertyBuy) {
+                        //alert(activePlayer.name + " ha comprado la propiedad " + dataProperty.name);
+                        button = representationProperty.getElementsByClassName('propertyBuy');
+                        button[0].style.opacity = '0.99';
+                        button[0].disabled = false;
+                        //buttonBuyProperty.style.display = "none";
+                    }
+                //}
+            } else {
+                selectAction();
             }
-        //}
-    } else {
-        selectAction();
+      break;
+
+      case "cave":
+      break;
+
+      case "entry":
+      break;
+
+      case "hotChair":
+      default:
+           //showImage
+            var img = document.getElementById("silla");
+            img.display="inline";
+
+            var optionsPlaceDiv = document.getElementById("optionsPlace");
+            optionsPlaceDiv.display= "inline-block";
+            //Show question
+
+            var questionNumber =  Math.floor(Math.random() * 64);
+            window.showQuestion(questionNumber);
+            window.showOptions(questionNumber);
+            window.showQuestionPrize(questionNumber);
+
+
+      break;
+
     }
+	//preguntar si la propiedad fue vendida
+
 }
 
 //funcion para colocar boton terminar en tablero y hacerlo funcional
@@ -543,6 +575,7 @@ function sellConstruction(){
     var buyAmount = window.properties[propertyId].houseBuy;//Cost of selling a house
 
     //Decrement houses on property
+
     //Change from sell actions to buy actions
     this.innerHTML = buyAmount;
     this.style.textDecoration="none";
@@ -553,25 +586,46 @@ function sellConstruction(){
 
     //Get all buttons
     var allBtns = propertyBottonDiv.getElementsByClassName("btnActionHouse");
+    var allBtnsLodg =  propertyBottonDiv.getElementsByClassName("btnLodgement");
     var buttonIndex = this.dataset.pos;
-    //allBtns[currentProperty.countHouses - 1].style.backgroundColor = "black"; //button of last constructed house
-    var n = parseInt(buttonIndex)+1; //EL mas concatena yno suma..  hay que parsearlo...
-    var nextButton = allBtns[n];
-    var prevButton =  allBtns[buttonIndex-1];
 
+    //Disable current lodgment button
+    allBtnsLodg[buttonIndex].disabled=true;
+    allBtnsLodg[buttonIndex].style.opacity = '0.3';
+
+    var nextButton =  null;
+    var prevButton = null;
+    var prevButtonLod=null;
+    prevButtonLod = allBtnsLodg[buttonIndex-1];
+
+          prevButtonLod.disabled = false;
+          prevButtonLod.style.opacity = '0.9';
     if(buttonIndex-1 !=0){
+
+      prevButton = allBtns[buttonIndex-1];
+
       prevButton.disabled = false;
       prevButton.style.opacity = '0.9';
       prevButton.innerHTML = saleAmount;
       prevButton.style.textDecoration='line-through';
       prevButton.onClick=sellConstruction;
 
+
+
     }
 
-    nextButton.disabled = true;
-    nextButton.style.opacity = '0.30';
-    nextButton.style.textDecoration='none';
-    currentProperty.houses-=1;
+    if(buttonIndex+1 !=6){
+      var n = parseInt(buttonIndex)+1; //EL mas concatena yno suma..  hay que parsearlo...
+      nextButton = allBtns[n];
+      nextButton.disabled = true;
+      nextButton.style.opacity = '0.30';
+      nextButton.style.textDecoration='none';
+    }
+
+    currentProperty.countHouses-=1;
+
+    //move Lodgments?
+
 
     window.updateLiquidCash(window.activePlayer.liquidCash , window.activePlayer);
     verifyIndebtedness();
