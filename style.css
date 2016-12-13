@@ -28,7 +28,8 @@ img{
 
 #silla{
 padding-left: 2em;
-float: left;;
+float: left;
+display: none;
 
 }
 #questionStatement, #priceText{
@@ -80,7 +81,7 @@ margin-top: 1em;
 	padding-bottom: 1.5em;
 	float: right;
 	max-height: 50%;
-	display: inline-block;
+	display: none; /*inline-block*/
 
 }
 
@@ -169,7 +170,7 @@ margin-top: 1em;
 }
 
 #playerIcon3{
-	
+
 	position: absolute;
 	bottom: 1%;
 	left: 10%;
@@ -180,7 +181,7 @@ p{
 	display: inline-block;
 }
  #playerIcon4 {
-	
+
 	position: absolute;
 	bottom: 1%;
 	left: 60%;
@@ -320,7 +321,7 @@ button{
 	.player1 p, .player2 p, .player3 p, .player4 p{
 		font-size: 18px;
 	}
-  
+
 	.buttomHouse, .buttomHouseU{
 		font-size: 10px;
 	}
@@ -366,11 +367,11 @@ button{
 }
 
 #gameOverMsg{
-	
+
 	width: 60%;
 	position: absolute;
     top: 50%;
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%)
-} 
+}
