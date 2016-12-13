@@ -3,8 +3,8 @@
 
 
 }
-img{
-
+h1{
+ font-size: 1em;
 }
 
 .playerToken {
@@ -27,19 +27,20 @@ img{
 
 
 #silla{
-padding-left: 2em;
-float: left;;
-
+	padding-left: 2em;
+	float: left;
+	display: none;
 }
+
 #questionStatement, #priceText{
 	font-size: 1.5em;
 	color:#607B8B;
 	text-align: center;
-padding: 0 1em 0 1em;
+	padding: 0 1em 0 1em;
 }
-#priceText{
-color: rgba(255,0,0,0.7);
 
+#priceText{
+	color: rgba(255,0,0,0.7);
 }
 
 .title{
@@ -71,6 +72,7 @@ margin-top: 1em;
 	margin-top: 1em;
 	margin-bottom: : 1em;
 }
+/*
 #optionsPlace{
 	background-color: rgba(192,192,192,0.3);
 	text-align: left;
@@ -81,17 +83,13 @@ margin-top: 1em;
 	float: right;
 	max-height: 50%;
 	display: inline-block;
-
+}
+*/
+#optionsPlace{
+	background-color: rgba(192,192,192,0.3);
+  max-height: 75%;
 }
 
-
-#mainContainer{
-
-}
-
-#dice{
-
-}
 
 #lowerSpace #statusGame{
 	font-align: end;
@@ -118,7 +116,7 @@ margin-top: 1em;
 	height: 50%;
 	padding-bottom: 50%;
 	font-size: 2em;
-		display: inline-block
+	display: inline-block
 }
 
 #name1, #name2, #name3, #name4, .count{
@@ -169,7 +167,7 @@ margin-top: 1em;
 }
 
 #playerIcon3{
-	
+
 	position: absolute;
 	bottom: 1%;
 	left: 10%;
@@ -179,8 +177,12 @@ margin-top: 1em;
 p{
 	display: inline-block;
 }
+
+.title{
+	display:block;
+}
  #playerIcon4 {
-	
+
 	position: absolute;
 	bottom: 1%;
 	left: 60%;
@@ -298,6 +300,12 @@ button{
 	font-weight: lighter;;
 
 }
+
+#statusButton{
+	float:right;
+	margin-top: 30%;
+}
+
 #enter, #property1, #property2, #property3, #property4, #property5, #property6, #property7, #property8, #property9, #chair1,#property10, #property11, #property12, #chair2, #curve{
 	width: calc(100%/6 - 2px);
 	background-color: rgb(196,215,196);
@@ -320,7 +328,7 @@ button{
 	.player1 p, .player2 p, .player3 p, .player4 p{
 		font-size: 18px;
 	}
-  
+
 	.buttomHouse, .buttomHouseU{
 		font-size: 10px;
 	}
@@ -366,11 +374,11 @@ button{
 }
 
 #gameOverMsg{
-	
+
 	width: 60%;
 	position: absolute;
     top: 50%;
     left: 50%;
     margin-right: -50%;
     transform: translate(-50%, -50%)
-} 
+}
