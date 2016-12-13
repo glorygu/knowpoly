@@ -809,8 +809,12 @@ function paintLodgementPart(representationProperty, dataProperty) {
 		buttonBuy[dataProperty.countHouses].onclick = sellConstruction;
 		buttonBuy[dataProperty.countHouses].innerText = dataProperty.houseSell;
 		buttonBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
-		buttonBuy[dataProperty.countHouses+1].style.opacity = '0.99';
-        buttonBuy[dataProperty.countHouses+1].disabled = false;
+		if(dataProperty,countHouses == 5){
+			buttonBuy[dataProperty.countHouses].style.backgroundColor = 'red';
+		}else{
+			buttonBuy[dataProperty.countHouses+1].style.opacity = '0.99';
+			buttonBuy[dataProperty.countHouses+1].disabled = false;
+		}
 		buttonLodgement[dataProperty.countHouses-1].style.opacity = '0.30';
 		buttonBuy[dataProperty.countHouses-1].style.opacity = '0.30';
         buttonBuy[dataProperty.countHouses-1].disabled = true;
@@ -948,7 +952,7 @@ function createBuilding(){
 	var topButtons, downButtons;
 	topButtons = container.getElementsByClassName('btnActionHouse');
 	downButtons = container.getElementsByClassName('btnLodgement');
-	if(dataProperty.countHouses < 5 && window.activePlayer.liquidCash > dataProperty.houseBuy){
+	if(dataProperty.countHouses < 6 && window.activePlayer.liquidCash > dataProperty.houseBuy){
 		window.activePlayer.liquidCash -= dataProperty.houseBuy;
 		window.activePlayer.richness -= dataProperty.houseBuy;
 		window.activePlayer.richness += dataProperty.houseSell;
