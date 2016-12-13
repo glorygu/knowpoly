@@ -610,8 +610,6 @@ function sellConstruction(){
       prevButton.style.textDecoration='line-through';
       prevButton.onClick=sellConstruction;
 
-
-
     }
 
     if(buttonIndex+1 !=6){
