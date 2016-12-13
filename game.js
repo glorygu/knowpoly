@@ -510,8 +510,9 @@ function fallBox() {
                         button[0].style.opacity = '0.99';
                         button[0].disabled = false;
                     }
-                //}
+
             } else {
+
                 selectAction();
             }
       break;
@@ -645,6 +646,8 @@ property I intent to sell is not the same as the one Im positioned*/
 function sellProperty(){
     // Prompt a message of confirmation
 
+
+    //
     var cfm = confirm("¿Desea vender esta propiedad?");
     var housesCount = window.properties[this.parentNode.parentNode.id].countHouses;
     if(cfm  && housesCount == 0){
@@ -727,8 +730,10 @@ function buyProperty(){
 function selectAction(){
 
 	if(this.properties.hasOwnProperty(this.activePlayer.position) == true){
+
 		var property = this.properties[this.activePlayer.position];
 		if(property.owner != this.activePlayer.number){
+      alert("Cayó en propiedad privada, tiene que pagar!");
 			payLodgement();
 		}
 	}
@@ -1136,7 +1141,28 @@ function changeTurn(){
    	{
    	    activePlayer = activePlayers[activePlayer.index+1];
    	}
+    //Disable all buttons!
+    disableAll();
    	enableDiceRoll();
+}
+
+function disableAll(){
+  /*var headerDiv = document.getElementById(prop).getElementsByClassName("header");
+  headerDiv.getElementsByClassName();*/
+  var btn = [];
+   btn.push(document.getElementsByClassName("propertyBuy"));
+    btn.push(document.getElementsByClassName("propertySell"));
+    btn.push(document.getElementsByClassName("btnActionHouse"));
+    btn.push(document.getElementsByClassName("btnLodgement"));
+   for(var x in btn){
+        for(var i = 0 ; i < btn[x].length; ++i){
+          btn[x][i].disabled = true;
+          btn[x][i].style.opacity = '0.3';
+
+        }
+   }
+
+
 }
 
 
