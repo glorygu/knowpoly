@@ -429,6 +429,8 @@ function drawBottomTable(element) {
         button = document.createElement('button');
         button.disabled = true;
         button.className = 'btnLodgement';
+        button.setAttribute("data-pos",c);
+
         txt = document.createTextNode((this.properties[element.id])[string]);
         button.appendChild(txt);
         buttonDiv[0].appendChild(button);
@@ -502,21 +504,51 @@ function fallBox() {
     var dataProperty = this.properties[this.activePlayer.position];
     var button;
 
-	//preguntar si la propiedad fue vendida
-    if (dataProperty.isSold == false) {
+    switch(dataProperty.type){
+      case "property":
+            if (dataProperty.isSold == false) {
 
 
-            if (activePlayer.liquidCash > dataProperty.propertyBuy) {
-                //alert(activePlayer.name + " ha comprado la propiedad " + dataProperty.name);
-                button = representationProperty.getElementsByClassName('propertyBuy');
-                button[0].style.opacity = '0.99';
-                button[0].disabled = false;
-                //buttonBuyProperty.style.display = "none";
+                    if (activePlayer.liquidCash > dataProperty.propertyBuy) {
+                        //alert(activePlayer.name + " ha comprado la propiedad " + dataProperty.name);
+                        button = representationProperty.getElementsByClassName('propertyBuy');
+                        button[0].style.opacity = '0.99';
+                        button[0].disabled = false;
+                        //buttonBuyProperty.style.display = "none";
+                    }
+                //}
+            } else {
+                selectAction();
             }
-        //}
-    } else {
-        selectAction();
+      break;
+
+      case "cave":
+      break;
+
+      case "entry":
+      break;
+
+      case "hotChair":
+      default:
+           //showImage
+            var img = document.getElementById("silla");
+            img.display="inline";
+
+            var optionsPlaceDiv = document.getElementById("optionsPlace");
+            optionsPlaceDiv.display= "inline-block";
+            //Show question
+
+            var questionNumber =  Math.floor(Math.random() * 64);
+            window.showQuestion(questionNumber);
+            window.showOptions(questionNumber);
+            window.showQuestionPrize(questionNumber);
+
+
+      break;
+
     }
+	//preguntar si la propiedad fue vendida
+
 }
 
 //funcion para colocar boton terminar en tablero y hacerlo funcional
@@ -543,6 +575,7 @@ function sellConstruction(){
     var buyAmount = window.properties[propertyId].houseBuy;//Cost of selling a house
 
     //Decrement houses on property
+
     //Change from sell actions to buy actions
     this.innerHTML = buyAmount;
     this.style.textDecoration="none";
@@ -553,13 +586,24 @@ function sellConstruction(){
 
     //Get all buttons
     var allBtns = propertyBottonDiv.getElementsByClassName("btnActionHouse");
+    var allBtnsLodg =  propertyBottonDiv.getElementsByClassName("btnLodgement");
     var buttonIndex = this.dataset.pos;
-    //allBtns[currentProperty.countHouses - 1].style.backgroundColor = "black"; //button of last constructed house
-    var n = parseInt(buttonIndex)+1; //EL mas concatena yno suma..  hay que parsearlo...
-    var nextButton = allBtns[n];
-    var prevButton =  allBtns[buttonIndex-1];
 
+    //Disable current lodgment button
+    allBtnsLodg[buttonIndex].disabled=true;
+    allBtnsLodg[buttonIndex].style.opacity = '0.3';
+
+    var nextButton =  null;
+    var prevButton = null;
+    var prevButtonLod=null;
+    prevButtonLod = allBtnsLodg[buttonIndex-1];
+
+          prevButtonLod.disabled = false;
+          prevButtonLod.style.opacity = '0.9';
     if(buttonIndex-1 !=0){
+
+      prevButton = allBtns[buttonIndex-1];
+
       prevButton.disabled = false;
       prevButton.style.opacity = '0.9';
       prevButton.innerHTML = saleAmount;
@@ -568,34 +612,54 @@ function sellConstruction(){
 
     }
 
-    nextButton.disabled = true;
-    nextButton.style.opacity = '0.30';
-    nextButton.style.textDecoration='none';
-    currentProperty.houses-=1;
+    if(parseInt(buttonIndex)+1 !=6){
+      var n = parseInt(buttonIndex)+1; //EL mas concatena yno suma..  hay que parsearlo...
+      nextButton = allBtns[n];
+      nextButton.disabled = true;
+      nextButton.style.opacity = '0.30';
+      nextButton.style.textDecoration='none';
+    }
+
+    currentProperty.countHouses-=1;
+
+    //move Lodgments?
+
 
     window.updateLiquidCash(window.activePlayer.liquidCash , window.activePlayer);
     verifyIndebtedness();
 
 }
 
+function disableAllBtmBtns(propDiv){
+  var bottomDiv = propDiv.children;
+  var btns = bottomDiv[2].getElementsByClassName("btnLodgement");
+  for(var x= 0; x< 3 ; ++ x){
+    btns[x].disabled=true;
+    btns[x].style.opacity="0.3";
+  }
+  btns = bottomDiv[2].getElementsByClassName("btnActionHouse");
+  for(var x= 0; x< 3 ; ++ x){
+    btns[x].disabled=true;
+      btns[x].style.opacity="0.3";
+  }
+}
+
+
+
 /*If it's my turn, I can sell any property I have. Doesn't matter if the
 property I intent to sell is not the same as the one Im positioned*/
 function sellProperty(){
     // Prompt a message of confirmation
-    //REMOVEREMOVE REMOVE REMOVEREMOVE
-      activePlayer=window.activePlayers[0];
-    //REMOVE REMOVE REMOVE
+
     var cfm = confirm("¿Desea vender esta propiedad?");
-    if(cfm){
+    var housesCount = window.properties[this.parentNode.parentNode.id].countHouses;
+    if(cfm  && housesCount == 0){
         var propertyId = this.parentNode.parentNode.id; //From HTML
         var propertyHeaderDiv = this.parentNode;
         var saleAmount = window.properties[propertyId].propertySell;//Cost of selling property
         //Update  active Player's money
-        for(var p in window.activePlayers){
-            if(window.activePlayers[p].number == window.activePlayer.number ){ //Finde the activePlayer in my activePLayers Array
-              window.activePlayers[p].liquidCash += saleAmount;
-            }
-        }
+        window.activePlayer.liquidCash += saleAmount;
+
         //mark property as bank's
         window.properties[propertyId].owner = "Bank";
         window.properties[propertyId].isSold = false;
@@ -607,9 +671,9 @@ function sellProperty(){
 
         sellButton[0].style.opacity='0.30';
         sellButton[0].disabled=true;
-        propertyHeaderDiv.backgroundColor="gray";
+        propertyHeaderDiv.style.backgroundColor="gray";
         //Me must enable the buy button if player has enough money
-        if(activePlayer.liquidCash > saleAmount){
+        if(window.activePlayer.liquidCash > saleAmount){
           buyButton[0].style.opacity='1';
           buyButton[0].disabled=false;
 
@@ -617,12 +681,16 @@ function sellProperty(){
           buyButton[0].style.opacity='0.30';
           buyButton[0].disabled=true;
         }
+        disableAllBtmBtns(this.parentNode.parentNode);
+        updateLiquidCash(  window.activePlayer.liquidCash,window.activePlayer);
+        verifyIndebtedness();
+    }else{
+      confirm("Lo sentimos, no la puede vender. Verifique que no tenga construcciones. ");
+
 
     }
 
-    //VER SI SE RESTA RICHNESS O SUMA VER VER VER VER VER VER VER
-    updateLiquidCash(  window.activePlayers[p].liquidCash,window.activePlayer);
-    verifyIndebtedness();
+
 }
 function buyProperty(){
 
