@@ -612,7 +612,7 @@ function sellConstruction(){
 
     }
 
-    if(buttonIndex+1 !=6){
+    if(parseInt(buttonIndex)+1 !=6){
       var n = parseInt(buttonIndex)+1; //EL mas concatena yno suma..  hay que parsearlo...
       nextButton = allBtns[n];
       nextButton.disabled = true;
@@ -630,24 +630,36 @@ function sellConstruction(){
 
 }
 
+function disableAllBtmBtns(propDiv){
+  var bottomDiv = propDiv.children;
+  var btns = bottomDiv[2].getElementsByClassName("btnLodgement");
+  for(var x= 0; x< 3 ; ++ x){
+    btns[x].disabled=true;
+    btns[x].style.opacity="0.3";
+  }
+  btns = bottomDiv[2].getElementsByClassName("btnActionHouse");
+  for(var x= 0; x< 3 ; ++ x){
+    btns[x].disabled=true;
+      btns[x].style.opacity="0.3";
+  }
+}
+
+
+
 /*If it's my turn, I can sell any property I have. Doesn't matter if the
 property I intent to sell is not the same as the one Im positioned*/
 function sellProperty(){
     // Prompt a message of confirmation
-    //REMOVEREMOVE REMOVE REMOVEREMOVE
-      activePlayer=window.activePlayers[0];
-    //REMOVE REMOVE REMOVE
+
     var cfm = confirm("¿Desea vender esta propiedad?");
-    if(cfm){
+    var housesCount = window.properties[this.parentNode.parentNode.id].countHouses;
+    if(cfm  && housesCount == 0){
         var propertyId = this.parentNode.parentNode.id; //From HTML
         var propertyHeaderDiv = this.parentNode;
         var saleAmount = window.properties[propertyId].propertySell;//Cost of selling property
         //Update  active Player's money
-        for(var p in window.activePlayers){
-            if(window.activePlayers[p].number == window.activePlayer.number ){ //Finde the activePlayer in my activePLayers Array
-              window.activePlayers[p].liquidCash += saleAmount;
-            }
-        }
+        window.activePlayer.liquidCash += saleAmount;
+
         //mark property as bank's
         window.properties[propertyId].owner = "Bank";
         window.properties[propertyId].isSold = false;
@@ -659,9 +671,9 @@ function sellProperty(){
 
         sellButton[0].style.opacity='0.30';
         sellButton[0].disabled=true;
-        propertyHeaderDiv.backgroundColor="gray";
+        propertyHeaderDiv.style.backgroundColor="gray";
         //Me must enable the buy button if player has enough money
-        if(activePlayer.liquidCash > saleAmount){
+        if(window.activePlayer.liquidCash > saleAmount){
           buyButton[0].style.opacity='1';
           buyButton[0].disabled=false;
 
@@ -669,12 +681,16 @@ function sellProperty(){
           buyButton[0].style.opacity='0.30';
           buyButton[0].disabled=true;
         }
+        disableAllBtmBtns(this.parentNode.parentNode);
+        updateLiquidCash(  window.activePlayer.liquidCash,window.activePlayer);
+        verifyIndebtedness();
+    }else{
+      confirm("Lo sentimos, no la puede vender. Verifique que no tenga construcciones. ");
+
 
     }
 
-    //VER SI SE RESTA RICHNESS O SUMA VER VER VER VER VER VER VER
-    updateLiquidCash(  window.activePlayers[p].liquidCash,window.activePlayer);
-    verifyIndebtedness();
+
 }
 function buyProperty(){
 
@@ -807,7 +823,7 @@ function paintLodgementPart(representationProperty, dataProperty) {
 		buttonBuy[dataProperty.countHouses].onclick = sellConstruction;
 		buttonBuy[dataProperty.countHouses].innerText = dataProperty.houseSell;
 		buttonBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
-		if(dataProperty,countHouses == 5){
+		if(dataProperty.countHouses == 5){
 			buttonBuy[dataProperty.countHouses].style.backgroundColor = 'red';
 		}else{
 			buttonBuy[dataProperty.countHouses+1].style.opacity = '0.99';
