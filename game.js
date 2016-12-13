@@ -966,7 +966,7 @@ function createBuilding(){
 	var topButtons, downButtons;
 	topButtons = container.getElementsByClassName('btnActionHouse');
 	downButtons = container.getElementsByClassName('btnLodgement');
-	if(dataProperty.countHouses < 6 && window.activePlayer.liquidCash > dataProperty.houseBuy){
+	if(dataProperty.countHouses < 5 && window.activePlayer.liquidCash > dataProperty.houseBuy){
 		window.activePlayer.liquidCash -= dataProperty.houseBuy;
 		window.activePlayer.richness -= dataProperty.houseBuy;
 		window.activePlayer.richness += dataProperty.houseSell;
