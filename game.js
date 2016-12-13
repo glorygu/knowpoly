@@ -1004,7 +1004,7 @@ function gameOver(){
         var buttonStartOver = document.createElement("button");
         buttonStartOver.id = "startOver";
         buttonStartOver.innerText = "Empezar juego nuevo";
-        buttonStartOver.onclick = initialize;
+        buttonStartOver.onclick = function(){window.location.reload();};
         divGameOver.appendChild(buttonStartOver);
     	container.appendChild(divGameOver);
     	//divGameOver.appendChild(msg);
