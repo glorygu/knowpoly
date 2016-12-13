@@ -27,20 +27,20 @@ h1{
 
 
 #silla{
-padding-left: 2em;
-float: left;
-display: none;
-
+	padding-left: 2em;
+	float: left;
+	display: none;
 }
+
 #questionStatement, #priceText{
 	font-size: 1.5em;
 	color:#607B8B;
 	text-align: center;
-padding: 0 1em 0 1em;
+	padding: 0 1em 0 1em;
 }
-#priceText{
-color: rgba(255,0,0,0.7);
 
+#priceText{
+	color: rgba(255,0,0,0.7);
 }
 
 .title{
@@ -300,6 +300,12 @@ button{
 	font-weight: lighter;;
 
 }
+
+#statusButton{
+	float:right;
+	margin-top: 30%;
+}
+
 #enter, #property1, #property2, #property3, #property4, #property5, #property6, #property7, #property8, #property9, #chair1,#property10, #property11, #property12, #chair2, #curve{
 	width: calc(100%/6 - 2px);
 	background-color: rgb(196,215,196);

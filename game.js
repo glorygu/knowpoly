@@ -476,7 +476,7 @@ function addPlayer(playerNumber){
 	 				if(activePlayers.length==2)
 	 				{//si hay mas de dos jugadores
                         console.log("entrando a start");
-						enableStartButton();
+						createStatusButton();
 	 				}
 				}
  			}
@@ -493,7 +493,7 @@ function none(){
 //metodo para decidir que hacer al caer en una propiedad
 function fallBox() {
 
-
+	paintProperties();
     //this.activePlayer.position = 'property1';
     var representationProperty = document.getElementById(this.activePlayer.position);
     var dataProperty = this.properties[this.activePlayer.position];
@@ -542,7 +542,7 @@ function fallBox() {
       break;
 
     }
-	//preguntar si la propiedad fue vendida
+	changeStatusButton();
 
 }
 
@@ -618,10 +618,17 @@ function sellConstruction(){
     currentProperty.countHouses-=1;
 
     //move Lodgments?
-
+	 if (currentProperty.countHouses == 0) {
+            var button = this.parentNode.parentNode.getElementsByClassName('propertySell');
+            button[0].style.opacity = '0.99';
+            button[0].style.backgroundColor = '#7EB5EB';
+            button[0].style.border = '1px solid'
+            button[0].disabled = false;
+    }
 
     window.updateLiquidCash(window.activePlayer.liquidCash , window.activePlayer);
     verifyIndebtedness();
+	
 
 }
 
@@ -733,11 +740,11 @@ function selectAction(){
 
 		var property = this.properties[this.activePlayer.position];
 		if(property.owner != this.activePlayer.number){
-      alert("Cayó en propiedad privada, tiene que pagar!");
+			alert("Cayó en propiedad privada, tiene que pagar!");
 			payLodgement();
 		}
 	}
-		paintProperties();
+		//paintProperties();
 }
 
 //pagar hospedaje
@@ -811,6 +818,7 @@ function paintProperties() {
 function paintLodgementPart(representationProperty, dataProperty) {
     var buttonBuy = representationProperty.getElementsByClassName('btnActionHouse');
 	var buttonLodgement;
+	
 	if(dataProperty.countHouses == 0){
 		buttonBuy[dataProperty.countHouses].style.opacity = '0.30';
         buttonBuy[dataProperty.countHouses].disabled = true;
@@ -821,6 +829,11 @@ function paintLodgementPart(representationProperty, dataProperty) {
 		buttonLodgement = representationProperty.getElementsByClassName('btnLodgement');
 		buttonLodgement[dataProperty.countHouses].style.opacity = '0.99';
 	}else{
+		if(dataProperty.countHouses == 1){
+			button = representationProperty.getElementsByClassName('propertySell');
+            button[0].style.opacity = '0.30';
+			button[0].disabled = true;
+		}
 		buttonLodgement = representationProperty.getElementsByClassName('btnLodgement');
 		buttonLodgement[dataProperty.countHouses].style.opacity = '0.99';
 		buttonBuy[dataProperty.countHouses].style.opacity = '0.99';
@@ -857,13 +870,16 @@ function getPropertyById(propId){
 }*/
 /***** inicia juego ***/
 function startGame(){
-	var button = document.getElementById("startButton");
-	button.style.display = "none";
-	console.log("bebes jugadores " + activePlayers[0]);
-
+	var button = document.getElementById("statusButton");
+	//button.style.display = "none";
+	button.innerText = 'Terminar turno';
+	button.onclick = changeTurn;
+	button.disable = true;
+	button.style.opacity = '0.30';
+	console.log("bebs jugadores " + activePlayers[0]);
 	activePlayer = activePlayers[0];
 	console.log("currrrent" + activePlayer.position);
-	alert("Comencemos a jugar. Empieza el turno de" + activePlayer.name );
+	alert("Comencemos a jugar. Empieza el turno de " + activePlayer.name );
 
 	addingPlayers = false;
 	showDice();
@@ -983,18 +999,42 @@ function createBuilding(){
 
 }
 
-/** funcion enableStartButton, se llama cuando se han agregado 2 o mas jugadores y permite que el juego empiece **/
-function enableStartButton(){
+//funcion para habilitar o desahabilitar el boton del turno
+function changeStatusButton(){
+	if(activePlayer.indebtedness == 0){
+		enableStatusButton();
+	}else{
+		disableStatusButton();
+	}
+}
 
-	var startButton = document.createElement('button');
-	startButton.setAttribute("id","startButton" );
-	startButton.onclick = startGame;
+//desahibilitar el boton de terminar turno
+function disableStatusButton(){
+	var button = document.getElementById('statusButton');
+	button.disabled = true;
+	button.style.opacity = '0.30';
+}
+
+//habilitar el boton de terminar turno
+function enableStatusButton(){
+	var button = document.getElementById('statusButton');
+	button.disabled = false;
+	button.style.opacity = '0.90';
+}
+
+
+/** funcion createStatusButton, se llama cuando se han agregado 2 o mas jugadores y permite que el juego empiece **/
+function createStatusButton(){
+
+	var statusButton = document.createElement('button');
+	statusButton.setAttribute("id","statusButton" );
+	statusButton.onclick = startGame;
 	var txt = document.createTextNode("Iniciar juego");
-	startButton.appendChild(txt);
-	var up = document.getElementById("upperSpace");
-	up.appendChild(startButton);
-	startButton.style.top = "50%";
-	startButton.style.left="50%";
+	statusButton.appendChild(txt);
+	var up = document.getElementById("lowerSpace");
+	up.appendChild(statusButton);
+	//statusButton.style.top = "50%";
+	//statusButton.style.left="50%";
 
 }
 
@@ -1130,10 +1170,8 @@ function enableEndTurnButton(){
  * al presionar el boton de terminar turno
  **/
 function changeTurn(){
-    var button = document.getElementById("endTurn");
-   	if(button!=null){
-    	button.style.display = "none";
-   	}
+ 
+	disableStatusButton();
    	//cambia el activePlayer
    	if(activePlayer.index == activePlayers.length-1 ){
    	    activePlayer = activePlayers[0];
@@ -1157,7 +1195,10 @@ function disableAll(){
    for(var x in btn){
         for(var i = 0 ; i < btn[x].length; ++i){
           btn[x][i].disabled = true;
-          btn[x][i].style.opacity = '0.3';
+		  if(btn[x][i].className != 'btnLodgement' ){
+			 btn[x][i].style.opacity = '0.3'; 
+		  }
+          
 
         }
    }
