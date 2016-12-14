@@ -930,7 +930,13 @@ function movePlayer(numberOfCells){
 
 		moveNext(activePlayer, actualPosition.nextDirection);
 		actualPosition = properties[actualPosition.nextPropId];
-
+        if(actualPosition.id == "enter" ) //si pasa por la entrada le dan 100
+        {
+            activePlayer.liquidCash += 100;
+            activePlayer.richness += 100;
+            updateLiquidCash(window.activePlayer.liquidCash, window.activePlayer);
+		    updateRichness(window.activePlayer.richness, window.activePlayer);
+        }
 
 	}
 	activePlayer.position = actualPosition.id;
