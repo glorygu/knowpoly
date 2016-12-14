@@ -234,6 +234,27 @@ function verifyAnswer(questionNumber) {
 						window.activePlayer.richness = updatedRichness; // Substract due amount.
 						updateLiquidCash(updatedCash, this.activePlayer);
 						updateRichness(updatedRichness, this.activePlayer);
+            enableStatusButton();
+            eraseQuestionSpace();
+
+}
+
+/*De antemano les pido perdón por este código.
+ No puede ser más ineficiente y chancho, pero las circunstancias de la vida (fin de semestre)
+ me llevaron a crear esta abominación, sin interesarme su integridad.*/
+function eraseQuestionSpace(){
+  var qP = document.getElementById("questionPlace");
+  var oP = document.getElementById("optionsPlace");
+  var qpr = document.getElementById("gamePrice");
+  while (qP.hasChildNodes()) {
+      qP.removeChild(qP.lastChild);
+  }
+  while (oP.hasChildNodes()) {
+      oP.removeChild(oP.lastChild);
+  }
+  while (qpr.hasChildNodes()) {
+      qpr.removeChild(qpr.lastChild);
+  }
 
 
 }
@@ -515,19 +536,24 @@ function fallBox() {
 
                 selectAction();
             }
+            changeStatusButton();
+
       break;
 
       case "cave":
+      changeStatusButton();
+
       break;
 
       case "entry":
+      changeStatusButton();
+
       break;
 
       case "hotChair":
-      default:
-           //showImage
-            var img = document.getElementById("silla");
-            img.display="inline-block";
+
+            disableStatusButton();
+            disableDiceRoll();
 
             var optionsPlaceDiv = document.getElementById("optionsPlace");
             optionsPlaceDiv.display= "inline-block";
@@ -541,8 +567,10 @@ function fallBox() {
 
       break;
 
+      default:
+      break;
+
     }
-	changeStatusButton();
 
 }
 
@@ -628,7 +656,7 @@ function sellConstruction(){
 
     window.updateLiquidCash(window.activePlayer.liquidCash , window.activePlayer);
     verifyIndebtedness();
-	
+
 
 }
 
@@ -818,7 +846,7 @@ function paintProperties() {
 function paintLodgementPart(representationProperty, dataProperty) {
     var buttonBuy = representationProperty.getElementsByClassName('btnActionHouse');
 	var buttonLodgement;
-	
+
 	if(dataProperty.countHouses == 0){
 		buttonBuy[dataProperty.countHouses].style.opacity = '0.30';
         buttonBuy[dataProperty.countHouses].disabled = true;
@@ -1104,6 +1132,10 @@ function enableDiceRoll(){ //muestra el boton de lanzar dado
     var diceRollButton = document.getElementById("diceRollButton");
     diceRollButton.style.display = "initial";
 }
+function disableDiceRoll(){ //muestra el boton de lanzar dado
+    var diceRollButton = document.getElementById("diceRollButton");
+    diceRollButton.style.display = "none";
+}
 
 function updateActivePlayerIndexes(){
     // funcion que permite actualizar los indices de los jugadores luego de que se elimina un jugador
@@ -1176,7 +1208,7 @@ function enableEndTurnButton(){
  * al presionar el boton de terminar turno
  **/
 function changeTurn(){
- 
+
 	disableStatusButton();
    	//cambia el activePlayer
    	if(activePlayer.index == activePlayers.length-1 ){
@@ -1202,9 +1234,9 @@ function disableAll(){
         for(var i = 0 ; i < btn[x].length; ++i){
           btn[x][i].disabled = true;
 		  if(btn[x][i].className != 'btnLodgement' ){
-			 btn[x][i].style.opacity = '0.3'; 
+			 btn[x][i].style.opacity = '0.3';
 		  }
-          
+
 
         }
    }
