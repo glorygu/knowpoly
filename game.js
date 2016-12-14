@@ -1082,7 +1082,7 @@ function verifyIndebtedness(){
 			this.activePlayer.indebtedness = 0;
 			updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer);
 			updateRichness(this.activePlayer.richness, this.activePlayer);
-            enableEndTurnButton();
+      enableEndTurnButton();
 			alert('Puede seguir jugando, ya no tiene deudas');
 			for(var counter = 0; counter < this.activePlayers.length; ++counter){
 				//buscar a quién hay que pagar
@@ -1186,7 +1186,7 @@ function gameOver(){
  Funcion que permite habilitar el boton de terminar partida
  **/
 function enableEndTurnButton(){
-    var button = document.getElementById("endTurn");
+    var button = document.getElementById("statusButton");
     if (button == null){
     button = document.createElement("button");
     button.id = "endTurn";
