@@ -479,7 +479,7 @@ function addPlayer(playerNumber){
 					player.richness = 800;
 					player.indebtedness = 0;
 					player.debtOwner = -1;
-					document.getElementById("name"+playerNumber).innerHTML = player.name + " <p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p>/" +  "<p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
+					document.getElementById("name"+playerNumber).innerHTML = player.name + " <p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p><p id=\"slash" + player.number +"\"> / </p><p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
                     player.inCave = "false";
 	 				player.position = "enter";
 	 				//var imgHeight =  Math.floor(enter.offsetHeight/5);
