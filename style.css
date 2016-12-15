@@ -132,6 +132,16 @@ margin-top: 1em;
 
 }
 
+#player3Cash{
+	margin-bottom: 0;
+	margin-left: 1em;
+}
+
+#player4Cash{
+	margin-bottom: 0;
+	margin-left: 2em;
+}
+
 
 .player4 p{
 	position:absolute;
@@ -162,8 +172,26 @@ margin-top: 1em;
 
 	position: absolute;
 	bottom: 0.3%;
+	display: inline;
 
 
+}
+
+#player3Cash, #player4Cash{
+	left: 7em;
+	margin-bottom: 0;
+}
+#slash3, #slash4{
+	left: 9em;
+	margin-bottom: 0;
+}
+#player3Richness, #player4Richness{
+
+	left: 9.5em;
+	margin-bottom: 0;
+}
+#player3Cash, #player4Cash, #player3Richness, #player4Richness{
+	z-index: 4;
 }
 
 #playerIcon3{
