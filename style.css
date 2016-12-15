@@ -132,6 +132,16 @@ margin-top: 1em;
 
 }
 
+#player3Cash{
+	margin-bottom: 0;
+	margin-left: 1em;
+}
+
+#player4Cash{
+	margin-bottom: 0;
+	margin-left: 2em;
+}
+
 
 .player4 p{
 	position:absolute;

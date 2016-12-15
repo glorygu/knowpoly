@@ -479,7 +479,7 @@ function addPlayer(playerNumber){
 					player.richness = 800;
 					player.indebtedness = 0;
 					player.debtOwner = -1;
-					document.getElementById("name"+playerNumber).innerHTML = player.name + " <p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p>/" +  "<p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
+					document.getElementById("name"+playerNumber).innerHTML = player.name + " <p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p> <p>/</p>" +  "<p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
                     player.inCave = "false";
 	 				player.position = "enter";
 	 				//var imgHeight =  Math.floor(enter.offsetHeight/5);
@@ -852,8 +852,10 @@ function paintLodgementPart(representationProperty, dataProperty) {
         buttonBuy[dataProperty.countHouses].disabled = true;
 		buttonBuy[dataProperty.countHouses].innerText = dataProperty.houseSell;
 		buttonBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
-		buttonBuy[dataProperty.countHouses+1].style.opacity = '0.99';
-        buttonBuy[dataProperty.countHouses+1].disabled = false;
+		if(this.activePlayer.liquidCash > dataProperty.houseBuy){
+			buttonBuy[dataProperty.countHouses+1].style.opacity = '0.99';
+			buttonBuy[dataProperty.countHouses+1].disabled = false;
+		}
 		buttonLodgement = representationProperty.getElementsByClassName('btnLodgement');
 		buttonLodgement[dataProperty.countHouses].style.opacity = '0.99';
 	}else{
@@ -871,7 +873,7 @@ function paintLodgementPart(representationProperty, dataProperty) {
 		buttonBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
 		if(dataProperty.countHouses == 5){
 			buttonBuy[dataProperty.countHouses].style.backgroundColor = 'red';
-		}else{
+		}else if(this.activePlayer.liquidCash > dataProperty.houseBuy){
 			buttonBuy[dataProperty.countHouses+1].style.opacity = '0.99';
 			buttonBuy[dataProperty.countHouses+1].disabled = false;
 		}
@@ -1029,6 +1031,8 @@ function createBuilding(){
 		paintLodgementPart(this.parentNode.parentNode, dataProperty);
 		updateLiquidCash(window.activePlayer.liquidCash, window.activePlayer);
 		updateRichness(window.activePlayer.richness, window.activePlayer);
+	}else{
+		alert('No le alcanza el dinero');
 	}
 
 }
