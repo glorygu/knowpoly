@@ -229,9 +229,6 @@ function verifyAnswer(questionNumber) {
 
 }
 
-/*De antemano les pido perdón por este código.
- No puede ser más ineficiente y chancho, pero las circunstancias de la vida (fin de semestre)
- me llevaron a crear esta abominación, sin interesarme su integridad.*/
 function eraseQuestionSpace(){
   var qP = document.getElementById("questionPlace");
   var oP = document.getElementById("optionsPlace");
