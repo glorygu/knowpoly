@@ -479,8 +479,8 @@ function addPlayer(playerNumber){
 					player.richness = 800;
 					player.indebtedness = 0;
 					player.debtOwner = -1;
-					document.getElementById("name"+playerNumber).innerHTML = player.name + "<p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p>/" +  "<p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
-
+					document.getElementById("name"+playerNumber).innerHTML = player.name + " <p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p>/" +  "<p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
+                    player.inCave = "false";
 	 				player.position = "enter";
 	 				//var imgHeight =  Math.floor(enter.offsetHeight/5);
 	     			//var imgWidth = Math.floor(enter.offsetWidth/3);
@@ -541,11 +541,11 @@ function fallBox() {
       break;
 
       case "cave":
-      changeStatusButton();
-
+        changeStatusButton();
+        askCaveQuestion();
       break;
 
-      case "entry":
+      case "enter":
       changeStatusButton();
 
       break;
@@ -1082,16 +1082,25 @@ function verifyIndebtedness(){
 			this.activePlayer.indebtedness = 0;
 			updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer);
 			updateRichness(this.activePlayer.richness, this.activePlayer);
-      enableEndTurnButton();
+            enableEndTurnButton();
 			alert('Puede seguir jugando, ya no tiene deudas');
-			for(var counter = 0; counter < this.activePlayers.length; ++counter){
-				//buscar a quién hay que pagar
-				if(this.activePlayer.debtOwner == this.activePlayer[counter].number){
-					updateLiquidCash(this.activePlayers[counter].liquidCash + this.activePlayer.indebtedness, this.activePlayers[counter]);
-					updateRichness(this.activePlayers[counter].richness + this.activePlayer.indebtedness, this.activePlayers[counter]);
-					this.activePlayer.debtOwner = -1;
-				}
+			if(this.activePlayer.debtOwner == -2){ //si el debtOwner es igual a -2 la deuda es con el banco, si no es con uno de los jugadores
+			    alert('Puede salir de la cueva, ya no tiene deudas');    
+			    activePlayer.inCave = "false";
 			}
+			else 
+			{
+			    alert('Puede seguir jugando, ya no tiene deudas');
+			    for(var counter = 0; counter < this.activePlayers.length; ++counter){
+				//buscar a quién hay que pagar
+				    if(this.activePlayer.debtOwner == this.activePlayer[counter].number){
+    					updateLiquidCash(this.activePlayers[counter].liquidCash + this.activePlayer.indebtedness, this.activePlayers[counter]);
+    					updateRichness(this.activePlayers[counter].richness + this.activePlayer.indebtedness, this.activePlayers[counter]);
+    					this.activePlayer.debtOwner = -1;
+				    }
+			    }
+			}
+			
 		}else{
 			alert('Necesita más efectivo');
 		}
@@ -1219,7 +1228,13 @@ function changeTurn(){
    	}
     //Disable all buttons!
     disableAll();
-   	enableDiceRoll();
+    if (activePlayer.position == "cave" && activePlayer.inCave == "true"){
+        askCaveQuestion();
+    } else 
+    {
+        enableDiceRoll();
+    }
+   	
 }
 
 function disableAll(){
@@ -1278,7 +1293,7 @@ function addTokenOnProperty(){
 
 
 function verifyRichness(){
-    if(activePlayer.richness<=0 || activePlayer.indebtness > activePlayer.richness){
+    if(activePlayer.richness<=0 || activePlayer.indebtedness > activePlayer.richness){
         alert(activePlayer.name +" no tiene suficiente riqueza para seguir jugando. Se elimina del juego");
         removeFromActivePlayers();
     }
@@ -1307,3 +1322,116 @@ fillBoard();
  * habilitar boton terminar turno
  *
  * **/
+/**** cueva 
+***/
+
+function showCaveQuestion(questionNumber) {
+
+    //Get the question statement according to the number just generated.
+    var questionStatement = caveQuestions['web'][questionNumber]['text'];
+    //Get the number of option that answers correctly the question.
+    //The question will be shown in the div with id "questionPlace".
+    var questionPlaceDiv = document.getElementById("questionPlace");
+    var questionTextElement = document.createElement("H1");
+    questionTextElement.id = "questionStatement";
+    //Create a text node which will be a child of div questionPlace.
+    var questionTextNode = document.createTextNode(questionStatement);
+    questionTextElement.appendChild(questionTextNode);
+    //Add that node  as a child of div questionPlace
+    questionPlaceDiv.appendChild(questionTextElement);
+
+}
+
+function showCaveOptions(questionNumber) {
+    //Get the possible options that may answer that question. Stored in a array.
+    var it = 1;
+    var questionOptions = this.caveQuestions['web'][questionNumber]['options'];
+    //The options will be shown in the div with id "optionsPlace".
+    var optionsPlaceDiv = document.getElementById("optionsPlace");
+    //Iterate through options, and in each option we must create  a div with a radio button.
+    for (var q in questionOptions) {
+        //Create input elements
+        var inputRadioElement = document.createElement("INPUT");
+        inputRadioElement.setAttribute("TYPE", "radio");
+        inputRadioElement.setAttribute("NAME", "options");
+        inputRadioElement.setAttribute("VALUE", it);
+        it++;
+        //Create a label which will contain the text and radio button
+        var label = document.createElement("LABEL");
+        //Create a text node which will be a child of the input type radio element.
+        var optionTextNode = document.createTextNode(questionOptions[q]);
+        inputRadioElement.appendChild(optionTextNode);
+        //Append the input to the options div
+        label.appendChild(inputRadioElement);
+        label.appendChild(optionTextNode);
+        optionsPlaceDiv.appendChild(label);
+        var brElement = document.createElement("BR");
+        optionsPlaceDiv.appendChild(brElement);
+    }
+    var buttonSelect = document.createElement("BUTTON");
+    buttonSelect.id = "btnSelect";
+    buttonSelect.setAttribute("onClick", "verifyCaveAnswer(" + questionNumber + ")");
+    buttonSelect.appendChild(document.createTextNode("Seleccionar"));
+    optionsPlaceDiv.appendChild(buttonSelect);
+}
+
+
+function showCaveQuestionPrize(questionNumber) {
+    var gamePriceDiv = document.getElementById("gamePrice");
+    //Get difficulty
+    var questionDifficulty = this.questions['web'][questionNumber]['difficulty'];
+    var punishment = questionDifficulty * 200;
+    var punishmentElement = document.createElement("H1");
+    var punishmentNodeText = document.createTextNode("Costo de la pregunta: " + punishment.toString() + "USD");
+    punishmentElement.id = "priceText";
+    punishmentElement.appendChild(punishmentNodeText);
+    gamePriceDiv.appendChild(punishmentElement);
+}
+
+
+function verifyCaveAnswer(questionNumber){
+	
+	 var questionAnswer = window.caveQuestions['web'][questionNumber]['answer'];
+    //Get user-selected answer
+    var selectedAnswer = document.querySelector('input[name = "options"]:checked').value;
+    
+    activePlayer.inCave = "true";
+    if (selectedAnswer == questionAnswer) {
+	    alert("¡Opción correcta! Puede seguir jugando"); //acerto pero no recibe dinero 
+		enableStatusButton();
+        
+        activePlayer.inCave = "false";
+	} else {
+        alert("¡Opción incorrecta! Se le descuenta el valor de la pregunta"); //fallo respuesta
+		var questionDifficulty = this.questions['web'][questionNumber]['difficulty'];
+		var amount = questionDifficulty * 200;
+		if (activePlayer.liquidCash >= amount){ //si le alcanza el dinero 
+			activePlayer.liquidCash -= amount;
+			activePlayer.richness -= amount;
+			updateLiquidCash(activePlayer.liquidCash, this.activePlayer);
+			updateRichness(activePlayer.richness, this.activePlayer);
+			enableStatusButton();
+            
+            activePlayer.inCave = "false";
+		} else //no le alcanza y debe vender 
+		{
+			alert("No tiene suficiente dinero líquido, debe vender");
+			activePlayer.indebtedness += amount;
+			activePlayer.debtOwner = -2;
+			verifyRichness();
+		
+		}
+    }
+    
+    eraseQuestionSpace();
+		
+		
+}
+
+function askCaveQuestion(){
+    var randomNumber = Math.floor(Math.random() * caveQuestions.web.length);
+    console.log("numPreg"+ randomNumber);
+    showCaveQuestion(randomNumber);
+    showCaveOptions(randomNumber);
+    showCaveQuestionPrize(randomNumber);
+}
