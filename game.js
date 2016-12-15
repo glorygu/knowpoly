@@ -1,10 +1,8 @@
 /**
 Variables globales
 **/
-var imgWidth = 80;
-var imgHeight = 80;
+
 var activePlayers = [];
-var cells = [];
 var colors = ["red","green","blue","yellow"];
 var addingPlayers = true;
 var upperSpace  = document.getElementById("upperSpace");
@@ -58,7 +56,10 @@ function removeFromArray(srcArray, item) {
 }
 
 
-
+/**
+ * Function getOffset obtenida de
+ * http://stackoverflow.com/questions/442404/retrieve-the-position-x-y-of-an-html-element
+ * **/
 
 function getOffset(el) {
     el = el.getBoundingClientRect();
@@ -1172,6 +1173,11 @@ function gameOver(){
     	img.src = "img/gameOver.gif";
     	img.id = "gameOverMsg";
     	divGameOver.appendChild(img);
+    	var winnerText = document.createTextNode("Felicidades, " +activePlayer.name + ", ha ganado el juego. ");
+    	var winner = document.createElement("p");
+    	winner.id = "winner";
+    	winner.appendChild(winnerText);
+    	divGameOver.appendChild(winner);
     	var containerTemp = document.getElementsByClassName("cointainer");
         var container = containerTemp[0];
         var buttonStartOver = document.createElement("button");
@@ -1249,30 +1255,6 @@ function disableAll(){
         }
    }
 
-
-}
-
-
-function initialize(){
-    //inicializacion de variables globales
-    activePlayers = [];
-    cells = [];
-    colors = ["red","green","blue","yellow"];
-    addingPlayers = true;
-    upperSpace  = document.getElementById("upperSpace");
-    enter =  document.getElementById("enter");
-    questionsPool = [];
-    board = document.getElementById("board");
-    properties = {};
-    activePlayer = {};
-
-    enterOffset = getOffset(enter);
-    cellWidth = enterOffset.width;
-    cellHeight = enterOffset.height;
-
-    // llamados para llenar el tablero
-    //fillProperties();
-    //fillBoard();
 
 }
 
