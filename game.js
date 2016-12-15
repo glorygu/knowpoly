@@ -645,7 +645,7 @@ function sellConstruction(){
 
     currentProperty.countHouses-=1;
 
-    //move Lodgments?
+
 	 if (currentProperty.countHouses == 0) {
             var button = this.parentNode.parentNode.getElementsByClassName('propertySell');
             button[0].style.opacity = '0.99';
@@ -789,8 +789,7 @@ function payLodgement(){
 		this.activePlayer.indebtedness = property[lodgement];
 		this.activePlayer.debtOwner = property.owner;
 		verifyRichness();
-		//this.activePlayer.debtOwner = proper
-		//verificar si puede vender
+		disableStatusButton();
 
 
 	}else{
@@ -813,6 +812,7 @@ function payLodgement(){
 		}
 		updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer);
 		updateRichness(this.activePlayer.richness, this.activePlayer);
+		enableStatusButton();
 	}
 }
 
@@ -1067,8 +1067,6 @@ function createStatusButton(){
 	statusButton.appendChild(txt);
 	var up = document.getElementById("lowerSpace");
 	up.appendChild(statusButton);
-	//statusButton.style.top = "50%";
-	//statusButton.style.left="50%";
 
 }
 
@@ -1082,7 +1080,7 @@ function verifyIndebtedness(){
 			this.activePlayer.indebtedness = 0;
 			updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer);
 			updateRichness(this.activePlayer.richness, this.activePlayer);
-            enableEndTurnButton();
+            enableStatusButton();
 			alert('Puede seguir jugando, ya no tiene deudas');
 			if(this.activePlayer.debtOwner == -2){ //si el debtOwner es igual a -2 la deuda es con el banco, si no es con uno de los jugadores
 			    alert('Puede salir de la cueva, ya no tiene deudas');    
@@ -1106,7 +1104,7 @@ function verifyIndebtedness(){
 		}
 	} else
 	{
-	    enableEndTurnButton();
+	    disableStatusButton();
 	}
 
 }
