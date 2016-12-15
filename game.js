@@ -58,6 +58,8 @@ function removeFromArray(srcArray, item) {
 }
 
 
+
+
 function getOffset(el) {
     el = el.getBoundingClientRect();
 
@@ -105,13 +107,6 @@ function playerExists(playerNumber) {
 
     return false;
 }
-/**
-funcion getPlayer que retorna el objeto de player despues de haberlo buscado por su numero
-**/
-
-
-//var properties = new Array();
-
 
 function getPlayer(playerNumber) {
 
@@ -123,12 +118,6 @@ function getPlayer(playerNumber) {
 }
 
 
-
-/**
-		It shows on the board a random question.
-**/
-
-//Get a random number that will represent the question displayed. There are 63 questions.
 
 function showQuestion(questionNumber) {
 
@@ -1083,10 +1072,10 @@ function verifyIndebtedness(){
             enableStatusButton();
 			alert('Puede seguir jugando, ya no tiene deudas');
 			if(this.activePlayer.debtOwner == -2){ //si el debtOwner es igual a -2 la deuda es con el banco, si no es con uno de los jugadores
-			    alert('Puede salir de la cueva, ya no tiene deudas');    
+			    alert('Puede salir de la cueva, ya no tiene deudas');
 			    activePlayer.inCave = "false";
 			}
-			else 
+			else
 			{
 			    alert('Puede seguir jugando, ya no tiene deudas');
 			    for(var counter = 0; counter < this.activePlayers.length; ++counter){
@@ -1098,13 +1087,13 @@ function verifyIndebtedness(){
 				    }
 			    }
 			}
-			
+
 		}else{
 			alert('Necesita más efectivo');
 		}
 	} else
 	{
-	    disableStatusButton();
+	    enableStatusButton();
 	}
 
 }
@@ -1228,11 +1217,11 @@ function changeTurn(){
     disableAll();
     if (activePlayer.position == "cave" && activePlayer.inCave == "true"){
         askCaveQuestion();
-    } else 
+    } else
     {
         enableDiceRoll();
     }
-   	
+
 }
 
 function disableAll(){
@@ -1320,7 +1309,7 @@ fillBoard();
  * habilitar boton terminar turno
  *
  * **/
-/**** cueva 
+/**** cueva
 ***/
 
 function showCaveQuestion(questionNumber) {
@@ -1388,42 +1377,42 @@ function showCaveQuestionPrize(questionNumber) {
 
 
 function verifyCaveAnswer(questionNumber){
-	
+
 	 var questionAnswer = window.caveQuestions['web'][questionNumber]['answer'];
     //Get user-selected answer
     var selectedAnswer = document.querySelector('input[name = "options"]:checked').value;
-    
+
     activePlayer.inCave = "true";
     if (selectedAnswer == questionAnswer) {
-	    alert("¡Opción correcta! Puede seguir jugando"); //acerto pero no recibe dinero 
+	    alert("¡Opción correcta! Puede seguir jugando"); //acerto pero no recibe dinero
 		enableStatusButton();
-        
+
         activePlayer.inCave = "false";
 	} else {
         alert("¡Opción incorrecta! Se le descuenta el valor de la pregunta"); //fallo respuesta
 		var questionDifficulty = this.questions['web'][questionNumber]['difficulty'];
 		var amount = questionDifficulty * 200;
-		if (activePlayer.liquidCash >= amount){ //si le alcanza el dinero 
+		if (activePlayer.liquidCash >= amount){ //si le alcanza el dinero
 			activePlayer.liquidCash -= amount;
 			activePlayer.richness -= amount;
 			updateLiquidCash(activePlayer.liquidCash, this.activePlayer);
 			updateRichness(activePlayer.richness, this.activePlayer);
 			enableStatusButton();
-            
+
             activePlayer.inCave = "false";
-		} else //no le alcanza y debe vender 
+		} else //no le alcanza y debe vender
 		{
 			alert("No tiene suficiente dinero líquido, debe vender");
 			activePlayer.indebtedness += amount;
 			activePlayer.debtOwner = -2;
 			verifyRichness();
-		
+
 		}
     }
-    
+
     eraseQuestionSpace();
-		
-		
+
+
 }
 
 function askCaveQuestion(){
