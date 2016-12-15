@@ -773,6 +773,156 @@ var questions =
 			answer: 2,
 			difficulty: 0.1,
 		},
+		
+		//LUIS LEANDRO
+		{
+			text: '¿Que són  las declaraciones de tipo de elemento?',
+			options:
+			[
+				'etiquetas de HTML',
+				'declaraciones de posibles errores que puede tener el XML',
+				'restricciones que deben respetar todos los elementos en un documento XML válido',
+				'identificadores de etiquetas',
+				
+			],
+			answer: 3,
+			difficulty: 0.6,
+		},
+		{
+			text: 'Palabra clave en los identificadores de sistemas',
+			options:
+			[
+				'SYSTEM',
+				'SYS',
+				'ADMINISTRATION',
+				'DTD',
+			],
+			answer: 1,
+			difficulty: 0.5,
+		},
+		
+		{
+			text: 'Valide la frase: "Los identificadores en HTML son sensitivos a mayúsculas ni minúsculas"',
+			options:
+			[
+				'Verdadero',
+				'Falso',
+				
+			],
+			answer: 2,
+			difficulty: 0.1,
+		},
+		
+		{
+			text: 'Valide la frase: HTML no permite dejar elementos sin cerrar',
+			options:
+			[
+				'Verdadero',
+				'Falso',
+				
+			],
+			answer: 2,
+			difficulty: 0.1,
+		},
+		
+		{
+			text: 'Valide la frase: Los elementos html, body y head, son obligatorios en XML',
+			options:
+			[
+				'Verdadero',
+				'Falso',
+				
+			],
+			answer: 1,
+			difficulty: 0.1,
+		},
+		
+		{
+			text: 'Qué indica el atributo xml:lang',
+			options:
+			[
+				'codificación',
+				'orientación',
+				'longitud',
+				'idioma',
+			],
+			answer: 4,
+			difficulty: 0.5,
+		},
+		
+		{
+			text: 'Atributo que conceptualmente debe llamarse encoding',
+			options:
+			[
+				'charset',
+				'xml:lang',
+				'name',
+				'id',
+			],
+			answer: 1,
+			difficulty: 0.5,
+		},
+		
+		{
+			text: 'Elemento para describir el encabezado de la página',
+			options:
+			[
+				'nav',
+				'header',
+				'footer',
+			],
+			answer: 3,
+			difficulty: 0.5,
+		},
+		
+		{
+			text: 'Elemento que carece de semántica',
+			options:
+			[
+				'div',
+				'header',
+				'footer',
+			],
+			answer: 1,
+			difficulty: 0.5,
+		},
+		
+		{
+			text: 'Valide la frase: XHTML puede tener secciones CDATA, mientras que HTML no',
+			options:
+			[
+				'Verdadero',
+				'Falso',
+				
+			],
+			answer: 1,
+			difficulty: 0.1,
+		},
+		
+		{
+			text: 'Valide la frase: XHTML exige que todo valor de atributo debe estar encerrado entre comillas',
+			options:
+			[
+				'Verdadero',
+				'Falso',
+				
+			],
+			answer: 1,
+			difficulty: 0.1,
+		},
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 /*
 		{
 			text: '',

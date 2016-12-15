@@ -479,7 +479,9 @@ function addPlayer(playerNumber){
 					player.richness = 800;
 					player.indebtedness = 0;
 					player.debtOwner = -1;
+
 					document.getElementById("name"+playerNumber).innerHTML = player.name + " <p id=\"player"+playerNumber+"Cash\">" + player.liquidCash + "</p><p id=\"slash" + player.number +"\"> / </p><p id=\"player"+playerNumber+"Richness\">" + player.richness +"</p>";
+
                     player.inCave = "false";
 	 				player.position = "enter";
 	 				//var imgHeight =  Math.floor(enter.offsetHeight/5);
@@ -645,7 +647,7 @@ function sellConstruction(){
 
     currentProperty.countHouses-=1;
 
-    //move Lodgments?
+
 	 if (currentProperty.countHouses == 0) {
             var button = this.parentNode.parentNode.getElementsByClassName('propertySell');
             button[0].style.opacity = '0.99';
@@ -789,8 +791,7 @@ function payLodgement(){
 		this.activePlayer.indebtedness = property[lodgement];
 		this.activePlayer.debtOwner = property.owner;
 		verifyRichness();
-		//this.activePlayer.debtOwner = proper
-		//verificar si puede vender
+		disableStatusButton();
 
 
 	}else{
@@ -813,6 +814,7 @@ function payLodgement(){
 		}
 		updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer);
 		updateRichness(this.activePlayer.richness, this.activePlayer);
+		enableStatusButton();
 	}
 }
 
@@ -852,8 +854,10 @@ function paintLodgementPart(representationProperty, dataProperty) {
         buttonBuy[dataProperty.countHouses].disabled = true;
 		buttonBuy[dataProperty.countHouses].innerText = dataProperty.houseSell;
 		buttonBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
-		buttonBuy[dataProperty.countHouses+1].style.opacity = '0.99';
-        buttonBuy[dataProperty.countHouses+1].disabled = false;
+		if(this.activePlayer.liquidCash > dataProperty.houseBuy){
+			buttonBuy[dataProperty.countHouses+1].style.opacity = '0.99';
+			buttonBuy[dataProperty.countHouses+1].disabled = false;
+		}
 		buttonLodgement = representationProperty.getElementsByClassName('btnLodgement');
 		buttonLodgement[dataProperty.countHouses].style.opacity = '0.99';
 	}else{
@@ -871,7 +875,7 @@ function paintLodgementPart(representationProperty, dataProperty) {
 		buttonBuy[dataProperty.countHouses].style.textDecoration = 'line-through';
 		if(dataProperty.countHouses == 5){
 			buttonBuy[dataProperty.countHouses].style.backgroundColor = 'red';
-		}else{
+		}else if(this.activePlayer.liquidCash > dataProperty.houseBuy){
 			buttonBuy[dataProperty.countHouses+1].style.opacity = '0.99';
 			buttonBuy[dataProperty.countHouses+1].disabled = false;
 		}
@@ -1029,6 +1033,8 @@ function createBuilding(){
 		paintLodgementPart(this.parentNode.parentNode, dataProperty);
 		updateLiquidCash(window.activePlayer.liquidCash, window.activePlayer);
 		updateRichness(window.activePlayer.richness, window.activePlayer);
+	}else{
+		alert('No le alcanza el dinero');
 	}
 
 }
@@ -1067,8 +1073,6 @@ function createStatusButton(){
 	statusButton.appendChild(txt);
 	var up = document.getElementById("lowerSpace");
 	up.appendChild(statusButton);
-	//statusButton.style.top = "50%";
-	//statusButton.style.left="50%";
 
 }
 
@@ -1082,7 +1086,7 @@ function verifyIndebtedness(){
 			this.activePlayer.indebtedness = 0;
 			updateLiquidCash(this.activePlayer.liquidCash, this.activePlayer);
 			updateRichness(this.activePlayer.richness, this.activePlayer);
-            enableEndTurnButton();
+            enableStatusButton();
 			alert('Puede seguir jugando, ya no tiene deudas');
 			if(this.activePlayer.debtOwner == -2){ //si el debtOwner es igual a -2 la deuda es con el banco, si no es con uno de los jugadores
 			    alert('Puede salir de la cueva, ya no tiene deudas');    
@@ -1106,7 +1110,7 @@ function verifyIndebtedness(){
 		}
 	} else
 	{
-	    enableEndTurnButton();
+	    disableStatusButton();
 	}
 
 }
